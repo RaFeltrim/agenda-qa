@@ -1,0 +1,133 @@
+
+import React, { useState } from 'react';
+import { Moon, Sun, Download, History, Search, User, Settings, LogOut } from 'lucide-react';
+
+interface HeaderProps {
+  isDark: boolean;
+  toggleDark: (dark: boolean) => void;
+  onImportClick: () => void;
+  onExportClick: () => void;
+  onAuditLogClick: () => void;
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ 
+  isDark, 
+  toggleDark, 
+  onExportClick, 
+  onAuditLogClick,
+  searchTerm, 
+  setSearchTerm 
+}) => {
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-50 w-full glass border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between gap-6">
+        {/* Logo Section */}
+        <div className="flex items-center gap-3 group cursor-pointer">
+          <div className="w-11 h-11 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-xl flex items-center justify-center text-white font-black shadow-lg shadow-indigo-500/20 group-hover:scale-105 group-hover:rotate-3 transition-all duration-300">
+            A
+          </div>
+          <div className="hidden sm:block">
+            <h1 className="text-xl font-black bg-gradient-to-r from-indigo-600 to-teal-500 bg-clip-text text-transparent leading-none tracking-tight">
+              Agenda Kanban
+            </h1>
+            <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em] mt-1 opacity-80">v3.0 PRO</p>
+          </div>
+        </div>
+
+        {/* Dynamic Search Bar */}
+        <div className="flex-1 max-w-lg relative group">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none">
+            <Search className="w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+          </div>
+          <input
+            type="text"
+            placeholder="Pressione Ctrl + K para buscar cards..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500/50 transition-all text-sm font-medium shadow-inner"
+          />
+        </div>
+
+        {/* Action Group */}
+        <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-1.5 p-1 bg-slate-100/50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/20 dark:border-slate-700/20">
+            <button
+              onClick={onAuditLogClick}
+              className="p-2.5 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-white dark:hover:bg-slate-700 rounded-xl transition-all"
+              title="Audit Log"
+            >
+              <History className="w-5 h-5" />
+            </button>
+            <button
+              onClick={onExportClick}
+              className="p-2.5 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-white dark:hover:bg-slate-700 rounded-xl transition-all"
+              title="Exportar Markdown"
+            >
+              <Download className="w-5 h-5" />
+            </button>
+          </div>
+
+          <div className="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-1 hidden sm:block"></div>
+
+          <button
+            onClick={() => toggleDark(!isDark)}
+            className="p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all shadow-sm"
+          >
+            {isDark ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5" />}
+          </button>
+
+          {/* Enhanced Profile Menu */}
+          <div className="relative">
+            <button 
+              onClick={() => setShowProfileMenu(!showProfileMenu)}
+              className="w-11 h-11 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 flex items-center justify-center p-0.5 hover:ring-4 hover:ring-indigo-500/20 transition-all shadow-md active:scale-95"
+            >
+              <img
+                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rafael"
+                className="w-full h-full rounded-xl"
+                alt="Profile"
+              />
+            </button>
+
+            {showProfileMenu && (
+              <>
+                <div className="fixed inset-0 z-10" onClick={() => setShowProfileMenu(false)} />
+                <div className="absolute right-0 mt-4 w-64 glass dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700/50 rounded-3xl shadow-2xl py-3 z-20 animate-in fade-in slide-in-from-top-4 duration-300">
+                  <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] mb-1.5">Perfil Ativo</p>
+                    <p className="text-base font-black dark:text-white">Rafael Feltrim</p>
+                    <p className="text-[11px] text-indigo-600 dark:text-indigo-400 font-extrabold flex items-center gap-1.5 mt-1">
+                      <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                      Orquestrador Sênior
+                    </p>
+                  </div>
+                  <div className="p-2 space-y-1">
+                    <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100/50 dark:hover:bg-slate-700/50 rounded-xl transition-all">
+                      <User className="w-4 h-4" /> Conta
+                    </button>
+                    <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100/50 dark:hover:bg-slate-700/50 rounded-xl transition-all">
+                      <Settings className="w-4 h-4" /> Preferências
+                    </button>
+                    <div className="h-px bg-slate-100 dark:bg-slate-700 my-2 mx-3" />
+                    <button 
+                      onClick={() => { if(confirm("Deseja mesmo sair?")) window.location.reload(); }}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-black text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all"
+                    >
+                      <LogOut className="w-4 h-4" /> Sair da Conta
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;

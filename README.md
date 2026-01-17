@@ -1,5 +1,6 @@
 # 🚀 Agenda Kanban v3.0 - AI Workspace
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2b859ec8-eca0-4306-a9a9-d42bca4a9f97/deploy-status)](https://app.netlify.com/projects/agenda-qa/deploys)
 ![Version](https://img.shields.io/badge/version-3.0.0-indigo)
 ![Stack](https://img.shields.io/badge/stack-React%20%7C%20Tailwind%20%7C%20Gemini%202.0-blueviolet)
 ![Status](https://img.shields.io/badge/status-Production%20Ready-emerald)

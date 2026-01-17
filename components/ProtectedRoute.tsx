@@ -7,9 +7,10 @@ import FirstPasswordChange from './FirstPasswordChange';
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requiredRole?: 'editor' | 'viewer';
+  addNotification?: (message: string, type: 'success' | 'error' | 'info' | 'warning') => void;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole, addNotification }) => {
   const { isAuthenticated, isLoading, role, needsPasswordChange } = useAuth();
 
   // Show loading state while checking auth
@@ -101,7 +102,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole 
           exit={{ opacity: 0, x: 50 }}
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         >
-          <Login />
+          <Login addNotification={addNotification} />
         </motion.div>
       )}
     </AnimatePresence>

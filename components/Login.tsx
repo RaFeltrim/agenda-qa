@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
-import { Eye, EyeOff, Lock, User, LogIn, HelpCircle } from 'lucide-react';
+import { Eye, EyeOff, Lock, User, LogIn, HelpCircle, AlertCircle, CheckCircle } from 'lucide-react';
 import ForgotPasswordModal from './ForgotPasswordModal';
 import { PageTransition, SmoothSpinner } from './Transitions';
 
-const Login: React.FC = () => {
+interface LoginProps {
+  onLoginSuccess?: () => void;
+  addNotification?: (message: string, type: 'success' | 'error' | 'info' | 'warning') => void;
+}
+
+const Login: React.FC<LoginProps> = ({ onLoginSuccess, addNotification }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -21,10 +26,35 @@ const Login: React.FC = () => {
     e.preventDefault();
 
     if (!username.trim() || !password.trim()) {
+      addNotification?.('Por favor, preencha todos os campos', 'warning');
       return;
     }
 
-    await login(username.trim(), password);
+    try {
+      const success = await login(username.trim(), password);
+      
+      if (success) {
+        addNotification?.(`Bem-vindo, ${username.trim()}!`, 'success');
+        onLoginSuccess?.();
+      } else {
+        // Error is handled by the auth hook, but we can add additional context
+        addNotification?.('Falha na autenticação. Verifique suas credenciais.', 'error');
+      }
+    } catch (err) {
+      addNotification?.('Erro inesperado durante o login. Tente novamente.', 'error');
+    }
+  };
+
+  const handleUsernameBlur = () => {
+    if (username.trim() && !password.trim()) {
+      addNotification?.('Por favor, informe sua senha', 'info');
+    }
+  };
+
+  const handlePasswordBlur = () => {
+    if (password.trim() && !username.trim()) {
+      addNotification?.('Por favor, informe seu usuário', 'info');
+    }
   };
 
   return (
@@ -87,6 +117,7 @@ const Login: React.FC = () => {
                   required
                   value={username}
                   onChange={e => setUsername(e.target.value)}
+                  onBlur={handleUsernameBlur}
                   className="w-full pl-12 pr-4 py-4 bg-slate-900/50 border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all touch-target"
                   placeholder="Digite seu usuário"
                   disabled={isLoading}
@@ -112,6 +143,7 @@ const Login: React.FC = () => {
                   required
                   value={password}
                   onChange={e => setPassword(e.target.value)}
+                  onBlur={handlePasswordBlur}
                   className="w-full pl-12 pr-12 py-4 bg-slate-900/50 border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all touch-target"
                   placeholder="Digite sua senha"
                   disabled={isLoading}
@@ -131,24 +163,32 @@ const Login: React.FC = () => {
               </div>
             </div>
 
-            {/* Error Message */}
+            {/* Inline Error Message (still shown for immediate feedback) */}
             {error && (
-              <div className="rounded-2xl bg-red-900/30 border border-red-800/50 p-4">
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-2xl bg-red-900/30 border border-red-800/50 p-4"
+              >
                 <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <div className="ml-3">
-                    <p className="text-sm text-red-300">{error}</p>
-                  </div>
+                  <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0 mr-3" />
+                  <p className="text-sm text-red-300">{error}</p>
                 </div>
-              </div>
+              </motion.div>
+            )}
+
+            {/* Success Message */}
+            {isLoading && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="rounded-2xl bg-indigo-900/30 border border-indigo-800/50 p-4"
+              >
+                <div className="flex items-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-indigo-400 mr-3"></div>
+                  <p className="text-sm text-indigo-300">Autenticando...</p>
+                </div>
+              </motion.div>
             )}
 
             {/* Submit Button */}
@@ -190,8 +230,7 @@ const Login: React.FC = () => {
             <ForgotPasswordModal
               onClose={() => setShowForgotPassword(false)}
               onNotification={(message, type) => {
-                // TODO: Implement notification system
-                console.log('Notification:', message, type);
+                addNotification?.(message, type as any);
               }}
               onCreateUrgentCard={cardData => {
                 // TODO: Implement urgent card creation

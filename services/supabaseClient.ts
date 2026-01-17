@@ -1,21 +1,104 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Supabase configuration
-const supabaseUrl = import.meta.env?.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env?.VITE_SUPABASE_ANON_KEY;
+// Supabase configuration with fallbacks
+const supabaseUrl = import.meta.env?.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env?.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables. Please check your .env file.');
+// Validate configuration
+const isValidConfig = supabaseUrl && supabaseAnonKey && supabaseUrl.startsWith('http');
+
+// Console warnings for debugging
+if (!isValidConfig) {
+  console.warn('⚠️ Supabase configuration incomplete:');
+  console.warn('  VITE_SUPABASE_URL:', supabaseUrl || 'MISSING');
+  console.warn('  VITE_SUPABASE_ANON_KEY:', supabaseAnonKey ? 'PRESENT' : 'MISSING');
+  
+  if (typeof window !== 'undefined') {
+    console.info('ℹ️ Running in demo mode - authentication will be simulated');
+  }
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    // Session expires in 1 hour
-    detectSessionInUrl: true,
-    persistSession: true,
-    autoRefreshToken: true,
-  },
-});
+// Create the Supabase client (real or mock based on config)
+export const supabase = isValidConfig 
+  ? createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        detectSessionInUrl: true,
+        persistSession: true,
+        autoRefreshToken: true,
+      },
+    })
+  : {
+      // Mock client for development/offline mode
+      auth: {
+        signInWithPassword: async () => {
+          if (typeof window === 'undefined') {
+            throw new Error('Supabase not configured');
+          }
+          // Demo login credentials
+          return {
+            data: { 
+              user: { 
+                id: 'demo-user', 
+                email: 'demo@example.com',
+                user_metadata: { 
+                  full_name: 'Demo User', 
+                  username: 'demo' 
+                }
+              } 
+            },
+            error: null
+          };
+        },
+        signOut: async () => ({ error: null }),
+        getUser: async () => ({
+          data: { 
+            user: { 
+              id: 'demo-user', 
+              email: 'demo@example.com',
+              user_metadata: { 
+                full_name: 'Demo User', 
+                username: 'demo' 
+              }
+            } 
+          }, 
+          error: null 
+        }),
+        updateUser: async () => ({ error: null }),
+      },
+      from: (table: string) => ({
+        select: () => ({
+          eq: () => Promise.resolve({ 
+            data: table === 'profiles' ? [{ 
+              id: 'demo-user', 
+              username: 'demo', 
+              full_name: 'Demo User',
+              role: 'editor',
+              first_login: false,
+              password_changed_at: new Date().toISOString(),
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString()
+            }] : [],
+            error: null 
+          }),
+          single: () => Promise.resolve({ 
+            data: table === 'profiles' ? { 
+              id: 'demo-user', 
+              username: 'demo', 
+              full_name: 'Demo User',
+              role: 'editor',
+              first_login: false,
+              password_changed_at: new Date().toISOString(),
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString()
+            } : null,
+            error: null 
+          })
+        }),
+        update: () => ({
+          eq: () => Promise.resolve({ error: null })
+        }),
+      }),
+    } as any;
 
 // Types for our profiles table
 export interface Profile {

@@ -158,7 +158,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <ProtectedRoute>
+    <ProtectedRoute addNotification={addNotification}>
       <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a] transition-colors duration-200">
         <Header
           isDark={isDark}

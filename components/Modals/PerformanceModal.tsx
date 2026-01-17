@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { X, TrendingDown, Info, Award, Activity, Zap } from 'lucide-react';
 import { Sprint, Card } from '../../types';
@@ -11,16 +10,16 @@ interface PerformanceModalProps {
 
 const PerformanceModal: React.FC<PerformanceModalProps> = ({ sprint, cards, onClose }) => {
   const sprintCards = cards.filter(c => c.sprintId === sprint.id);
-  
+
   const calculateTotalPoints = () => {
-    return sprintCards.reduce((acc, c) => acc + 10 + (c.subTasks.length * 2), 0);
+    return sprintCards.reduce((acc, c) => acc + 10 + c.subTasks.length * 2, 0);
   };
 
   const calculateRemainingPoints = () => {
     return sprintCards.reduce((acc, c) => {
       if (c.status === 'concluido') return acc;
       const pendingSubtasks = c.subTasks.filter(st => !st.concluida).length;
-      return acc + 10 + (pendingSubtasks * 2);
+      return acc + 10 + pendingSubtasks * 2;
     }, 0);
   };
 
@@ -29,22 +28,23 @@ const PerformanceModal: React.FC<PerformanceModalProps> = ({ sprint, cards, onCl
   const completed = total - remaining;
   const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-  const days = 14; 
+  const days = 14;
   const idealPath = Array.from({ length: days + 1 }, (_, i) => [
     (i / days) * 100,
-    100 - (i / days) * 100 
+    100 - (i / days) * 100,
   ]);
 
   const actualPath = [
     [0, 100],
     [30, 85],
-    [50, 100 - percentage]
+    [50, 100 - percentage],
   ];
 
   // Helper for SVG path d attribute
-  const pointsToPath = (pts: number[][]) => pts.map((p, i) => (i === 0 ? 'M' : 'L') + p.join(',')).join(' ');
+  const pointsToPath = (pts: number[][]) =>
+    pts.map((p, i) => (i === 0 ? 'M' : 'L') + p.join(',')).join(' ');
   // Create area path for gradient
-  const areaPath = `${pointsToPath(actualPath)} L ${actualPath[actualPath.length-1][0]},100 L 0,100 Z`;
+  const areaPath = `${pointsToPath(actualPath)} L ${actualPath[actualPath.length - 1][0]},100 L 0,100 Z`;
 
   return (
     <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md animate-in fade-in duration-300">
@@ -57,9 +57,14 @@ const PerformanceModal: React.FC<PerformanceModalProps> = ({ sprint, cards, onCl
               </span>
               Performance: {sprint.nome}
             </h2>
-            <p className="text-sm text-slate-500 font-bold uppercase tracking-widest mt-2 ml-1">Analytics em Tempo Real</p>
+            <p className="text-sm text-slate-500 font-bold uppercase tracking-widest mt-2 ml-1">
+              Analytics em Tempo Real
+            </p>
           </div>
-          <button onClick={onClose} className="p-3 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all">
+          <button
+            onClick={onClose}
+            className="p-3 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all"
+          >
             <X className="w-6 h-6" />
           </button>
         </div>
@@ -71,26 +76,39 @@ const PerformanceModal: React.FC<PerformanceModalProps> = ({ sprint, cards, onCl
               <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform">
                 <Zap className="w-20 h-20" />
               </div>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Health Score</p>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">
+                Health Score
+              </p>
               <div className="flex items-end gap-2">
-                <span className={`text-5xl font-black tracking-tighter ${percentage > 70 ? 'text-emerald-500' : percentage > 40 ? 'text-amber-500' : 'text-rose-500'}`}>
+                <span
+                  className={`text-5xl font-black tracking-tighter ${percentage > 70 ? 'text-emerald-500' : percentage > 40 ? 'text-amber-500' : 'text-rose-500'}`}
+                >
                   {percentage}%
                 </span>
               </div>
               <div className="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mt-4 overflow-hidden">
-                 <div className={`h-full ${percentage > 70 ? 'bg-emerald-500' : 'bg-amber-500'} transition-all duration-1000`} style={{width: `${percentage}%`}}></div>
+                <div
+                  className={`h-full ${percentage > 70 ? 'bg-emerald-500' : 'bg-amber-500'} transition-all duration-1000`}
+                  style={{ width: `${percentage}%` }}
+                ></div>
               </div>
             </div>
 
             <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-[2rem] border border-slate-100 dark:border-slate-700">
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Pontos Totais</p>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">
+                Pontos Totais
+              </p>
               <p className="text-5xl font-black dark:text-white tracking-tighter">{total}</p>
               <p className="text-xs font-bold text-indigo-500 mt-2">+12% vs média</p>
             </div>
 
             <div className="p-6 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[2rem] shadow-xl shadow-indigo-500/20 text-white">
-              <p className="text-[10px] font-black text-indigo-200 uppercase tracking-widest mb-3">Tasks Restantes</p>
-              <p className="text-5xl font-black tracking-tighter">{sprintCards.length - sprintCards.filter(c => c.status === 'concluido').length}</p>
+              <p className="text-[10px] font-black text-indigo-200 uppercase tracking-widest mb-3">
+                Tasks Restantes
+              </p>
+              <p className="text-5xl font-black tracking-tighter">
+                {sprintCards.length - sprintCards.filter(c => c.status === 'concluido').length}
+              </p>
               <p className="text-xs font-bold text-indigo-200 mt-2">Foco total necessário</p>
             </div>
           </div>
@@ -113,19 +131,43 @@ const PerformanceModal: React.FC<PerformanceModalProps> = ({ sprint, cards, onCl
             </div>
 
             <div className="h-72 w-full bg-slate-50 dark:bg-slate-800/30 rounded-[2.5rem] border border-slate-200 dark:border-slate-700 p-8 relative overflow-hidden">
-              <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full overflow-visible">
+              <svg
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                className="w-full h-full overflow-visible"
+              >
                 <defs>
                   <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="currentColor" stopOpacity="0.2" className="text-indigo-500" />
-                    <stop offset="100%" stopColor="currentColor" stopOpacity="0" className="text-indigo-500" />
+                    <stop
+                      offset="0%"
+                      stopColor="currentColor"
+                      stopOpacity="0.2"
+                      className="text-indigo-500"
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor="currentColor"
+                      stopOpacity="0"
+                      className="text-indigo-500"
+                    />
                   </linearGradient>
                 </defs>
 
                 {/* Grid Lines */}
                 {[25, 50, 75].map(y => (
-                  <line key={y} x1="0" y1={y} x2="100" y2={y} stroke="currentColor" strokeWidth="0.1" className="text-slate-200 dark:text-slate-600" strokeDasharray="2" />
+                  <line
+                    key={y}
+                    x1="0"
+                    y1={y}
+                    x2="100"
+                    y2={y}
+                    stroke="currentColor"
+                    strokeWidth="0.1"
+                    className="text-slate-200 dark:text-slate-600"
+                    strokeDasharray="2"
+                  />
                 ))}
-                
+
                 {/* Area Fill */}
                 <path d={areaPath} fill="url(#chartGradient)" className="text-indigo-500" />
 
@@ -151,10 +193,10 @@ const PerformanceModal: React.FC<PerformanceModalProps> = ({ sprint, cards, onCl
                 />
 
                 {/* Current Point Dot */}
-                <circle 
-                  cx={actualPath[actualPath.length-1][0]} 
-                  cy={actualPath[actualPath.length-1][1]} 
-                  r="1.5" 
+                <circle
+                  cx={actualPath[actualPath.length - 1][0]}
+                  cy={actualPath[actualPath.length - 1][1]}
+                  r="1.5"
                   className="fill-indigo-600 dark:fill-indigo-400 stroke-white dark:stroke-slate-900 stroke-[0.5]"
                 />
               </svg>
@@ -173,11 +215,13 @@ const PerformanceModal: React.FC<PerformanceModalProps> = ({ sprint, cards, onCl
               <Award className="w-7 h-7" />
             </div>
             <div>
-              <h4 className="font-black text-indigo-900 dark:text-indigo-300 text-sm mb-2 uppercase tracking-wide">Orquestrador Intelligence</h4>
+              <h4 className="font-black text-indigo-900 dark:text-indigo-300 text-sm mb-2 uppercase tracking-wide">
+                Orquestrador Intelligence
+              </h4>
               <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
-                {percentage > 60 
-                  ? "O ritmo de entrega está acima da média histórica. A probabilidade de conclusão do sprint sem carryover é de 85%. Mantenha o foco em code reviews para evitar gargalos no final."
-                  : "Detectamos um risco de atraso. A velocidade atual indica que 30% do escopo pode não ser entregue. Recomenda-se reavaliar os itens bloqueados prioritariamente."}
+                {percentage > 60
+                  ? 'O ritmo de entrega está acima da média histórica. A probabilidade de conclusão do sprint sem carryover é de 85%. Mantenha o foco em code reviews para evitar gargalos no final.'
+                  : 'Detectamos um risco de atraso. A velocidade atual indica que 30% do escopo pode não ser entregue. Recomenda-se reavaliar os itens bloqueados prioritariamente.'}
               </p>
             </div>
           </div>

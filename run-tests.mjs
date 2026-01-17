@@ -12,24 +12,24 @@ console.log('🚀 Running Comprehensive Test Suite for Agenda Kanban v3.0\n');
 const testCommands = [
   {
     name: 'Unit Tests - Core Components',
-    command: 'npx jest --config=jest.config.mjs components/__tests__/* --verbose'
+    command: 'npx jest --config=jest.config.mjs components/__tests__/* --verbose',
   },
   {
     name: 'Unit Tests - Hooks',
-    command: 'npx jest --config=jest.config.mjs hooks/__tests__/* --verbose'
+    command: 'npx jest --config=jest.config.mjs hooks/__tests__/* --verbose',
   },
   {
     name: 'Unit Tests - Services',
-    command: 'npx jest --config=jest.config.mjs services/__tests__/* --verbose'
+    command: 'npx jest --config=jest.config.mjs services/__tests__/* --verbose',
   },
   {
     name: 'Integration Tests',
-    command: 'npx jest --config=jest.config.mjs components/__tests__/*.integration.* --verbose'
+    command: 'npx jest --config=jest.config.mjs components/__tests__/*.integration.* --verbose',
   },
   {
     name: 'Coverage Report',
-    command: 'npx jest --config=jest.config.mjs --coverage --colors'
-  }
+    command: 'npx jest --config=jest.config.mjs --coverage --colors',
+  },
 ];
 
 async function runTestSuite() {
@@ -42,13 +42,13 @@ async function runTestSuite() {
 
     try {
       await new Promise((resolve, reject) => {
-        const child = spawn(test.command, { 
-          shell: true, 
+        const child = spawn(test.command, {
+          shell: true,
           stdio: 'inherit',
-          cwd: __dirname
+          cwd: __dirname,
         });
 
-        child.on('close', (code) => {
+        child.on('close', code => {
           if (code === 0) {
             console.log(`✅ ${test.name} - PASSED`);
             passedSuites++;
@@ -59,7 +59,7 @@ async function runTestSuite() {
           }
         });
 
-        child.on('error', (error) => {
+        child.on('error', error => {
           console.log(`💥 ${test.name} - ERROR: ${error.message}`);
           reject(error);
         });

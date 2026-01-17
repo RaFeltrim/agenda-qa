@@ -1,4 +1,3 @@
-
 export type CardStatus = 'backlog' | 'em-progresso' | 'bloqueado' | 'concluido';
 
 export interface SubTask {

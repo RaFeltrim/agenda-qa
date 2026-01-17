@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { X, Calendar, Clock, Users, Video, MapPin, Sparkles } from 'lucide-react';
 import { Meeting } from '../../types';
@@ -13,7 +12,7 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({ onClose, on
     titulo: '',
     horario: '09:00',
     local: 'Google Meet' as 'Google Meet' | 'Teams' | 'Presencial',
-    participantes: ''
+    participantes: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -26,7 +25,10 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({ onClose, on
       horario: form.horario,
       pauta: 'Agendado via Agenda Kanban',
       local: form.local,
-      participantes: form.participantes.split(',').map(p => p.trim()).filter(p => p !== '')
+      participantes: form.participantes
+        .split(',')
+        .map(p => p.trim())
+        .filter(p => p !== ''),
     };
 
     onSchedule(newMeeting);
@@ -43,16 +45,23 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({ onClose, on
               </span>
               Novo Evento
             </h2>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 ml-1">Schedule & Sync</p>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 ml-1">
+              Schedule & Sync
+            </p>
           </div>
-          <button onClick={onClose} className="p-3 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all">
+          <button
+            onClick={onClose}
+            className="p-3 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-8 space-y-5">
           <div className="space-y-1">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Título da Reunião</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+              Título da Reunião
+            </label>
             <input
               required
               autoFocus
@@ -64,37 +73,47 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({ onClose, on
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-             <div className="space-y-1">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Horário</label>
-                <div className="relative">
-                   <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                   <input
-                      type="time"
-                      value={form.horario}
-                      onChange={e => setForm({ ...form, horario: e.target.value })}
-                      className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl pl-11 pr-4 py-3.5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/10"
-                   />
-                </div>
-             </div>
-             <div className="space-y-1">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Plataforma</label>
-                <div className="relative">
-                   {form.local === 'Presencial' ? <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" /> : <Video className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />}
-                   <select
-                      value={form.local}
-                      onChange={e => setForm({ ...form, local: e.target.value as any })}
-                      className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl pl-11 pr-4 py-3.5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/10 appearance-none"
-                   >
-                      <option value="Google Meet">Google Meet</option>
-                      <option value="Teams">Microsoft Teams</option>
-                      <option value="Presencial">Presencial</option>
-                   </select>
-                </div>
-             </div>
+            <div className="space-y-1">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+                Horário
+              </label>
+              <div className="relative">
+                <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input
+                  type="time"
+                  value={form.horario}
+                  onChange={e => setForm({ ...form, horario: e.target.value })}
+                  className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl pl-11 pr-4 py-3.5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/10"
+                />
+              </div>
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+                Plataforma
+              </label>
+              <div className="relative">
+                {form.local === 'Presencial' ? (
+                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                ) : (
+                  <Video className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                )}
+                <select
+                  value={form.local}
+                  onChange={e => setForm({ ...form, local: e.target.value as any })}
+                  className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl pl-11 pr-4 py-3.5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/10 appearance-none"
+                >
+                  <option value="Google Meet">Google Meet</option>
+                  <option value="Teams">Microsoft Teams</option>
+                  <option value="Presencial">Presencial</option>
+                </select>
+              </div>
+            </div>
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Participantes (Separe por vírgula)</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+              Participantes (Separe por vírgula)
+            </label>
             <div className="relative">
               <Users className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input

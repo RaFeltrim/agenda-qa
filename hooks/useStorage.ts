@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card } from '../types';
 import { MOCK_CARDS } from '../constants';

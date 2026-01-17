@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { X, Target, Calendar, Plus, Flag } from 'lucide-react';
 import { Sprint } from '../../types';
@@ -14,7 +13,7 @@ const CreateSprintModal: React.FC<CreateSprintModalProps> = ({ onClose, onCreate
     objetivo: '',
     dataInicio: new Date().toISOString().split('T')[0],
     dataFim: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    status: 'planejada' as const
+    status: 'planejada' as const,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -23,7 +22,7 @@ const CreateSprintModal: React.FC<CreateSprintModalProps> = ({ onClose, onCreate
 
     const newSprint: Sprint = {
       id: `sprint-${Math.random().toString(36).substr(2, 5)}`,
-      ...form
+      ...form,
     };
 
     onCreate(newSprint);
@@ -40,16 +39,23 @@ const CreateSprintModal: React.FC<CreateSprintModalProps> = ({ onClose, onCreate
               </span>
               Nova Sprint
             </h2>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 ml-1">Ciclo de 14 Dias</p>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 ml-1">
+              Ciclo de 14 Dias
+            </p>
           </div>
-          <button onClick={onClose} className="p-3 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all">
+          <button
+            onClick={onClose}
+            className="p-3 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-8 space-y-5">
           <div className="space-y-1">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Identificação</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+              Identificação
+            </label>
             <input
               required
               autoFocus
@@ -61,7 +67,9 @@ const CreateSprintModal: React.FC<CreateSprintModalProps> = ({ onClose, onCreate
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Objetivo Principal</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+              Objetivo Principal
+            </label>
             <div className="relative">
               <Flag className="absolute left-4 top-4 w-4 h-4 text-slate-400" />
               <textarea
@@ -76,7 +84,9 @@ const CreateSprintModal: React.FC<CreateSprintModalProps> = ({ onClose, onCreate
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Início</label>
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+                Início
+              </label>
               <div className="relative">
                 <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
@@ -88,7 +98,9 @@ const CreateSprintModal: React.FC<CreateSprintModalProps> = ({ onClose, onCreate
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Término</label>
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+                Término
+              </label>
               <div className="relative">
                 <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input

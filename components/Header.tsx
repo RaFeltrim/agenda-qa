@@ -1,5 +1,5 @@
-
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Moon, Sun, Download, History, Search, User, Settings, LogOut } from 'lucide-react';
 
 interface HeaderProps {
@@ -10,17 +10,54 @@ interface HeaderProps {
   onAuditLogClick: () => void;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
+  userRole?: 'editor' | 'viewer' | null;
+  onLogout?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ 
-  isDark, 
-  toggleDark, 
-  onExportClick, 
+const Header: React.FC<HeaderProps> = ({
+  isDark,
+  toggleDark,
+  onExportClick,
   onAuditLogClick,
-  searchTerm, 
-  setSearchTerm 
+  searchTerm,
+  setSearchTerm,
+  userRole,
+  onLogout,
 }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  const getUserInitials = () => {
+    if (userRole === 'editor') return 'ED';
+    if (userRole === 'viewer') return 'VW';
+    return '??';
+  };
+
+  const getUserRoleLabel = () => {
+    if (userRole === 'editor') return 'Editor';
+    if (userRole === 'viewer') return 'Visualizador';
+    return 'Não autenticado';
+  };
+
+  const getUserRoleColor = () => {
+    if (userRole === 'editor') return 'text-green-600 dark:text-green-400';
+    if (userRole === 'viewer') return 'text-blue-600 dark:text-blue-400';
+    return 'text-slate-400';
+  };
+
+  const handleLogout = () => {
+    if (onLogout) {
+      // Add smooth fade-out effect before logout
+      const header = document.querySelector('header');
+      if (header) {
+        header.classList.add('animate-fade-out');
+      }
+
+      // Delay logout slightly to show animation
+      setTimeout(() => {
+        onLogout();
+      }, 300);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full glass border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm transition-all duration-300">
@@ -34,7 +71,9 @@ const Header: React.FC<HeaderProps> = ({
             <h1 className="text-xl font-black bg-gradient-to-r from-indigo-600 to-teal-500 bg-clip-text text-transparent leading-none tracking-tight">
               Agenda Kanban
             </h1>
-            <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em] mt-1 opacity-80">v3.0 PRO</p>
+            <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em] mt-1 opacity-80">
+              v3.0 PRO
+            </p>
           </div>
         </div>
 
@@ -47,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({
             type="text"
             placeholder="Pressione Ctrl + K para buscar cards..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             className="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500/50 transition-all text-sm font-medium shadow-inner"
           />
         </div>
@@ -82,15 +121,21 @@ const Header: React.FC<HeaderProps> = ({
 
           {/* Enhanced Profile Menu */}
           <div className="relative">
-            <button 
+            <button
               onClick={() => setShowProfileMenu(!showProfileMenu)}
               className="w-11 h-11 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 flex items-center justify-center p-0.5 hover:ring-4 hover:ring-indigo-500/20 transition-all shadow-md active:scale-95"
             >
-              <img
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rafael"
-                className="w-full h-full rounded-xl"
-                alt="Profile"
-              />
+              <div
+                className={`w-full h-full rounded-xl flex items-center justify-center font-black text-xs ${
+                  userRole === 'editor'
+                    ? 'bg-green-500 text-white'
+                    : userRole === 'viewer'
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-slate-300 text-slate-600'
+                }`}
+              >
+                {getUserInitials()}
+              </div>
             </button>
 
             {showProfileMenu && (
@@ -98,11 +143,23 @@ const Header: React.FC<HeaderProps> = ({
                 <div className="fixed inset-0 z-10" onClick={() => setShowProfileMenu(false)} />
                 <div className="absolute right-0 mt-4 w-64 glass dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700/50 rounded-3xl shadow-2xl py-3 z-20 animate-in fade-in slide-in-from-top-4 duration-300">
                   <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] mb-1.5">Perfil Ativo</p>
-                    <p className="text-base font-black dark:text-white">Rafael Feltrim</p>
-                    <p className="text-[11px] text-indigo-600 dark:text-indigo-400 font-extrabold flex items-center gap-1.5 mt-1">
-                      <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                      Orquestrador Sênior
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] mb-1.5">
+                      Perfil Ativo
+                    </p>
+                    <p className="text-base font-black dark:text-white">Usuário Autenticado</p>
+                    <p
+                      className={`text-[11px] font-extrabold flex items-center gap-1.5 mt-1 ${getUserRoleColor()}`}
+                    >
+                      <span
+                        className={`w-2 h-2 rounded-full animate-pulse ${
+                          userRole === 'editor'
+                            ? 'bg-green-500'
+                            : userRole === 'viewer'
+                              ? 'bg-blue-500'
+                              : 'bg-slate-500'
+                        }`}
+                      ></span>
+                      {getUserRoleLabel()}
                     </p>
                   </div>
                   <div className="p-2 space-y-1">
@@ -113,12 +170,18 @@ const Header: React.FC<HeaderProps> = ({
                       <Settings className="w-4 h-4" /> Preferências
                     </button>
                     <div className="h-px bg-slate-100 dark:bg-slate-700 my-2 mx-3" />
-                    <button 
-                      onClick={() => { if(confirm("Deseja mesmo sair?")) window.location.reload(); }}
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => {
+                        if (confirm('Deseja mesmo sair?')) {
+                          handleLogout();
+                        }
+                      }}
                       className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-black text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all"
                     >
                       <LogOut className="w-4 h-4" /> Sair da Conta
-                    </button>
+                    </motion.button>
                   </div>
                 </div>
               </>

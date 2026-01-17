@@ -1,20 +1,26 @@
-
 import React, { useState } from 'react';
 import { X, Plus, Calendar, User, Tag, AlignLeft, Sparkles } from 'lucide-react';
-import { Card } from '../../types';
+import { Card, CardStatus } from '../../types';
 
 interface CreateCardModalProps {
   onClose: () => void;
   onCreate: (card: Card) => void;
+  initialStatus?: CardStatus;
+  activeSprintId?: string | null;
 }
 
-const CreateCardModal: React.FC<CreateCardModalProps> = ({ onClose, onCreate }) => {
+const CreateCardModal: React.FC<CreateCardModalProps> = ({
+  onClose,
+  onCreate,
+  initialStatus = 'backlog',
+  activeSprintId,
+}) => {
   const [form, setForm] = useState({
     titulo: '',
     descricao: '',
     responsavel: 'Rafael Feltrim',
     prazo: new Date().toISOString().split('T')[0],
-    tags: ''
+    tags: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -27,15 +33,25 @@ const CreateCardModal: React.FC<CreateCardModalProps> = ({ onClose, onCreate }) 
       descricao: form.descricao,
       responsavel: form.responsavel,
       prazo: form.prazo,
-      status: 'backlog',
-      tags: form.tags.split(',').map(t => t.trim()).filter(t => t !== ''),
+      status: initialStatus as CardStatus,
+      tags: form.tags
+        .split(',')
+        .map(t => t.trim())
+        .filter(t => t !== ''),
       dataCriacao: new Date().toISOString(),
       dataCriacaoPor: 'Usuário',
       comentarios: [],
       anexos: [],
-      historico: [{ acao: 'Card criado manualmente', por: 'Rafael Feltrim', em: new Date().toISOString() }],
-      subTasks: []
+      historico: [
+        { acao: 'Card criado manualmente', por: 'Rafael Feltrim', em: new Date().toISOString() },
+      ],
+      subTasks: [],
     };
+
+    // Add sprintId only if active sprint exists
+    if (activeSprintId) {
+      newCard.sprintId = activeSprintId;
+    }
 
     onCreate(newCard);
   };
@@ -52,16 +68,23 @@ const CreateCardModal: React.FC<CreateCardModalProps> = ({ onClose, onCreate }) 
               </span>
               Nova Tarefa
             </h2>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 ml-1">Adicionar ao Backlog</p>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 ml-1">
+              Adicionar ao Backlog
+            </p>
           </div>
-          <button onClick={onClose} className="p-3 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all">
+          <button
+            onClick={onClose}
+            className="p-3 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-8 space-y-6">
           <div className="space-y-1">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Título da Tarefa</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+              Título da Tarefa
+            </label>
             <input
               required
               autoFocus
@@ -73,7 +96,9 @@ const CreateCardModal: React.FC<CreateCardModalProps> = ({ onClose, onCreate }) 
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Contexto & Detalhes</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+              Contexto & Detalhes
+            </label>
             <div className="relative">
               <AlignLeft className="absolute left-4 top-4 w-4 h-4 text-slate-400" />
               <textarea
@@ -87,7 +112,9 @@ const CreateCardModal: React.FC<CreateCardModalProps> = ({ onClose, onCreate }) 
 
           <div className="grid grid-cols-2 gap-5">
             <div className="space-y-1">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Responsável</label>
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+                Responsável
+              </label>
               <div className="relative group">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
                 <input
@@ -98,7 +125,9 @@ const CreateCardModal: React.FC<CreateCardModalProps> = ({ onClose, onCreate }) 
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Deadline</label>
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+                Deadline
+              </label>
               <div className="relative group">
                 <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
                 <input
@@ -112,7 +141,9 @@ const CreateCardModal: React.FC<CreateCardModalProps> = ({ onClose, onCreate }) 
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Tags (Separadas por vírgula)</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+              Tags (Separadas por vírgula)
+            </label>
             <div className="relative group">
               <Tag className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
               <input

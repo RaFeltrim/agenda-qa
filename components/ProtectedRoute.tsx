@@ -13,6 +13,11 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole, addNotification }) => {
   const { isAuthenticated, isLoading, role, needsPasswordChange } = useAuth();
 
+  // TEMPORARY: Disable login screen - bypass authentication
+  const bypassAuth = true;
+  const tempIsAuthenticated = bypassAuth ? true : isAuthenticated;
+  const tempRole = bypassAuth ? 'editor' : role;
+
   // Show loading state while checking auth
   if (isLoading) {
     return (
@@ -32,7 +37,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole,
 
   return (
     <AnimatePresence mode="wait">
-      {isAuthenticated ? (
+      {tempIsAuthenticated ? (
         needsPasswordChange ? (
           <motion.div
             key="password-change"
@@ -43,7 +48,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole,
           >
             <FirstPasswordChange />
           </motion.div>
-        ) : requiredRole && role !== requiredRole ? (
+        ) : requiredRole && tempRole !== requiredRole ? (
           <motion.div
             key="access-denied"
             initial={{ opacity: 0, scale: 0.9 }}
@@ -91,19 +96,23 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole,
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           >
+            {/* TEMPORARY: Mock user data for bypassed auth */}
+            <div style={{ display: 'none' }}>
+              {/* This div stores mock auth data */}
+              <span id="mock-auth-role">editor</span>
+              <span id="mock-auth-status">authenticated</span>
+            </div>
             {children}
           </motion.div>
         )
       ) : (
-        <motion.div
-          key="login"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 50 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <Login addNotification={addNotification} />
-        </motion.div>
+        // TEMPORARY: Login screen disabled
+        <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-white text-xl font-bold">Login desabilitado temporariamente</div>
+            <div className="text-slate-400 mt-2">Acesso direto ao sistema</div>
+          </div>
+        </div>
       )}
     </AnimatePresence>
   );

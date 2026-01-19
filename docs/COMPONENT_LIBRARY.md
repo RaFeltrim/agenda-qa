@@ -474,6 +474,72 @@ SprintBadge.displayName = 'SprintBadge';
 
 ---
 
+## 🎴 Molecules (Simple Combinations)
+
+### 1. Card
+```tsx
+// components/Kanban/Card.tsx
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Card as CardType } from '../../types';
+
+interface CardProps {
+  card: CardType;
+  onClick: (card: CardType) => void;
+  userRole?: 'editor' | 'viewer' | null;
+  onDuplicate?: (card: CardType) => void;
+  onArchive?: (cardId: string) => void;
+  onCopyLink?: (cardId: string) => void;
+  onToggleFavorite?: (cardId: string) => void;
+  onFlagUrgent?: (cardId: string) => void;
+  index?: number;
+}
+
+export const Card: React.FC<CardProps> = ({ 
+  card, 
+  onClick, 
+  userRole,
+  onDuplicate,
+  onArchive,
+  onCopyLink,
+  onToggleFavorite,
+  onFlagUrgent,
+  index = 0 
+}) => {
+  // Card component implementation with enhanced visual states
+  // - Unread comments: Yellow pulsing border
+  // - Blocked/Urgent cards: Strong red borders with ring effect
+  // - Overdue cards: Orange accent borders
+  // - Smooth animations and transitions
+};
+
+Card.displayName = 'Card';
+```
+
+### 2. Skeleton Loading
+```tsx
+// components/Common/Skeleton.tsx
+import React from 'react';
+
+interface SkeletonProps {
+  className?: string;
+  width?: string | number;
+  height?: string | number;
+  borderRadius?: string;
+  animated?: boolean;
+}
+
+export const CardSkeleton: React.FC = () => (
+  // Predefined skeleton for card loading states
+  // Maintains exact dimensions and spacing of real cards
+);
+
+export const KanbanBoardSkeleton: React.FC = () => (
+  // Full board skeleton with columns and multiple card placeholders
+  // Provides seamless loading experience
+);
+```
+
 ## 🦠 Organisms (Complex Components)
 
 ### 1. KanbanBoard

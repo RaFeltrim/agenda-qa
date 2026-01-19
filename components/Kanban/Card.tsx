@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card as CardType } from '../../types';
 import { Calendar, MessageSquare, Paperclip, CheckSquare, AlertCircle, Clock, Copy, Archive, ExternalLink, Star, Flag } from 'lucide-react';
 import { getPrazoColor } from '../../utils/dateUtils';
 import EllipsisMenu from '../Common/EllipsisMenu';
+import { hasUnreadComments } from '../../services/commentReadService';
+import { useAuth } from '../../hooks/useAuth';
 
 interface CardProps {
   card: CardType;
@@ -27,12 +29,27 @@ const Card: React.FC<CardProps & { index?: number }> = ({
   onFlagUrgent,
   index = 0 
 }) => {
+  const { profile } = useAuth();
+  const [hasUnread, setHasUnread] = useState(false);
+  
   const totalSubtasks = card.subTasks?.length || 0;
   const completedSubtasks = card.subTasks?.filter(st => st.concluida).length || 0;
   const progressPercent =
     totalSubtasks > 0 ? Math.round((completedSubtasks / totalSubtasks) * 100) : 0;
   const isBlocked = card.status === 'bloqueado';
   const isUrgent = card.urgente;
+  
+  // Check for unread comments when component mounts
+  useEffect(() => {
+    const checkUnreadComments = async () => {
+      if (profile?.id && card.id) {
+        const unread = await hasUnreadComments(card.id, profile.id);
+        setHasUnread(unread);
+      }
+    };
+    
+    checkUnreadComments();
+  }, [card.id, profile?.id, card.comentarios.length]);
   
   // Calculate if card is actually overdue
   const today = new Date();
@@ -56,11 +73,14 @@ const Card: React.FC<CardProps & { index?: number }> = ({
         ease: [0.22, 1, 0.36, 1],
       }}
       onClick={() => onClick(card)}
-      className={`group relative bg-white dark:bg-slate-800 rounded-[2rem] border-2 p-6 cursor-pointer select-none shadow-sm transition-all duration-300 ${isOverdueCard 
-        ? 'border-red-200 dark:border-red-900/40 hover:border-red-400 bg-red-50/30 dark:bg-red-900/10 hover:bg-red-50 dark:hover:bg-red-900/20' 
-        : isBlocked || isUrgent 
-          ? 'border-rose-100 dark:border-rose-900/30 hover:border-rose-400' 
-          : 'border-slate-100 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600'
+      className={`group relative bg-white dark:bg-slate-800 rounded-[2rem] border-2 p-6 cursor-pointer select-none shadow-sm transition-all duration-300 ${
+        hasUnread
+          ? 'border-yellow-400 dark:border-yellow-500 hover:border-yellow-500 bg-yellow-50/40 dark:bg-yellow-900/20 hover:bg-yellow-100 dark:hover:bg-yellow-900/30 shadow-lg shadow-yellow-200/50 dark:shadow-yellow-900/20 animate-pulse'
+          : isBlocked || isUrgent
+            ? 'border-red-600 dark:border-red-500 hover:border-red-700 bg-red-100/60 dark:bg-red-900/40 hover:bg-red-200/60 dark:hover:bg-red-900/50 shadow-lg shadow-red-300/40 dark:shadow-red-900/40 ring-2 ring-red-200/50 dark:ring-red-900/30'
+            : isOverdueCard
+              ? 'border-orange-500 dark:border-orange-400 hover:border-orange-600 bg-orange-50/40 dark:bg-orange-900/30 hover:bg-orange-100/50 dark:hover:bg-orange-900/40 shadow-md shadow-orange-200/40 dark:shadow-orange-900/30'
+              : 'border-slate-100 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600'
       }`}
     >
 
@@ -80,7 +100,11 @@ const Card: React.FC<CardProps & { index?: number }> = ({
       </div>
 
       <h3
-        className={`text-base font-black text-slate-900 dark:text-slate-100 mb-3 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-tight ${isBlocked || isUrgent ? 'text-rose-700 dark:text-rose-400' : ''}`}
+        className={`text-base font-black text-slate-900 dark:text-slate-100 mb-3 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-tight ${
+          isBlocked || isUrgent 
+            ? 'text-red-800 dark:text-red-300 font-extrabold drop-shadow-sm' 
+            : ''
+        }`}
       >
         {card.titulo}
       </h3>
@@ -115,13 +139,33 @@ const Card: React.FC<CardProps & { index?: number }> = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          {/* Overdue indicator - positioned prominently */}
-          {isOverdueCard && (
-            <div className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-red-500/40 animate-pulse border-2 border-red-400/80 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Combined status indicators to prevent overflow */}
+          {((isBlocked || isUrgent) && isOverdueCard) ? (
+            // Combined "BLOQUEADO/VENCIDO" or "URGENTE/VENCIDO" tag
+            <div className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-red-500/40 animate-pulse border-2 border-red-400/80 transition-all duration-300 hover:scale-105 hover:shadow-xl">
               <AlertCircle className="w-4 h-4 flex-shrink-0 drop-shadow-sm" />
-              <span className="whitespace-nowrap drop-shadow-sm">VENCIDO</span>
+              <span className="whitespace-nowrap drop-shadow-sm">
+                {isBlocked ? 'BLOQ/VENC' : 'URG/VENC'}
+              </span>
             </div>
+          ) : (
+            // Separate status indicators
+            <>
+              {(isBlocked || isUrgent) && (
+                <div className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-red-500/40 animate-pulse border-2 border-red-400/80 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0 drop-shadow-sm" />
+                  <span className="whitespace-nowrap drop-shadow-sm">{isBlocked ? 'BLOQUEADO' : 'URGENTE'}</span>
+                </div>
+              )}
+              
+              {isOverdueCard && (
+                <div className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-orange-500/40 animate-pulse border-2 border-orange-400/80 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0 drop-shadow-sm" />
+                  <span className="whitespace-nowrap drop-shadow-sm">VENCIDO</span>
+                </div>
+              )}
+            </>
           )}
           
           <div className="flex items-center gap-1.5">

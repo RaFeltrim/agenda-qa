@@ -11,6 +11,7 @@ import {
   Video,
   CalendarPlus,
   X,
+  ExternalLink,
 } from 'lucide-react';
 
 interface DashboardProps {
@@ -180,6 +181,11 @@ const Dashboard: React.FC<DashboardProps> = ({
               meetings.map(m => (
                 <div
                   key={m.id}
+                  onClick={() => {
+                    if (m.linkReuniao) {
+                      window.open(m.linkReuniao, '_blank');
+                    }
+                  }}
                   className="bg-white/10 backdrop-blur-xl p-4 rounded-3xl border border-white/10 hover:bg-white/20 transition-all cursor-pointer group/item relative"
                 >
                   <button
@@ -198,6 +204,9 @@ const Dashboard: React.FC<DashboardProps> = ({
                       {m.horario}
                     </span>
                     <div className="flex items-center gap-1.5 text-indigo-200">
+                      {m.linkReuniao && (
+                        <ExternalLink className="w-3.5 h-3.5 text-indigo-300" />
+                      )}
                       <Video className="w-3.5 h-3.5" />
                       <span className="text-[10px] font-bold uppercase tracking-widest">
                         {m.local}

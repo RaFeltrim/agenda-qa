@@ -97,6 +97,33 @@ export const MOCK_CARDS: Card[] = [
       { id: 'st4', texto: 'Testar rollback', concluida: false },
     ],
   },
+  {
+    id: '4',
+    titulo: 'Setup CI/CD Pipeline',
+    descricao: 'Configurar pipeline automatizado para deploy contínuo.',
+    responsavel: 'Wagner Silva',
+    prazo: '2026-01-17',
+    status: 'em-progresso',
+    urgente: true,
+    tags: ['DevOps', 'CI/CD'],
+    dataCriacao: '2026-01-14',
+    dataCriacaoPor: 'Rafael Feltrim',
+    comentarios: [
+      {
+        id: 'c3',
+        autor: 'Wagner',
+        texto: 'Pipeline quase pronto, faltam testes finais.',
+        timestamp: '2026-01-17T14:00:00Z',
+      },
+    ],
+    anexos: [],
+    historico: [{ acao: 'created', por: 'Rafael Feltrim', em: '2026-01-14T09:00:00Z' }],
+    sprintId: 'sprint-2',
+    subTasks: [
+      { id: 'st5', texto: 'Configurar stages', concluida: true },
+      { id: 'st6', texto: 'Integrar com SonarQube', concluida: false },
+    ],
+  },
 ];
 
 export const STATUS_COLUMNS = [

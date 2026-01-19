@@ -27,6 +27,9 @@ Um sistema de gerenciamento de tarefas de alto desempenho projetado para times d
 ### ⚡ Produtividade & UX
 
 - **Drag & Drop Fluido**: Movimentação suave de cards entre colunas (Backlog, Em Progresso, Bloqueado, Concluído).
+- **Indicadores Visuais Aprimorados**: Destaque visual forte para cards bloqueados e urgentes com cores semânticas intensificadas.
+- **Loading Skeleton**: Estados de carregamento elegantes durante fetch de dados para melhor experiência do usuário.
+- **Indicador de Comentários Não Lidos**: Bordas amarelas pulsantes para cards com novos comentários.
 - **Agenda Integrada**: Widget para gestão rápida de reuniões (Daily, Planning, Review).
 - **Relatórios em Markdown**: Exportação completa do board para documentação em `.md`.
 - **Modo Escuro (Dark Mode)**: Interface totalmente adaptada para ambientes com pouca luz.

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Card as CardType, CardStatus } from '../../types';
 import { STATUS_COLUMNS } from '../../constants';
 import Card from './Card';
+import { KanbanBoardSkeleton } from '../Common/Skeleton';
 import { Plus, LayoutPanelTop, MoreHorizontal } from 'lucide-react';
 
 interface KanbanBoardProps {
@@ -11,6 +12,7 @@ interface KanbanBoardProps {
   onStatusChange: (cardId: string, newStatus: CardStatus) => void;
   onAddNewToColumn: (status: CardStatus) => void;
   userRole?: 'editor' | 'viewer' | null;
+  loading?: boolean;
 }
 
 const KanbanBoard: React.FC<KanbanBoardProps> = ({
@@ -19,6 +21,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({
   onStatusChange,
   onAddNewToColumn,
   userRole,
+  loading = false,
 }) => {
   const [dragOverCol, setDragOverCol] = useState<CardStatus | null>(null);
 
@@ -45,6 +48,11 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({
   const onDragStart = (e: React.DragEvent, cardId: string) => {
     e.dataTransfer.setData('cardId', cardId);
   };
+
+  // Show skeleton loading when data is being fetched
+  if (loading) {
+    return <KanbanBoardSkeleton />;
+  }
 
   return (
     <div className="max-w-[1400px] mx-auto px-6 pb-20">
@@ -96,23 +104,19 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({
               {/* Card List Container */}
               <div className="flex flex-col gap-5 flex-1">
                 {columnCards.map((card, index) => (
-                  <motion.div
+                  <div
                     key={card.id}
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{
-                      duration: 0.3,
-                      delay: index * 0.03,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
                     draggable={canEdit}
-                    onDragStart={canEdit ? e => onDragStart(e, card.id) : undefined}
-                    className={`transform transition-transform ${canEdit ? 'active:cursor-grabbing' : 'cursor-default'}`}
+                    onDragStart={canEdit ? (e: React.DragEvent) => onDragStart(e, card.id) : undefined}
+                    className={`${canEdit ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'}`}
                   >
-                    <Card card={card} onClick={onCardClick} userRole={userRole} index={index} />
-                  </motion.div>
+                    <Card 
+                      card={card} 
+                      onClick={onCardClick} 
+                      userRole={userRole ?? null} 
+                      index={index} 
+                    />
+                  </div>
                 ))}
 
                 {columnCards.length === 0 && !isDraggingOver && (

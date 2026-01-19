@@ -64,6 +64,7 @@ const MOCK_MEETINGS: Meeting[] = [
     participantes: ['Rafael', 'Wagner', 'Danyla'],
     local: 'Google Meet',
     prioridade: 'media',
+    linkReuniao: 'https://meet.google.com/test-meeting-1',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   },
@@ -75,6 +76,18 @@ const MOCK_MEETINGS: Meeting[] = [
     participantes: ['Equipe QA', 'Product Owner'],
     local: 'Teams',
     prioridade: 'alta',
+    linkReuniao: 'https://teams.microsoft.com/test-meeting-2',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: 'm3',
+    titulo: 'Retrospectiva Sprint 03',
+    horario: '16:00',
+    pauta: 'Análise do último ciclo',
+    participantes: ['Time Desenvolvimento'],
+    local: 'Presencial',
+    prioridade: 'baixa',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   },

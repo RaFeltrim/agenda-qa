@@ -111,6 +111,9 @@ Component Tree:
 | Card Creation      | Multiple locations | Audit-triggered logging     | Editor role required              |
 | Card Editing       | CardModal.tsx      | Optimistic locking          | Ownership/RBAC validation         |
 | Status Change      | KanbanBoard.tsx    | Database constraints        | Valid state transitions only      |
+| Visual Indicators  | Card.tsx           | CSS Classes + Animations    | Real-time status highlighting     |
+| Loading States     | KanbanBoard.tsx    | Skeleton components         | Smooth data fetching experience   |
+| Unread Comments    | Card.tsx           | Supabase comment_reads table| Yellow pulsing border indicator   |
 | Meeting Scheduler  | Dashboard.tsx      | Conflict detection function | Participant availability check    |
 | Audit Trail        | Backend service    | Immutable logging           | Full change history tracking      |
 | Notifications      | Edge functions     | Scheduled triggers          | Automated alerts and reminders    |

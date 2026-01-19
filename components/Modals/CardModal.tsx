@@ -32,6 +32,7 @@ import {
 import { formatTimeAgo, getPrazoColor } from '../../utils/dateUtils';
 import { speakText, generateTestData, generateAIReport } from '../../services/geminiService';
 import { AuditService } from '../../services/auditService';
+import { markCommentsAsRead } from '../../services/commentReadService';
 import { ModalTransition } from '../Transitions';
 import SprintAssignment from './CardModalComponents/SprintAssignment';
 
@@ -95,6 +96,17 @@ const CardModal: React.FC<CardModalProps> = ({
       responsavel: card.responsavel,
     });
   }, [card]);
+
+  // Mark comments as read when modal opens
+  useEffect(() => {
+    const markAsRead = async () => {
+      if (profile?.id && card.id) {
+        await markCommentsAsRead(card.id, profile.id);
+      }
+    };
+    
+    markAsRead();
+  }, [card.id, profile?.id]);
 
   const handleListenCard = async () => {
     if (isSpeaking) return;

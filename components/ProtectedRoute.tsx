@@ -13,10 +13,24 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole, addNotification }) => {
   const { isAuthenticated, isLoading, role, needsPasswordChange } = useAuth();
 
-  // Re-enabled authentication system
-  const bypassAuth = false;
-  const tempIsAuthenticated = bypassAuth ? true : isAuthenticated;
-  const tempRole = bypassAuth ? 'editor' : role;
+  // Debug authentication state
+  useEffect(() => {
+    console.log('Auth State Changed:', { isAuthenticated, isLoading, role, needsPasswordChange });
+  }, [isAuthenticated, isLoading, role, needsPasswordChange]);
+
+  // Force component update when auth state changes
+  const [, forceUpdate] = React.useReducer(x => x + 1, 0);
+  
+  useEffect(() => {
+    if (isAuthenticated && !isLoading) {
+      console.log('Triggering force update for authenticated state');
+      forceUpdate();
+    }
+  }, [isAuthenticated, isLoading]);
+
+  // Use actual authentication state
+  const tempIsAuthenticated = isAuthenticated;
+  const tempRole = role;
 
   // Show loading state while checking auth
   if (isLoading) {
@@ -36,7 +50,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole,
   }
 
   // Force re-render when auth state changes
-  const authKey = `${tempIsAuthenticated}-${needsPasswordChange}-${tempRole}`;
+  const authKey = `${tempIsAuthenticated}-${isLoading}-${needsPasswordChange}-${tempRole}`;
 
   return (
     <AnimatePresence mode="wait" key={authKey}>
@@ -117,7 +131,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole,
           transition={{ duration: 0.3 }}
         >
           <Login 
-            onLoginSuccess={() => {}}
+            onLoginSuccess={() => {
+              // Login success handled by auth state change
+              console.log('Login successful, waiting for auth state update');
+            }}
             addNotification={addNotification || (() => {})}
           />
         </motion.div>

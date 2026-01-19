@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, Comentario, Anexo, SubTask, Sprint } from '../../types';
+import { useAuth } from '../../hooks/useAuth';
 import {
   X,
   Calendar,
@@ -30,6 +31,7 @@ import {
 } from 'lucide-react';
 import { formatTimeAgo, getPrazoColor } from '../../utils/dateUtils';
 import { speakText, generateTestData, generateAIReport } from '../../services/geminiService';
+import { AuditService } from '../../services/auditService';
 import { ModalTransition } from '../Transitions';
 import SprintAssignment from './CardModalComponents/SprintAssignment';
 
@@ -52,6 +54,8 @@ const CardModal: React.FC<CardModalProps> = ({
   sprints = [],
   activeSprintId = null
 }) => {
+  const { profile } = useAuth();
+  const currentUser = profile?.full_name || 'Admin';
   const [activeTab, setActiveTab] = useState<'details' | 'comments' | 'ai-help' | 'history'>(
     'details'
   );
@@ -65,7 +69,13 @@ const CardModal: React.FC<CardModalProps> = ({
 
   // Evidence Input State
   const [showEvidenceInput, setShowEvidenceInput] = useState(false);
-  const [evidenceUrl, setEvidenceUrl] = useState('');
+  const [evidenceFile, setEvidenceFile] = useState<File | null>(null);
+  const [evidencePreview, setEvidencePreview] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  
+  // Subtask Input State
+  const [showSubtaskInput, setShowSubtaskInput] = useState(false);
+  const [newSubtaskText, setNewSubtaskText] = useState('');
 
   // Edit Mode State
   const [editForm, setEditForm] = useState({
@@ -128,19 +138,208 @@ const CardModal: React.FC<CardModalProps> = ({
     }
   };
 
-  const handleAddEvidence = () => {
-    if (!evidenceUrl.trim()) return;
-    const anexo: Anexo = {
-      id: Math.random().toString(36).substr(2, 9),
-      nome: 'Evidência de Validação',
-      url: evidenceUrl,
-      tipo: 'evidencia',
-      uploadadoPor: 'Rafael Feltrim',
-      dataUpload: new Date().toISOString(),
-    };
-    onUpdate({ ...card, anexos: [...card.anexos, anexo] });
-    setEvidenceUrl('');
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setEvidenceFile(file);
+    
+    // Generate preview for images
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = () => setEvidencePreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAddEvidence = async () => {
+    if (!evidenceFile) return;
+    
+    setIsUploading(true);
+    try {
+      // In a real implementation, this would upload to a storage service
+      // For now, we'll create a data URL for demonstration
+      let fileUrl = '';
+      let fileName = evidenceFile.name;
+      
+      if (evidenceFile.type.startsWith('image/')) {
+        const reader = new FileReader();
+        fileUrl = await new Promise((resolve) => {
+          reader.onload = () => resolve(reader.result as string);
+          reader.readAsDataURL(evidenceFile);
+        });
+      } else {
+        // For other file types, create a blob URL
+        fileUrl = URL.createObjectURL(evidenceFile);
+        fileName = evidenceFile.name;
+      }
+      
+      const anexo: Anexo = {
+        id: Math.random().toString(36).substr(2, 9),
+        nome: fileName,
+        url: fileUrl,
+        tipo: 'evidencia',
+        uploadadoPor: 'Rafael Feltrim',
+        dataUpload: new Date().toISOString(),
+      };
+      
+      onUpdate({ 
+        ...card, 
+        anexos: [...card.anexos, anexo],
+        historico: [
+          ...card.historico,
+          { acao: `Nova evidência adicionada: "${fileName}"`, por: 'Usuário', em: new Date().toISOString() }
+        ]
+      });
+      
+      setEvidenceFile(null);
+      setEvidencePreview(null);
+      setShowEvidenceInput(false);
+    } catch (error) {
+      console.error('Erro ao adicionar evidência:', error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleCancelEvidence = () => {
+    setEvidenceFile(null);
+    setEvidencePreview(null);
     setShowEvidenceInput(false);
+  };
+
+  const handleAddSubtask = () => {
+    if (!newSubtaskText.trim()) return;
+    
+    const newSubtask: SubTask = {
+      id: Math.random().toString(36).substr(2, 9),
+      texto: newSubtaskText.trim(),
+      concluida: false
+    };
+    
+    onUpdate({ 
+      ...card, 
+      subTasks: [...card.subTasks, newSubtask],
+      historico: [
+        ...card.historico,
+        { acao: `Nova subtarefa adicionada: "${newSubtask.texto}"`, por: 'Usuário', em: new Date().toISOString() }
+      ]
+    });
+    
+    setNewSubtaskText('');
+    setShowSubtaskInput(false);
+  };
+
+  const handleCancelSubtask = () => {
+    setNewSubtaskText('');
+    setShowSubtaskInput(false);
+  };
+
+  // Audit logged subtask operations
+  const auditLoggedAddSubtask = async () => {
+    if (!newSubtaskText.trim()) return;
+    
+    try {
+      const newSubtask: SubTask = {
+        id: Math.random().toString(36).substr(2, 9),
+        texto: newSubtaskText.trim(),
+        concluida: false
+      };
+      
+      // Log the subtask addition
+      await AuditService.logActivity(
+        'CREATE',
+        'subtasks',
+        newSubtask.id,
+        'current-user', // This should be replaced with actual user ID
+        null,
+        newSubtask,
+        { 
+          entity_type: 'subtask', 
+          operation: 'add',
+          parent_card_id: card.id
+        }
+      );
+      
+      // Update the card with new subtask
+      onUpdate({ 
+        ...card, 
+        subTasks: [...card.subTasks, newSubtask],
+        historico: [
+          ...card.historico,
+          { acao: `Nova subtarefa adicionada: "${newSubtask.texto}"`, por: 'Usuário', em: new Date().toISOString() }
+        ]
+      });
+      
+      setNewSubtaskText('');
+      setShowSubtaskInput(false);
+    } catch (error) {
+      console.error('Audit logging failed:', error);
+      // Still add the subtask even if audit logging fails
+      const newSubtask: SubTask = {
+        id: Math.random().toString(36).substr(2, 9),
+        texto: newSubtaskText.trim(),
+        concluida: false
+      };
+      
+      onUpdate({ 
+        ...card, 
+        subTasks: [...card.subTasks, newSubtask],
+        historico: [
+          ...card.historico,
+          { acao: `Nova subtarefa adicionada: "${newSubtask.texto}"`, por: 'Usuário', em: new Date().toISOString() }
+        ]
+      });
+      
+      setNewSubtaskText('');
+      setShowSubtaskInput(false);
+    }
+  };
+
+  const auditLoggedToggleSubtask = async (subtaskId: string, newCompletedStatus: boolean) => {
+    try {
+      const subtaskToToggle = card.subTasks.find(s => s.id === subtaskId);
+      if (subtaskToToggle) {
+        // Log the subtask completion toggle
+        await AuditService.logActivity(
+          'UPDATE',
+          'subtasks',
+          subtaskId,
+          'current-user', // This should be replaced with actual user ID
+          { concluida: subtaskToToggle.concluida },
+          { concluida: newCompletedStatus },
+          { 
+            entity_type: 'subtask', 
+            operation: 'toggle_completion',
+            parent_card_id: card.id
+          }
+        );
+      }
+      
+      // Update the subtask completion status
+      const newSub = card.subTasks.map(s =>
+        s.id === subtaskId ? { ...s, concluida: newCompletedStatus } : s
+      );
+      
+      onUpdate({ ...card, subTasks: newSub });
+    } catch (error) {
+      console.error('Audit logging failed:', error);
+      // Still toggle the subtask even if audit logging fails
+      const newSub = card.subTasks.map(s =>
+        s.id === subtaskId ? { ...s, concluida: newCompletedStatus } : s
+      );
+      
+      onUpdate({ ...card, subTasks: newSub });
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      auditLoggedAddSubtask();
+    } else if (e.key === 'Escape') {
+      handleCancelSubtask();
+    }
   };
 
   const saveChanges = () => {
@@ -314,12 +513,9 @@ const CardModal: React.FC<CardModalProps> = ({
                       <div
                         key={st.id}
                         className="flex items-center gap-3 p-3 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl group transition-all hover:border-indigo-200 hover:shadow-sm cursor-pointer"
-                        onClick={() => {
+                        onClick={async () => {
                           if (isEditing) return;
-                          const newSub = card.subTasks.map(s =>
-                            s.id === st.id ? { ...s, concluida: !s.concluida } : s
-                          );
-                          onUpdate({ ...card, subTasks: newSub });
+                          await auditLoggedToggleSubtask(st.id, !st.concluida);
                         }}
                       >
                         {st.concluida ? (
@@ -334,9 +530,38 @@ const CardModal: React.FC<CardModalProps> = ({
                         </span>
                       </div>
                     ))}
-                    <button className="w-full py-3 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-bold text-slate-400 hover:text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/10 transition-all flex items-center justify-center gap-2">
-                      <Plus className="w-4 h-4" /> Adicionar Item
-                    </button>
+                    {showSubtaskInput ? (
+                      <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-2 rounded-2xl animate-in zoom-in">
+                        <input
+                          autoFocus
+                          value={newSubtaskText}
+                          onChange={e => setNewSubtaskText(e.target.value)}
+                          onKeyDown={handleKeyPress}
+                          placeholder="Digite a nova subtarefa..."
+                          className="flex-1 bg-transparent border-none text-sm focus:ring-0 p-1 text-slate-700 dark:text-slate-200 placeholder:text-slate-400/70"
+                        />
+                        <button
+                          onClick={auditLoggedAddSubtask}
+                          disabled={!newSubtaskText.trim()}
+                          className="p-1.5 bg-indigo-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indigo-700 transition-colors"
+                        >
+                          <Check className="w-3 h-3" />
+                        </button>
+                        <button
+                          onClick={handleCancelSubtask}
+                          className="p-1.5 bg-slate-300 text-slate-600 rounded-lg hover:bg-slate-400 hover:text-slate-700 transition-colors"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ) : (
+                      <button 
+                        onClick={() => setShowSubtaskInput(true)}
+                        className="w-full py-3 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-bold text-slate-400 hover:text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/10 transition-all flex items-center justify-center gap-2"
+                      >
+                        <Plus className="w-4 h-4" /> Adicionar Item
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -387,6 +612,7 @@ const CardModal: React.FC<CardModalProps> = ({
                         type="date"
                         value={editForm.prazo}
                         onChange={e => setEditForm({ ...editForm, prazo: e.target.value })}
+                        min={new Date().toISOString().split('T')[0]}
                         className="w-full bg-slate-50 dark:bg-slate-800 px-4 py-3 rounded-xl border-none text-sm font-bold focus:ring-2 focus:ring-indigo-500"
                       />
                     ) : (
@@ -428,26 +654,64 @@ const CardModal: React.FC<CardModalProps> = ({
                         ))}
 
                       {showEvidenceInput ? (
-                        <div className="col-span-2 flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-2 rounded-xl animate-in zoom-in">
-                          <input
-                            autoFocus
-                            value={evidenceUrl}
-                            onChange={e => setEvidenceUrl(e.target.value)}
-                            placeholder="https://..."
-                            className="flex-1 bg-transparent border-none text-xs focus:ring-0 p-1"
-                          />
-                          <button
-                            onClick={handleAddEvidence}
-                            className="p-1.5 bg-indigo-600 text-white rounded-lg"
-                          >
-                            <Check className="w-3 h-3" />
-                          </button>
-                          <button
-                            onClick={() => setShowEvidenceInput(false)}
-                            className="p-1.5 bg-slate-300 text-slate-600 rounded-lg"
-                          >
-                            <X className="w-3 h-3" />
-                          </button>
+                        <div className="col-span-2 space-y-3">
+                          <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-3 rounded-xl animate-in zoom-in">
+                            <label className="flex-1 flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="file"
+                                accept=".pdf,.doc,.docx,.txt,.md,.jpg,.jpeg,.png,.gif,.mp4,.mov,.avi,.webm"
+                                onChange={handleFileChange}
+                                className="hidden"
+                              />
+                              <div className="flex items-center gap-2 flex-1">
+                                {evidenceFile ? (
+                                  <div className="flex items-center gap-2">
+                                    <Paperclip className="w-4 h-4 text-indigo-600" />
+                                    <span className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate">
+                                      {evidenceFile.name}
+                                    </span>
+                                    {evidenceFile.type.startsWith('image/') && evidencePreview && (
+                                      <img 
+                                        src={evidencePreview} 
+                                        alt="Preview" 
+                                        className="w-8 h-8 rounded object-cover border border-slate-200"
+                                      />
+                                    )}
+                                  </div>
+                                ) : (
+                                  <>
+                                    <Paperclip className="w-4 h-4 text-slate-400" />
+                                    <span className="text-sm text-slate-500 dark:text-slate-400">
+                                      Selecione um arquivo...
+                                    </span>
+                                  </>
+                                )}
+                              </div>
+                            </label>
+                            <button
+                              onClick={handleAddEvidence}
+                              disabled={!evidenceFile || isUploading}
+                              className="p-1.5 bg-indigo-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indigo-700 transition-colors"
+                            >
+                              {isUploading ? (
+                                <Loader2 className="w-3 h-3 animate-spin" />
+                              ) : (
+                                <Check className="w-3 h-3" />
+                              )}
+                            </button>
+                            <button
+                              onClick={handleCancelEvidence}
+                              className="p-1.5 bg-slate-300 text-slate-600 rounded-lg hover:bg-slate-400 hover:text-slate-700 transition-colors"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </div>
+                          
+                          {evidenceFile && (
+                            <div className="text-[10px] text-slate-500 dark:text-slate-400 px-2">
+                              Tipos suportados: PDF, DOC, TXT, MD, imagens, vídeos
+                            </div>
+                          )}
                         </div>
                       ) : (
                         <button
@@ -575,7 +839,7 @@ const CardModal: React.FC<CardModalProps> = ({
                     if (!newComment.trim()) return;
                     const comment: Comentario = {
                       id: Date.now().toString(),
-                      autor: 'Rafael Feltrim',
+                      autor: currentUser,
                       texto: newComment,
                       timestamp: new Date().toISOString(),
                     };
@@ -653,12 +917,28 @@ const CardModal: React.FC<CardModalProps> = ({
           className="px-10 py-6 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center"
         >
           {userRole === 'editor' && (
-            <button
-              onClick={() => onDelete(card.id)}
-              className="flex items-center gap-2 text-red-500 hover:text-red-700 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-red-50 px-4 py-2 rounded-xl"
-            >
-              <Trash2 className="w-4 h-4" /> Deletar Card
-            </button>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => onDelete(card.id)}
+                className="flex items-center gap-2 text-red-500 hover:text-red-700 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-red-50 px-4 py-2 rounded-xl"
+              >
+                <Trash2 className="w-4 h-4" /> Deletar Card
+              </button>
+              
+              {/* Special delete button for overdue cards */}
+              {new Date(card.prazo) < new Date() && card.status !== 'concluido' && (
+                <button
+                  onClick={() => {
+                    if (window.confirm(`Tem certeza que deseja deletar este card vencido?\n\n"${card.titulo}"\nVencido em: ${new Date(card.prazo).toLocaleDateString('pt-BR')}`)) {
+                      onDelete(card.id);
+                    }
+                  }}
+                  className="flex items-center gap-2 text-orange-600 hover:text-orange-800 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-orange-50 px-4 py-2 rounded-xl border border-orange-200"
+                >
+                  <AlertCircle className="w-4 h-4" /> Deletar Card Vencido
+                </button>
+              )}
+            </div>
           )}
           <div className="flex gap-4">
             {isEditing && (

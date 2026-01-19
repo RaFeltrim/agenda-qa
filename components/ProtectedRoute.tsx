@@ -13,8 +13,8 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole, addNotification }) => {
   const { isAuthenticated, isLoading, role, needsPasswordChange } = useAuth();
 
-  // TEMPORARY: Disable login screen - bypass authentication
-  const bypassAuth = true;
+  // Re-enabled authentication system
+  const bypassAuth = false;
   const tempIsAuthenticated = bypassAuth ? true : isAuthenticated;
   const tempRole = bypassAuth ? 'editor' : role;
 
@@ -35,8 +35,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole,
     );
   }
 
+  // Force re-render when auth state changes
+  const authKey = `${tempIsAuthenticated}-${needsPasswordChange}-${tempRole}`;
+
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="wait" key={authKey}>
       {tempIsAuthenticated ? (
         needsPasswordChange ? (
           <motion.div
@@ -106,13 +109,18 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole,
           </motion.div>
         )
       ) : (
-        // TEMPORARY: Login screen disabled
-        <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-white text-xl font-bold">Login desabilitado temporariamente</div>
-            <div className="text-slate-400 mt-2">Acesso direto ao sistema</div>
-          </div>
-        </div>
+        <motion.div
+          key="login"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Login 
+            onLoginSuccess={() => {}}
+            addNotification={addNotification || (() => {})}
+          />
+        </motion.div>
       )}
     </AnimatePresence>
   );

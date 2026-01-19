@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Target, Calendar, Plus, Flag } from 'lucide-react';
 import { Sprint } from '../../types';
+import { formatDateForInput } from '../../utils/dateUtils';
 
 interface CreateSprintModalProps {
   onClose: () => void;
@@ -11,8 +12,8 @@ const CreateSprintModal: React.FC<CreateSprintModalProps> = ({ onClose, onCreate
   const [form, setForm] = useState({
     nome: '',
     objetivo: '',
-    dataInicio: new Date().toISOString().split('T')[0],
-    dataFim: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    dataInicio: formatDateForInput(new Date()),
+    dataFim: formatDateForInput(new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)),
     status: 'planejada' as const,
   });
 

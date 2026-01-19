@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, Plus, Calendar, User, Tag, AlignLeft, Sparkles } from 'lucide-react';
 import { Card, CardStatus } from '../../types';
+import { useAuth } from '../../hooks/useAuth';
+import { formatDateForInput, parseDateFromInput } from '../../utils/dateUtils';
 
 interface CreateCardModalProps {
   onClose: () => void;
@@ -15,13 +17,25 @@ const CreateCardModal: React.FC<CreateCardModalProps> = ({
   initialStatus = 'backlog',
   activeSprintId,
 }) => {
+  const { profile } = useAuth();
+  const currentUser = profile?.full_name || 'Usuário';
+  
   const [form, setForm] = useState({
     titulo: '',
     descricao: '',
-    responsavel: 'Rafael Feltrim',
-    prazo: new Date().toISOString().split('T')[0],
+    responsavel: currentUser,
+    prazo: formatDateForInput(new Date()),
     tags: '',
   });
+
+  // Ensure form values are never undefined
+  const safeForm = {
+    titulo: form.titulo || '',
+    descricao: form.descricao || '',
+    responsavel: form.responsavel || currentUser,
+    prazo: form.prazo || formatDateForInput(new Date()),
+    tags: form.tags || '',
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,21 +43,21 @@ const CreateCardModal: React.FC<CreateCardModalProps> = ({
 
     const newCard: Card = {
       id: Math.random().toString(36).substr(2, 9),
-      titulo: form.titulo,
-      descricao: form.descricao,
-      responsavel: form.responsavel,
-      prazo: form.prazo,
+      titulo: safeForm.titulo,
+      descricao: safeForm.descricao,
+      responsavel: safeForm.responsavel,
+      prazo: safeForm.prazo || formatDateForInput(new Date()),
       status: initialStatus as CardStatus,
-      tags: form.tags
+      tags: safeForm.tags
         .split(',')
         .map(t => t.trim())
         .filter(t => t !== ''),
       dataCriacao: new Date().toISOString(),
-      dataCriacaoPor: 'Usuário',
+      dataCriacaoPor: currentUser,
       comentarios: [],
       anexos: [],
       historico: [
-        { acao: 'Card criado manualmente', por: 'Rafael Feltrim', em: new Date().toISOString() },
+        { acao: 'Card criado manualmente', por: currentUser, em: new Date().toISOString() },
       ],
       subTasks: [],
     };
@@ -134,6 +148,7 @@ const CreateCardModal: React.FC<CreateCardModalProps> = ({
                   type="date"
                   value={form.prazo}
                   onChange={e => setForm({ ...form, prazo: e.target.value })}
+                  min={new Date().toISOString().split('T')[0]}
                   className="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl text-sm font-medium focus:ring-4 focus:ring-indigo-500/10 transition-all"
                 />
               </div>

@@ -1,5 +1,21 @@
 import '@testing-library/jest-dom';
 
+// Mock import.meta.env for Vite environment variables
+Object.defineProperty(globalThis, 'import', {
+  value: {
+    meta: {
+      env: {
+        VITE_SUPABASE_URL: 'https://test.supabase.co',
+        VITE_SUPABASE_ANON_KEY: 'test-anon-key',
+        GEMINI_API_KEY: 'test-gemini-key',
+        API_KEY: 'test-api-key',
+        NODE_ENV: 'test',
+      }
+    }
+  },
+  writable: true
+});
+
 // Mock environment variables for testing
 process.env.VITE_SUPABASE_URL = 'https://test.supabase.co';
 process.env.VITE_SUPABASE_ANON_KEY = 'test-anon-key';
@@ -58,4 +74,19 @@ Object.defineProperty(window, 'AudioContext', {
 Object.defineProperty(window, 'webkitAudioContext', {
   value: MockAudioContext,
   writable: true,
+});
+
+// Mock window.matchMedia
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  }))
 });

@@ -36,6 +36,57 @@
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Theme Transition Effects */
+.theme-transition * {
+  transition: 
+    background-color 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    fill 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    stroke 300ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+/* Prevent transitions on initial load */
+.theme-loading * {
+  transition: none !important;
+}
+
+/* Dark Theme Specific Styles */
+.dark-theme {
+  color-scheme: dark;
+}
+
+/* Light Theme Specific Styles */
+:root:not(.dark-theme) {
+  color-scheme: light;
+}
+
+/* Enhanced Scrollbar for Dark Mode */
+.dark ::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+  border: 2px solid #0f172a;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Selection Colors */
+::selection {
+  background: rgba(99, 102, 241, 0.3);
+  color: inherit;
+}
+
+.dark ::selection {
+  background: rgba(139, 92, 246, 0.3);
+  color: inherit;
+}
+
 /* Scale Hover Effects */
 .hover-scale {
   transition: transform 0.2s ease;

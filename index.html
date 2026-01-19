@@ -18,6 +18,30 @@
     <!-- Production-ready Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <script>
+      // Theme initialization to prevent FOIT (Flash of Incorrect Theme)
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = savedTheme === 'dark' || (!savedTheme && systemPrefersDark);
+        
+        // Apply theme immediately
+        if (isDark) {
+          document.documentElement.classList.add('dark', 'dark-theme');
+        } else {
+          document.documentElement.classList.remove('dark', 'dark-theme');
+        }
+        
+        // Add loading class to prevent transitions during initial load
+        document.documentElement.classList.add('theme-loading');
+        
+        // Remove loading class after DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+          setTimeout(() => {
+            document.documentElement.classList.remove('theme-loading');
+          }, 100);
+        });
+      })();
+      
       tailwind.config = {
         theme: {
           extend: {

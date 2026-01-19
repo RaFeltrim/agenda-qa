@@ -54,6 +54,20 @@ export interface Meeting {
   pauta: string;
   participantes: string[];
   local: 'Google Meet' | 'Presencial' | 'Teams';
+  prioridade: 'baixa' | 'media' | 'alta';
+  linkReuniao?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface Project {
+  id: string;
+  nome: string;
+  descricao: string;
+  cor: string;
+  squadLead?: string;
+  createdAt: string;
+  updatedAt?: string;
 }
 
 export interface Sprint {
@@ -62,7 +76,9 @@ export interface Sprint {
   objetivo: string;
   dataInicio: string;
   dataFim: string;
-  status: 'planejada' | 'ativa' | 'concluida';
+  status: 'planejada' | 'ativa' | 'concluida' | 'arquivada';
+  projectId?: string;
+  updatedAt?: string;
 }
 
 export interface Notification {

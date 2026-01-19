@@ -1,15 +1,60 @@
 # 🗺️ Agenda Kanban v3.0 - System Element Mapping
 
+## 🏗️ Updated Architecture Overview (Post-Backend Consolidation)
+
+### Backend Layer Structure
+
+```
+📁 infrastructure/
+├── database/
+│   ├── migrations/
+│   │   └── backend-consolidation.sql (MAIN SECURITY FILE)
+│   ├── functions/
+│   │   ├── check_meeting_conflict()
+│   │   ├── soft_delete_card()
+│   │   ├── enhanced_audit_trigger()
+│   │   └── db_health_check()
+│   └── views/
+│       ├── mv_card_analytics (materialized)
+│       └── audit_logs_with_user_info
+│
+├── edge-functions/
+│   ├── send-email-notification/
+│   ├── generate-test-data/
+│   ├── sync-types-with-database/
+│   ├── automated-backup/
+│   └── performance-monitoring/
+│
+└── security/
+    ├── Row Level Security (RLS) policies
+    ├── Audit logging system
+    ├── Soft delete mechanisms
+    └── Data integrity constraints
+```
+
 ## 🏗️ Architecture Overview
 
-### Core Components Structure
+### Enhanced Components Structure with Backend Integration
 
 ```
 App.tsx (Main Orchestrator)
 ├── State Management (useState, useStorage, useDarkMode)
-├── Routing Logic (Conditional Rendering)
+├── Supabase Integration (Real-time subscriptions)
+├── Routing Logic (Protected routes with RBAC)
 ├── Modal Management (Lazy-loaded modals)
-└── Event Handlers (Keyboard shortcuts, drag/drop)
+├── Event Handlers (Keyboard shortcuts, drag/drop)
+└── Backend Services Integration
+    ├── Audit logging service
+    ├── Notification system
+    ├── Meeting conflict detection
+    └── Performance monitoring
+
+Backend Security Layer:
+├── Authentication (Supabase Auth + RBAC)
+├── Authorization (RLS Policies)
+├── Data Protection (Encryption at rest)
+├── Audit Trail (Immutable logs)
+└── Compliance (GDPR/LGPD ready)
 
 Component Tree:
 ├── Header.tsx
@@ -57,16 +102,18 @@ Component Tree:
 
 ### 1. **Core Features**
 
-| Feature            | Component          | State Dependencies          | Actions                           |
+| Feature            | Component          | Backend Integration         | Security Controls                 |
 | ------------------ | ------------------ | --------------------------- | --------------------------------- |
-| Theme Toggle       | Header.tsx         | `isDark`                    | Toggle dark/light mode            |
-| Search Filter      | Header.tsx         | `searchTerm`                | Filter cards by title/description |
-| Statistics Display | Dashboard.tsx      | `cards`, `sprints`          | Show metrics counters             |
-| Sprint Management  | Dashboard.tsx      | `sprints`, `activeSprintId` | Select/switch sprints             |
-| Card Creation      | Multiple locations | `cards`                     | Add new task cards                |
-| Card Editing       | CardModal.tsx      | Individual card state       | Modify card properties            |
-| Status Change      | KanbanBoard.tsx    | `card.status`               | Drag-drop between columns         |
-| Meeting Scheduler  | Dashboard.tsx      | `meetings`                  | Add/remove scheduled meetings     |
+| Theme Toggle       | Header.tsx         | Local storage only          | User preference persistence       |
+| Search Filter      | Header.tsx         | Database query optimization | RLS-protected search results      |
+| Statistics Display | Dashboard.tsx      | Materialized views          | Role-based data access            |
+| Sprint Management  | Dashboard.tsx      | Transaction-safe operations | Team-based access control         |
+| Card Creation      | Multiple locations | Audit-triggered logging     | Editor role required              |
+| Card Editing       | CardModal.tsx      | Optimistic locking          | Ownership/RBAC validation         |
+| Status Change      | KanbanBoard.tsx    | Database constraints        | Valid state transitions only      |
+| Meeting Scheduler  | Dashboard.tsx      | Conflict detection function | Participant availability check    |
+| Audit Trail        | Backend service    | Immutable logging           | Full change history tracking      |
+| Notifications      | Edge functions     | Scheduled triggers          | Automated alerts and reminders    |
 
 ### 2. **AI-Powered Features**
 
@@ -166,11 +213,54 @@ App.tsx (Global State)
 
 ### 8. **External Integrations**
 
-| Service           | Purpose              | Authentication              |
-| ----------------- | -------------------- | --------------------------- |
-| Google Gemini API | AI processing        | API Key via window.aistudio |
-| DiceBear Avatars  | User icons           | Seed-based generation       |
-| Browser APIs      | Audio, File handling | Native browser support      |
+| Service              | Purpose                    | Authentication              | Security Level |
+| -------------------- | -------------------------- | --------------------------- | -------------- |
+| Google Gemini API    | AI processing              | API Key via window.aistudio | 🔐 Encrypted   |
+| Supabase Backend     | Database + Auth + Storage  | JWT + RLS                   | 🔒 Enterprise  |
+| Edge Functions       | Serverless operations      | Service role key            | 🔐 IAM-based   |
+| DiceBear Avatars     | User icons                 | Seed-based generation       | 🟢 Public      |
+| Browser APIs         | Audio, File handling       | Native browser support      | 🟢 Client-side |
+
+### 9. **Backend Security Architecture**
+
+```
+🛡️ Security Layers:
+
+Layer 1: Network Security
+├── HTTPS/TLS encryption
+├── IP whitelisting
+└── DDoS protection
+
+Layer 2: Authentication
+├── Supabase Auth (OAuth 2.0)
+├── JWT token validation
+└── Session management
+
+Layer 3: Authorization
+├── Role-Based Access Control (RBAC)
+├── Row Level Security (RLS) policies
+└── Function-level permissions
+
+Layer 4: Data Protection
+├── Encryption at rest
+├── Field-level encryption
+└── Audit logging
+
+Layer 5: Compliance
+├── GDPR/LGPD compliance
+├── Data retention policies
+└── Right to deletion
+```
+
+### 10. **Database Schema Security Mapping**
+
+| Table        | RLS Policy Owner | Read Access          | Write Access         | Delete Access      |
+| ------------ | ---------------- | -------------------- | -------------------- | ------------------ |
+| profiles     | User self + Admin| Authenticated users  | Self + Admin         | Admin only         |
+| cards        | Creator + Assignee| Team members        | Editors + Assignees  | Creator + Admin    |
+| meetings     | Creator + Participants| Participants      | Creator              | Creator + Admin    |
+| sprints      | Team members     | Team members         | Team leads + Admin   | Team leads + Admin |
+| audit_logs   | System + Admin   | User self + Admin    | System only          | None (immutable)   |
 
 ## 🧪 Testing Targets Identification
 

@@ -25,6 +25,7 @@ interface DashboardProps {
   onOpenPerformance: () => void;
   onOpenScheduleModal: () => void;
   onDeleteMeeting: (id: string) => void;
+  onDeleteExpiredCards?: (() => void) | undefined; // New prop for expired card cleanup
 }
 
 const Dashboard: React.FC<DashboardProps> = ({
@@ -38,6 +39,7 @@ const Dashboard: React.FC<DashboardProps> = ({
   onOpenPerformance,
   onOpenScheduleModal,
   onDeleteMeeting,
+  onDeleteExpiredCards,
 }) => {
   const currentSprint = sprints.find(s => s.id === activeSprintId);
 
@@ -109,6 +111,17 @@ const Dashboard: React.FC<DashboardProps> = ({
               <PieChart className="w-5 h-5 text-indigo-500 group-hover:rotate-12 transition-transform" />
               Analytics
             </button>
+
+            {/* Cleanup Expired Cards Button */}
+            {onDeleteExpiredCards && (
+              <button
+                onClick={onDeleteExpiredCards}
+                className="flex items-center gap-2.5 px-6 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm hover:text-red-600 hover:border-red-200 dark:hover:border-red-900 transition-all text-sm font-black uppercase tracking-tight dark:text-white group"
+              >
+                <AlertCircle className="w-5 h-5 text-red-500 group-hover:animate-pulse transition-transform" />
+                Limpar Vencidos
+              </button>
+            )}
           </div>
 
           {/* New Stats Grid */}
@@ -240,11 +253,11 @@ const Dashboard: React.FC<DashboardProps> = ({
             <p className="text-[10px] font-black text-indigo-500 dark:text-indigo-400 uppercase tracking-[0.2em] leading-none mb-1">
               Squad Lead
             </p>
-            <p className="text-sm font-black text-slate-800 dark:text-white">Rafael Feltrim</p>
+            <p className="text-sm font-black text-slate-800 dark:text-white">Luiz Muller</p>
           </div>
           <div className="relative">
             <img
-              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rafael"
+              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Luiz"
               className="w-11 h-11 rounded-2xl shadow-xl border-2 border-white dark:border-slate-700 object-cover"
               alt="Profile"
             />

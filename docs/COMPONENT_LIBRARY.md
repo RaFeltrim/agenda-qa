@@ -510,6 +510,11 @@ export const Card: React.FC<CardProps> = ({
   // - Unread comments: Yellow pulsing border
   // - Blocked/Urgent cards: Strong red borders with ring effect
   // - Overdue cards: Orange accent borders
+  // - Combined Status Tags: Intelligent layout that merges overlapping tags
+  //   - "BLOQUEADO" + "VENCIDO" → "BLOQ/VENC" single tag
+  //   - "URGENTE" + "VENCIDO" → "URG/VENC" single tag
+  //   - Gradient styling maintains visual distinction
+  //   - Prevents overflow in narrow card containers
   // - Smooth animations and transitions
 };
 

@@ -28,6 +28,7 @@ Um sistema de gerenciamento de tarefas de alto desempenho projetado para times d
 
 - **Drag & Drop Fluido**: Movimentação suave de cards entre colunas (Backlog, Em Progresso, Bloqueado, Concluído).
 - **Indicadores Visuais Aprimorados**: Destaque visual forte para cards bloqueados e urgentes com cores semânticas intensificadas.
+- **Tags de Status Combinadas**: Layout inteligente que combina tags sobrepostas ("BLOQ/VENC", "URG/VENC") para evitar overflow visual.
 - **Loading Skeleton**: Estados de carregamento elegantes durante fetch de dados para melhor experiência do usuário.
 - **Indicador de Comentários Não Lidos**: Bordas amarelas pulsantes para cards com novos comentários.
 - **Agenda Integrada**: Widget para gestão rápida de reuniões (Daily, Planning, Review).

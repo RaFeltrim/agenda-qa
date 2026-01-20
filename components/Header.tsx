@@ -15,9 +15,18 @@ interface HeaderProps {
   onProjectsClick?: () => void;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
+<<<<<<< Updated upstream
   userRole?: 'editor' | 'viewer' | null;
+<<<<<<< HEAD
   userFullName?: string;
+=======
+=======
+  userRole?: 'editor' | 'viewer' | 'admin' | null;
+  userFullName?: string;
+>>>>>>> Stashed changes
+>>>>>>> dev
   onLogout?: () => void;
+  onAdminClick?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -32,6 +41,7 @@ const Header: React.FC<HeaderProps> = ({
   userRole,
   userFullName,
   onLogout,
+  onAdminClick,
 }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showAccountModal, setShowAccountModal] = useState(false);
@@ -67,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full glass border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm transition-all duration-300">
+    <header className="sticky top-0 z-40 w-full glass border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm transition-all duration-300">
       <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between gap-6">
         {/* Logo Section */}
         <div className="flex items-center gap-3 group cursor-pointer">
@@ -191,8 +201,17 @@ const Header: React.FC<HeaderProps> = ({
 
             {showProfileMenu && (
               <>
+<<<<<<< Updated upstream
                 <div className="fixed inset-0 z-10" onClick={() => setShowProfileMenu(false)} />
+<<<<<<< HEAD
                 <div className="absolute right-0 mt-4 w-64 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl border border-slate-200/70 dark:border-slate-700/70 rounded-3xl shadow-2xl py-3 z-20 animate-in fade-in slide-in-from-top-4 duration-300">
+=======
+                <div className="absolute right-0 mt-4 w-64 glass dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700/50 rounded-3xl shadow-2xl py-3 z-20 animate-in fade-in slide-in-from-top-4 duration-300">
+=======
+                <div className="fixed inset-0 z-50" onClick={() => setShowProfileMenu(false)} />
+                <div className="absolute right-0 mt-12 w-64 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl border border-slate-200/70 dark:border-slate-700/70 rounded-3xl shadow-2xl py-3 z-60 animate-in fade-in slide-in-from-top-4 duration-300">
+>>>>>>> Stashed changes
+>>>>>>> dev
                   <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] mb-1.5">
                       Perfil Ativo
@@ -232,6 +251,11 @@ const Header: React.FC<HeaderProps> = ({
                     >
                       <Settings className="w-4 h-4" /> Preferências
                     </button>
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> dev
                     {userRole === 'editor' && (
                       <>
                         <div className="h-px bg-slate-100 dark:bg-slate-700 my-2 mx-3" />
@@ -246,6 +270,24 @@ const Header: React.FC<HeaderProps> = ({
                         </button>
                       </>
                     )}
+<<<<<<< HEAD
+=======
+                    {userRole === 'admin' && (
+                      <>
+                        <div className="h-px bg-slate-100 dark:bg-slate-700 my-2 mx-3" />
+                        <button 
+                          onClick={() => {
+                            setShowProfileMenu(false);
+                            if (onAdminClick) onAdminClick();
+                          }}
+                          className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-xl transition-all"
+                        >
+                          <Settings className="w-4 h-4" /> Painel Administrativo
+                        </button>
+                      </>
+                    )}
+>>>>>>> Stashed changes
+>>>>>>> dev
                     <div className="h-px bg-slate-100 dark:bg-slate-700 my-2 mx-3" />
                     <motion.button
                       whileHover={{ scale: 1.02 }}

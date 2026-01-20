@@ -129,7 +129,7 @@ export const changePassword = async (
     if (!validation.valid) {
       return {
         success: false,
-        error: validation.errors[0], // Return first error
+        error: validation.errors[0] || 'Senha inválida', // Return first error or default message
       };
     }
 
@@ -178,7 +178,25 @@ export const changePassword = async (
 
 // Logout user
 export const logout = async (): Promise<void> => {
-  await supabase.auth.signOut();
+  try {
+    // 1. Invalida sessão remota
+    await supabase.auth.signOut({ scope: 'global' });
+    
+    // 2. Limpa estado local SEM exceções
+    ['isAuthenticated', 'userRole', 'userId', 'lastProfile'].forEach(key => 
+      localStorage.removeItem(key)
+    );
+    sessionStorage.clear();
+    
+    // 3. Redirect forçado (não usar navigate do React Router)
+    window.location.replace('/login'); // replace = não volta com Back
+  } catch (error) {
+    // Fallback garante limpeza mesmo se Supabase falhar
+    console.error('Logout error:', error);
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.replace('/login');
+  }
 };
 
 // Get current authenticated user
@@ -205,9 +223,11 @@ export const getCurrentUser = async (): Promise<AuthResponse> => {
       .eq('id', user.id)
       .single();
 
+    // ❌ REMOVER fallback "genérico"
+    // ✅ NOVA lógica: Se não tem profile completo, considera não autenticado
     if (profileError || !profileData) {
       return {
-        user,
+        user: null,
         profile: null,
         role: null,
         error: 'Perfil de usuário não encontrado',

@@ -9,9 +9,19 @@ interface SprintListModalProps {
   onSelectSprint: (sprintId: string | null) => void;
   activeSprintId: string | null;
   onAddNewSprint: () => void;
+<<<<<<< HEAD
   onEditSprint?: (sprint: Sprint) => void;
   onArchiveSprint?: (sprintId: string) => void;
   userRole?: 'editor' | 'viewer' | null;
+=======
+<<<<<<< Updated upstream
+=======
+  onEditSprint?: (sprint: Sprint) => void;
+  onArchiveSprint?: (sprintId: string) => void;
+  onSetEditingSprint?: (sprint: Sprint | null) => void;
+  userRole?: 'editor' | 'viewer' | null;
+>>>>>>> Stashed changes
+>>>>>>> dev
 }
 
 const SprintListModal: React.FC<SprintListModalProps> = ({
@@ -21,9 +31,19 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
   onSelectSprint,
   activeSprintId,
   onAddNewSprint,
+<<<<<<< HEAD
   onEditSprint,
   onArchiveSprint,
   userRole
+=======
+<<<<<<< Updated upstream
+=======
+  onEditSprint,
+  onArchiveSprint,
+  onSetEditingSprint,
+  userRole
+>>>>>>> Stashed changes
+>>>>>>> dev
 }) => {
   const [editingSprint, setEditingSprint] = useState<Sprint | null>(null);
   const getCompletionData = (sprintId: string) => {
@@ -53,9 +73,17 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
     return { total: sprintCards.length, completed: cardsCompleted, percentage };
   };
 
+<<<<<<< HEAD
   const handleEditSprint = (sprint: Sprint) => {
     if (userRole === 'editor') {
       setEditingSprint(sprint);
+=======
+<<<<<<< Updated upstream
+=======
+  const handleEditSprint = (sprint: Sprint) => {
+    if (userRole === 'editor' && onSetEditingSprint) {
+      onSetEditingSprint(sprint);
+>>>>>>> dev
     }
   };
 
@@ -63,18 +91,34 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
     if (onEditSprint) {
       onEditSprint(updatedSprint);
     }
+<<<<<<< HEAD
     setEditingSprint(null);
+=======
+    if (onSetEditingSprint) {
+      onSetEditingSprint(null);
+    }
+>>>>>>> dev
   };
 
   const handleArchiveSprintLocal = (sprintId: string) => {
     if (onArchiveSprint) {
       onArchiveSprint(sprintId);
     }
+<<<<<<< HEAD
     setEditingSprint(null);
+=======
+    if (onSetEditingSprint) {
+      onSetEditingSprint(null);
+    }
+>>>>>>> dev
   };
 
   const canEdit = userRole === 'editor';
 
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> dev
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col border border-white/20 h-[80vh]">
@@ -266,6 +310,7 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
           </button>
         </div>
       </div>
+<<<<<<< HEAD
       
       {/* Edit Sprint Modal */}
       {editingSprint && (
@@ -273,6 +318,14 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
           {/* We'll render the EditSprintModal here */}
         </div>
       )}
+=======
+<<<<<<< Updated upstream
+=======
+      
+      {/* Edit Sprint Modal is rendered by parent component (App.tsx) */}
+      {/* This component only sets the editingSprint state */}
+>>>>>>> Stashed changes
+>>>>>>> dev
     </div>
   );
 };

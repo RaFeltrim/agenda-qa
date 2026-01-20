@@ -29,13 +29,14 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({ onClose, on
         .split(',')
         .map(p => p.trim())
         .filter(p => p !== ''),
+      prioridade: 'media',
     };
 
     onSchedule(newMeeting);
   };
 
   return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-200">
       <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col border border-white/20">
         <div className="px-8 py-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50">
           <div>

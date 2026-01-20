@@ -202,12 +202,12 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, addNotification }) => {
               {isLoading ? (
                 <>
                   <SmoothSpinner size="sm" />
-                  Autenticando...
+                  <span className="ml-2">Autenticando...</span>
                 </>
               ) : (
                 <>
                   <LogIn className="w-5 h-5" />
-                  Entrar
+                  <span>Entrar</span>
                 </>
               )}
             </motion.button>

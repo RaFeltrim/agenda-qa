@@ -4,8 +4,18 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env?.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env?.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
 
-// Validate configuration
-const isValidConfig = supabaseUrl && supabaseAnonKey && supabaseUrl.startsWith('http');
+// Validate configuration - be more lenient to allow real auth
+const isValidConfig = supabaseUrl && supabaseAnonKey && supabaseUrl.trim().length > 0;
+
+// Log configuration status for debugging
+if (typeof window !== 'undefined') {
+  console.log('🔍 Supabase Config Status:', {
+    urlPresent: !!supabaseUrl,
+    keyPresent: !!supabaseAnonKey,
+    urlValid: supabaseUrl?.startsWith('http'),
+    finalDecision: isValidConfig
+  });
+}
 
 // Console warnings for debugging
 if (!isValidConfig) {
@@ -16,6 +26,8 @@ if (!isValidConfig) {
   if (typeof window !== 'undefined') {
     console.info('ℹ️ Running in demo mode - authentication will be simulated');
   }
+} else {
+  console.log('✅ Using real Supabase authentication');
 }
 
 // Create the Supabase client (real or mock based on config)

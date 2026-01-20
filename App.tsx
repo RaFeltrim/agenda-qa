@@ -20,12 +20,6 @@ const CreateSprintModal = React.lazy(() => import('./components/Modals/CreateSpr
 const FinishSprintModal = React.lazy(() => import('./components/Modals/FinishSprintModal'));
 const PerformanceModal = React.lazy(() => import('./components/Modals/PerformanceModal'));
 const AuditLogDrawer = React.lazy(() => import('./components/Modals/AuditLogDrawer'));
-const ScheduleMeetingModal = React.lazy(() => import('./components/Modals/ScheduleMeetingModal'));
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> dev
 const EnhancedScheduleMeetingModal = React.lazy(() => import('./components/Modals/EnhancedScheduleMeetingModal'));
 const EnhancedAnalyticsDashboard = React.lazy(() => import('./components/EnhancedAnalyticsDashboard'));
 const EditSprintModal = React.lazy(() => import('./components/Modals/EditSprintModal'));
@@ -35,10 +29,7 @@ const ArchivedSprintsView = React.lazy(() => import('./components/ArchivedSprint
 const ProjectsTab = React.lazy(() => import('./components/ProjectsTab'));
 const ProjectSprintsView = React.lazy(() => import('./components/ProjectSprintsView'));
 const ConfirmationModal = React.lazy(() => import('./components/Modals/ConfirmationModal'));
-<<<<<<< HEAD
-=======
 const AdminSettings = React.lazy(() => import('./components/AdminSettings'));
->>>>>>> dev
 
 const MOCK_PROJECTS: Project[] = [
   {
@@ -63,10 +54,6 @@ const MOCK_PROJECTS: Project[] = [
     createdAt: new Date().toISOString()
   }
 ];
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> dev
 
 const MOCK_MEETINGS: Meeting[] = [
   {
@@ -132,11 +119,6 @@ const App: React.FC = () => {
   const [isPerformanceModalOpen, setIsPerformanceModalOpen] = useState(false);
   const [isAuditLogOpen, setIsAuditLogOpen] = useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> dev
   const [isEnhancedAnalyticsOpen, setIsEnhancedAnalyticsOpen] = useState(false);
   const [editingSprint, setEditingSprint] = useState<Sprint | null>(null);
   const [sprintToArchive, setSprintToArchive] = useState<Sprint | null>(null);
@@ -150,13 +132,9 @@ const App: React.FC = () => {
     onConfirm: () => void;
     type?: 'danger' | 'warning' | 'info';
   } | null>(null);
-<<<<<<< HEAD
-=======
   
   // Admin Panel State
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
->>>>>>> Stashed changes
->>>>>>> dev
 
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
@@ -704,11 +682,6 @@ const App: React.FC = () => {
               onClose={() => setIsSprintModalOpen(false)}
               onSelectSprint={setActiveSprintId}
               onAddNewSprint={() => setIsCreateSprintModalOpen(true)}
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> dev
               onEditSprint={auditLoggedEditSprint}
               onArchiveSprint={(sprintId) => {
                 const sprintToArchive = sprints.find(s => s.id === sprintId);
@@ -717,13 +690,9 @@ const App: React.FC = () => {
                   setIsArchiveSprintModalOpen(true);
                 }
               }}
-<<<<<<< HEAD
               userRole={role}
-=======
               onSetEditingSprint={setEditingSprint}
               userRole={role}
->>>>>>> Stashed changes
->>>>>>> dev
             />
           )}
           {isCreateSprintModalOpen && (
@@ -752,11 +721,6 @@ const App: React.FC = () => {
               }}
             />
           )}
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> dev
           {isEnhancedAnalyticsOpen && (
             <EnhancedAnalyticsDashboard
               onClose={() => setIsEnhancedAnalyticsOpen(false)}
@@ -832,8 +796,6 @@ const App: React.FC = () => {
           </Suspense>
 
           {/* Projects View */}
-<<<<<<< HEAD
-=======
           {/* Admin Settings Panel */}
           <Suspense fallback={null}>
             {isAdminPanelOpen && (
@@ -844,7 +806,6 @@ const App: React.FC = () => {
             )}
           </Suspense>
 
->>>>>>> dev
           {isProjectsViewOpen && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-2 md:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
               <div className="bg-white dark:bg-slate-900 w-full h-full sm:w-[95vw] sm:max-w-6xl sm:rounded-2xl md:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col border border-white/20 sm:h-[95vh] md:h-[90vh]">
@@ -907,10 +868,6 @@ const App: React.FC = () => {
               </div>
             </div>
           )}
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> dev
         </Suspense>
 
         {/* Floating Action Button - Only show for editors */}

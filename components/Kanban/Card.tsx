@@ -117,6 +117,7 @@ const Card: React.FC<CardProps & { index?: number }> = ({ card, onClick, index =
           )}
         </div>
 
+<<<<<<< Updated upstream
         <div className="flex items-center gap-3">
           <span
             className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-tight border shadow-sm flex items-center gap-2 transition-all duration-300 ${getPrazoColor(card.prazo)}`}
@@ -126,6 +127,48 @@ const Card: React.FC<CardProps & { index?: number }> = ({ card, onClick, index =
           </span>
           <div className="relative group/avatar">
             <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-white flex items-center justify-center text-[11px] font-black shadow-lg shadow-indigo-500/20 ring-2 ring-white dark:ring-slate-800 transition-all group-hover/avatar:scale-110">
+=======
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Combined status indicators to prevent overflow */}
+          {((isBlocked || isUrgent) && isOverdueCard) ? (
+            // Combined "BLOQUEADO/VENCIDO" or "URGENTE/VENCIDO" tag
+            <div className="flex-shrink-0 flex items-center gap-1 px-2.5 py-1.5 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white rounded-xl text-[8px] font-black uppercase tracking-widest shadow-lg shadow-red-500/40 animate-pulse border border-red-400/80 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+              <AlertCircle className="w-3 h-3 flex-shrink-0 drop-shadow-sm" />
+              <span className="whitespace-nowrap drop-shadow-sm">
+                {isBlocked ? 'BLOQ/VENC' : 'URG/VENC'}
+              </span>
+            </div>
+          ) : (
+            // Separate status indicators
+            <>
+              {(isBlocked || isUrgent) && (
+                <div className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-red-500/40 animate-pulse border-2 border-red-400/80 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0 drop-shadow-sm" />
+                  <span className="whitespace-nowrap drop-shadow-sm">{isBlocked ? 'BLOQUEADO' : 'URGENTE'}</span>
+                </div>
+              )}
+              
+              {isOverdueCard && (
+                <div className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-orange-500/40 animate-pulse border-2 border-orange-400/80 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0 drop-shadow-sm" />
+                  <span className="whitespace-nowrap drop-shadow-sm">VENCIDO</span>
+                </div>
+              )}
+            </>
+          )}
+          
+          <div className="flex items-center gap-1.5">
+            <span
+              className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-tight border shadow-sm flex items-center gap-2 transition-all duration-300 ${getPrazoColor(card.prazo)}`}
+            >
+              <Clock className="w-3.5 h-3.5" />
+              {card.prazo}
+            </span>
+          </div>
+          
+          <div className="relative group/avatar ml-2">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-white flex items-center justify-center text-[10px] font-black shadow-md shadow-indigo-500/20 ring-2 ring-white dark:ring-slate-800 transition-all group-hover/avatar:scale-105">
+>>>>>>> Stashed changes
               {card.responsavel
                 .split(' ')
                 .map(n => n[0])

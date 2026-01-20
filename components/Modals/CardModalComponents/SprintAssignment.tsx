@@ -8,6 +8,7 @@ interface SprintAssignmentProps {
   activeSprintId: string | null;
   isEditing: boolean;
   onUpdateCard: (updatedCard: Card) => void;
+  currentUser: string;
 }
 
 const SprintAssignment: React.FC<SprintAssignmentProps> = ({
@@ -16,6 +17,7 @@ const SprintAssignment: React.FC<SprintAssignmentProps> = ({
   activeSprintId,
   isEditing,
   onUpdateCard,
+  currentUser,
 }) => {
   const currentSprint = sprints.find(s => s.id === card.sprintId);
   const activeSprint = sprints.find(s => s.id === activeSprintId);
@@ -29,7 +31,7 @@ const SprintAssignment: React.FC<SprintAssignmentProps> = ({
           acao: sprintId 
             ? `Movido para sprint: ${sprints.find(s => s.id === sprintId)?.nome || sprintId}`
             : 'Removido da sprint (movido para backlog)',
-          por: 'Usuário',
+          por: currentUser,
           em: new Date().toISOString()
         }
       ]

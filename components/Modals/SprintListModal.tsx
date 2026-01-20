@@ -9,6 +9,13 @@ interface SprintListModalProps {
   onSelectSprint: (sprintId: string | null) => void;
   activeSprintId: string | null;
   onAddNewSprint: () => void;
+<<<<<<< Updated upstream
+=======
+  onEditSprint?: (sprint: Sprint) => void;
+  onArchiveSprint?: (sprintId: string) => void;
+  onSetEditingSprint?: (sprint: Sprint | null) => void;
+  userRole?: 'editor' | 'viewer' | null;
+>>>>>>> Stashed changes
 }
 
 const SprintListModal: React.FC<SprintListModalProps> = ({
@@ -18,6 +25,13 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
   onSelectSprint,
   activeSprintId,
   onAddNewSprint,
+<<<<<<< Updated upstream
+=======
+  onEditSprint,
+  onArchiveSprint,
+  onSetEditingSprint,
+  userRole
+>>>>>>> Stashed changes
 }) => {
   const getCompletionData = (sprintId: string) => {
     const sprintCards = cards.filter(c => c.sprintId === sprintId);
@@ -46,6 +60,35 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
     return { total: sprintCards.length, completed: cardsCompleted, percentage };
   };
 
+<<<<<<< Updated upstream
+=======
+  const handleEditSprint = (sprint: Sprint) => {
+    if (userRole === 'editor' && onSetEditingSprint) {
+      onSetEditingSprint(sprint);
+    }
+  };
+
+  const handleSaveEditedSprint = (updatedSprint: Sprint) => {
+    if (onEditSprint) {
+      onEditSprint(updatedSprint);
+    }
+    if (onSetEditingSprint) {
+      onSetEditingSprint(null);
+    }
+  };
+
+  const handleArchiveSprintLocal = (sprintId: string) => {
+    if (onArchiveSprint) {
+      onArchiveSprint(sprintId);
+    }
+    if (onSetEditingSprint) {
+      onSetEditingSprint(null);
+    }
+  };
+
+  const canEdit = userRole === 'editor';
+
+>>>>>>> Stashed changes
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col border border-white/20 h-[80vh]">
@@ -195,6 +238,12 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
           </button>
         </div>
       </div>
+<<<<<<< Updated upstream
+=======
+      
+      {/* Edit Sprint Modal is rendered by parent component (App.tsx) */}
+      {/* This component only sets the editingSprint state */}
+>>>>>>> Stashed changes
     </div>
   );
 };

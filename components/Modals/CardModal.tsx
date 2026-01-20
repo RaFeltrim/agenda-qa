@@ -73,6 +73,7 @@ const CardModal: React.FC<CardModalProps> = ({
     descricao: card.descricao,
     prazo: card.prazo,
     responsavel: card.responsavel,
+    status: card.status,
   });
 
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -83,6 +84,7 @@ const CardModal: React.FC<CardModalProps> = ({
       descricao: card.descricao,
       prazo: card.prazo,
       responsavel: card.responsavel,
+      status: card.status,
     });
   }, [card]);
 
@@ -128,9 +130,86 @@ const CardModal: React.FC<CardModalProps> = ({
     }
   };
 
+<<<<<<< Updated upstream
   const handleAddEvidence = () => {
     if (!evidenceUrl.trim()) return;
     const anexo: Anexo = {
+=======
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setEvidenceFile(file);
+    
+    // Generate preview for images
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = () => setEvidencePreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAddEvidence = async () => {
+    if (!evidenceFile) return;
+    
+    setIsUploading(true);
+    try {
+      // In a real implementation, this would upload to a storage service
+      // For now, we'll create a data URL for demonstration
+      let fileUrl = '';
+      let fileName = evidenceFile.name;
+      
+      if (evidenceFile.type.startsWith('image/')) {
+        const reader = new FileReader();
+        fileUrl = await new Promise((resolve) => {
+          reader.onload = () => resolve(reader.result as string);
+          reader.readAsDataURL(evidenceFile);
+        });
+      } else {
+        // For other file types, create a blob URL
+        fileUrl = URL.createObjectURL(evidenceFile);
+        fileName = evidenceFile.name;
+      }
+      
+      const anexo: Anexo = {
+        id: Math.random().toString(36).substr(2, 9),
+        nome: fileName,
+        url: fileUrl,
+        tipo: 'evidencia',
+        uploadadoPor: 'Rafael Feltrim',
+        dataUpload: new Date().toISOString(),
+      };
+      
+      onUpdate({ 
+        ...card, 
+        anexos: [...card.anexos, anexo],
+        historico: [
+          ...card.historico,
+          { acao: `Nova evidência adicionada: "${fileName}"`, por: currentUser, em: new Date().toISOString() }
+        ]
+      });
+      
+      setEvidenceFile(null);
+      setEvidencePreview(null);
+      setShowEvidenceInput(false);
+    } catch (error) {
+      console.error('Erro ao adicionar evidência:', error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleCancelEvidence = () => {
+    setEvidenceFile(null);
+    setEvidencePreview(null);
+    setShowEvidenceInput(false);
+  };
+
+  const handleAddSubtask = () => {
+    if (!newSubtaskText.trim()) return;
+    
+    const newSubtask: SubTask = {
+>>>>>>> Stashed changes
       id: Math.random().toString(36).substr(2, 9),
       nome: 'Evidência de Validação',
       url: evidenceUrl,
@@ -138,9 +217,136 @@ const CardModal: React.FC<CardModalProps> = ({
       uploadadoPor: 'Rafael Feltrim',
       dataUpload: new Date().toISOString(),
     };
+<<<<<<< Updated upstream
     onUpdate({ ...card, anexos: [...card.anexos, anexo] });
     setEvidenceUrl('');
     setShowEvidenceInput(false);
+=======
+    
+    onUpdate({ 
+      ...card, 
+      subTasks: [...card.subTasks, newSubtask],
+      historico: [
+        ...card.historico,
+        { acao: `Nova subtarefa adicionada: "${newSubtask.texto}"`, por: 'Usuário', em: new Date().toISOString() }
+      ]
+    });
+    
+    setNewSubtaskText('');
+    setShowSubtaskInput(false);
+  };
+
+  const handleCancelSubtask = () => {
+    setNewSubtaskText('');
+    setShowSubtaskInput(false);
+  };
+
+  // Audit logged subtask operations
+  const auditLoggedAddSubtask = async () => {
+    if (!newSubtaskText.trim()) return;
+    
+    try {
+      const newSubtask: SubTask = {
+        id: Math.random().toString(36).substr(2, 9),
+        texto: newSubtaskText.trim(),
+        concluida: false
+      };
+      
+      // Log the subtask addition
+      await AuditService.logActivity(
+        'CREATE',
+        'subtasks',
+        newSubtask.id,
+        profile?.id || 'anonymous', // Use actual user ID from auth context
+        null,
+        newSubtask,
+        { 
+          entity_type: 'subtask', 
+          operation: 'add',
+          parent_card_id: card.id
+        }
+      );
+      
+      // Update the card with new subtask
+      onUpdate({ 
+        ...card, 
+        subTasks: [...card.subTasks, newSubtask],
+        historico: [
+          ...card.historico,
+          { acao: `Nova subtarefa adicionada: "${newSubtask.texto}"`, por: currentUser, em: new Date().toISOString() }
+        ]
+      });
+      
+      setNewSubtaskText('');
+      setShowSubtaskInput(false);
+    } catch (error) {
+      console.error('Audit logging failed:', error);
+      // Still add the subtask even if audit logging fails
+      const newSubtask: SubTask = {
+        id: Math.random().toString(36).substr(2, 9),
+        texto: newSubtaskText.trim(),
+        concluida: false
+      };
+      
+      onUpdate({ 
+        ...card, 
+        subTasks: [...card.subTasks, newSubtask],
+        historico: [
+          ...card.historico,
+          { acao: `Nova subtarefa adicionada: "${newSubtask.texto}"`, por: currentUser, em: new Date().toISOString() }
+        ]
+      });
+      
+      setNewSubtaskText('');
+      setShowSubtaskInput(false);
+    }
+  };
+
+  const auditLoggedToggleSubtask = async (subtaskId: string, newCompletedStatus: boolean) => {
+    try {
+      const subtaskToToggle = card.subTasks.find(s => s.id === subtaskId);
+      if (subtaskToToggle) {
+        // Log the subtask completion toggle
+        await AuditService.logActivity(
+          'UPDATE',
+          'subtasks',
+          subtaskId,
+          profile?.id || 'anonymous', // Use actual user ID from auth context
+          { concluida: subtaskToToggle.concluida },
+          { concluida: newCompletedStatus },
+          { 
+            entity_type: 'subtask', 
+            operation: 'toggle_completion',
+            parent_card_id: card.id
+          }
+        );
+      }
+      
+      // Update the subtask completion status
+      const newSub = card.subTasks.map(s =>
+        s.id === subtaskId ? { ...s, concluida: newCompletedStatus } : s
+      );
+      
+      onUpdate({ ...card, subTasks: newSub });
+    } catch (error) {
+      console.error('Audit logging failed:', error);
+      // Still toggle the subtask even if audit logging fails
+      const newSub = card.subTasks.map(s =>
+        s.id === subtaskId ? { ...s, concluida: newCompletedStatus } : s
+      );
+      
+      onUpdate({ ...card, subTasks: newSub });
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      auditLoggedAddSubtask();
+    } else if (e.key === 'Escape') {
+      handleCancelSubtask();
+    }
+>>>>>>> Stashed changes
   };
 
   const saveChanges = () => {
@@ -150,9 +356,10 @@ const CardModal: React.FC<CardModalProps> = ({
       descricao: editForm.descricao,
       prazo: editForm.prazo,
       responsavel: editForm.responsavel,
+      status: editForm.status,
       historico: [
         ...card.historico,
-        { acao: 'Card editado manualmente', por: 'Usuário', em: new Date().toISOString() },
+        { acao: 'Card editado manualmente', por: currentUser, em: new Date().toISOString() },
       ],
     });
     setIsEditing(false);
@@ -184,10 +391,13 @@ const CardModal: React.FC<CardModalProps> = ({
         >
           <div className="flex-1 flex items-center gap-4">
             <button
-              onClick={handleListenCard}
-              disabled={isSpeaking}
-              className={`p-3 rounded-2xl transition-all shadow-sm flex-shrink-0 ${isSpeaking ? 'bg-indigo-600 text-white animate-pulse' : 'bg-white dark:bg-slate-800 text-slate-500 hover:text-indigo-600'}`}
-              title="Ouvir Card"
+              onClick={() => {
+                // Feature desabilitada temporariamente - Aguardando Sprint 3
+                alert('⚠️ Feature em desenvolvimento\n\nA função de áudio descrição estará disponível na Sprint 3 do roadmap.');
+              }}
+              disabled={true}
+              className="p-3 rounded-2xl transition-all shadow-sm flex-shrink-0 bg-slate-100 dark:bg-slate-800 text-slate-300 cursor-not-allowed opacity-50"
+              title="Feature desabilitada - Aguardando Sprint 3"
             >
               <Volume2 className="w-6 h-6" />
             </button>
@@ -349,6 +559,7 @@ const CardModal: React.FC<CardModalProps> = ({
                     activeSprintId={activeSprintId}
                     isEditing={isEditing}
                     onUpdateCard={onUpdate}
+                    currentUser={currentUser}
                   />
                   
                   <div className="space-y-2">
@@ -396,6 +607,43 @@ const CardModal: React.FC<CardModalProps> = ({
                         <Calendar className="w-5 h-5 opacity-70" />
                         <span className="text-sm font-black">
                           {new Date(card.prazo).toLocaleDateString('pt-BR')}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Bloqueio Manual Toggle */}
+                  <div className="space-y-2">
+                    <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                      Status do Card
+                    </h4>
+                    {isEditing ? (
+                      <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            id="blocked-toggle"
+                            checked={editForm.status === 'bloqueado'}
+                            onChange={(e) => setEditForm({ 
+                              ...editForm, 
+                              status: e.target.checked ? 'bloqueado' : 'em-progresso' 
+                            })}
+                            className="w-4 h-4 text-red-600 bg-white border-slate-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-slate-800 focus:ring-2 dark:bg-slate-700 dark:border-slate-600"
+                          />
+                          <label 
+                            htmlFor="blocked-toggle" 
+                            className="text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2"
+                          >
+                            <AlertCircle className="w-4 h-4 text-red-500" />
+                            Bloqueado Manualmente
+                          </label>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className={`flex items-center gap-3 p-3 rounded-2xl border ${card.status === 'bloqueado' ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800' : 'bg-slate-50 dark:bg-slate-800/50 border-slate-100 dark:border-slate-700'}`}>
+                        <AlertCircle className={`w-5 h-5 ${card.status === 'bloqueado' ? 'text-red-500' : 'text-slate-400'}`} />
+                        <span className={`text-sm font-bold ${card.status === 'bloqueado' ? 'text-red-700 dark:text-red-400' : 'text-slate-600 dark:text-slate-400'}`}>
+                          {card.status === 'bloqueado' ? 'Bloqueado Manualmente' : 'Em Progresso' }
                         </span>
                       </div>
                     )}
@@ -468,31 +716,37 @@ const CardModal: React.FC<CardModalProps> = ({
             <div className="space-y-8 animate-in fade-in slide-in-from-right-2 duration-300">
               <div className="grid grid-cols-2 gap-4">
                 <button
-                  onClick={handleGenerateData}
-                  disabled={aiLoading}
-                  className="p-6 bg-gradient-to-br from-indigo-600 to-blue-700 text-white rounded-3xl shadow-xl shadow-indigo-200 dark:shadow-none hover:scale-[1.02] active:scale-95 transition-all flex flex-col items-center text-center gap-3 disabled:opacity-50 group"
+                  onClick={() => {
+                    // Feature desabilitada temporariamente - Aguardando Sprint 3
+                    alert('⚠️ Feature em desenvolvimento\n\nA geração de massa de dados estará disponível na Sprint 3 do roadmap.');
+                  }}
+                  disabled={true}
+                  className="p-6 bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 text-slate-400 dark:text-slate-500 rounded-3xl shadow-lg flex flex-col items-center text-center gap-3 opacity-50 cursor-not-allowed"
                 >
-                  <div className="p-3 bg-white/20 rounded-2xl group-hover:rotate-12 transition-transform">
+                  <div className="p-3 bg-slate-200/20 dark:bg-slate-700/20 rounded-2xl">
                     <Database className="w-8 h-8" />
                   </div>
                   <span className="font-black uppercase tracking-tighter">
                     Gerar Massa de Dados
                   </span>
-                  <span className="text-[10px] opacity-70">JSON/SQL/CSV para testes</span>
+                  <span className="text-[10px] opacity-70">Disponível na Sprint 3</span>
                 </button>
 
                 <button
-                  onClick={handleGenerateReport}
-                  disabled={aiLoading}
-                  className="p-6 bg-white dark:bg-slate-800 border-2 border-indigo-600 text-indigo-600 dark:text-indigo-400 rounded-3xl shadow-lg hover:scale-[1.02] active:scale-95 transition-all flex flex-col items-center text-center gap-3 disabled:opacity-50 group"
+                  onClick={() => {
+                    // Feature desabilitada temporariamente - Aguardando Sprint 3
+                    alert('⚠️ Feature em desenvolvimento\n\nO relatório estratégico estará disponível na Sprint 3 do roadmap.');
+                  }}
+                  disabled={true}
+                  className="p-6 bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 text-slate-400 dark:text-slate-500 rounded-3xl shadow-lg flex flex-col items-center text-center gap-3 opacity-50 cursor-not-allowed"
                 >
-                  <div className="p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl group-hover:-rotate-12 transition-transform">
+                  <div className="p-3 bg-slate-200/20 dark:bg-slate-700/20 rounded-2xl">
                     <FileText className="w-8 h-8" />
                   </div>
                   <span className="font-black uppercase tracking-tighter">
                     Relatório Estratégico
                   </span>
-                  <span className="text-[10px] opacity-70">Pesquisa Web via Google</span>
+                  <span className="text-[10px] opacity-70">Disponível na Sprint 3</span>
                 </button>
               </div>
 
@@ -653,12 +907,45 @@ const CardModal: React.FC<CardModalProps> = ({
           className="px-10 py-6 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center"
         >
           {userRole === 'editor' && (
+<<<<<<< Updated upstream
             <button
               onClick={() => onDelete(card.id)}
               className="flex items-center gap-2 text-red-500 hover:text-red-700 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-red-50 px-4 py-2 rounded-xl"
             >
               <Trash2 className="w-4 h-4" /> Deletar Card
             </button>
+=======
+            <div className="flex flex-col gap-2">
+              {/* Verificar se é card vencido */}
+              {new Date(card.prazo) < new Date() && card.status !== 'concluido' ? (
+                <button
+                  onClick={() => {
+                    if (window.confirm(`⚠️ CARD VENCIDO ⚠️
+
+"${card.titulo}"
+
+Este card está vencido desde ${new Date(card.prazo).toLocaleDateString('pt-BR')}.
+
+Você deseja:
+1. ARQUIVAR (recomendado)
+2. EXCLUIR PERMANENTEMENTE`)) {
+                      onDelete(card.id);
+                    }
+                  }}
+                  className="flex items-center gap-2 text-orange-600 hover:text-orange-800 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-orange-50 px-4 py-2 rounded-xl border border-orange-200"
+                >
+                  <AlertCircle className="w-4 h-4" /> Deletar Card Vencido
+                </button>
+              ) : (
+                <button
+                  onClick={() => onDelete(card.id)}
+                  className="flex items-center gap-2 text-red-500 hover:text-red-700 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-red-50 px-4 py-2 rounded-xl"
+                >
+                  <Trash2 className="w-4 h-4" /> Deletar Card
+                </button>
+              )}
+            </div>
+>>>>>>> Stashed changes
           )}
           <div className="flex gap-4">
             {isEditing && (

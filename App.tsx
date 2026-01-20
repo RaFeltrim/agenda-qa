@@ -20,6 +20,43 @@ const FinishSprintModal = React.lazy(() => import('./components/Modals/FinishSpr
 const PerformanceModal = React.lazy(() => import('./components/Modals/PerformanceModal'));
 const AuditLogDrawer = React.lazy(() => import('./components/Modals/AuditLogDrawer'));
 const ScheduleMeetingModal = React.lazy(() => import('./components/Modals/ScheduleMeetingModal'));
+<<<<<<< Updated upstream
+=======
+const EnhancedScheduleMeetingModal = React.lazy(() => import('./components/Modals/EnhancedScheduleMeetingModal'));
+const EnhancedAnalyticsDashboard = React.lazy(() => import('./components/EnhancedAnalyticsDashboard'));
+const EditSprintModal = React.lazy(() => import('./components/Modals/EditSprintModal'));
+const MeetingsDashboard = React.lazy(() => import('./components/Meeting/MeetingsDashboard'));
+const ArchiveSprintModal = React.lazy(() => import('./components/Modals/ArchiveSprintModal'));
+const ArchivedSprintsView = React.lazy(() => import('./components/ArchivedSprintsView'));
+const ProjectsTab = React.lazy(() => import('./components/ProjectsTab'));
+const ProjectSprintsView = React.lazy(() => import('./components/ProjectSprintsView'));
+const ConfirmationModal = React.lazy(() => import('./components/Modals/ConfirmationModal'));
+const AdminSettings = React.lazy(() => import('./components/AdminSettings'));
+
+const MOCK_PROJECTS: Project[] = [
+  {
+    id: 'proj-1',
+    nome: 'Projeto Principal',
+    descricao: 'Desenvolvimento do sistema principal da empresa',
+    cor: '#3b82f6',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'proj-2',
+    nome: 'Dashboard Analytics',
+    descricao: 'Sistema de análise e métricas de performance',
+    cor: '#10b981',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'proj-3',
+    nome: 'Mobile App',
+    descricao: 'Aplicativo mobile para clientes',
+    cor: '#f59e0b',
+    createdAt: new Date().toISOString()
+  }
+];
+>>>>>>> Stashed changes
 
 const MOCK_MEETINGS: Meeting[] = [
   {
@@ -64,6 +101,25 @@ const App: React.FC = () => {
   const [isPerformanceModalOpen, setIsPerformanceModalOpen] = useState(false);
   const [isAuditLogOpen, setIsAuditLogOpen] = useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+<<<<<<< Updated upstream
+=======
+  const [isEnhancedAnalyticsOpen, setIsEnhancedAnalyticsOpen] = useState(false);
+  const [editingSprint, setEditingSprint] = useState<Sprint | null>(null);
+  const [sprintToArchive, setSprintToArchive] = useState<Sprint | null>(null);
+  const [isArchiveSprintModalOpen, setIsArchiveSprintModalOpen] = useState(false);
+  const [isArchivedSprintsViewOpen, setIsArchivedSprintsViewOpen] = useState(false);
+  const [isProjectsViewOpen, setIsProjectsViewOpen] = useState(false);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [confirmationConfig, setConfirmationConfig] = useState<{
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    type?: 'danger' | 'warning' | 'info';
+  } | null>(null);
+  
+  // Admin Panel State
+  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
+>>>>>>> Stashed changes
 
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
@@ -170,6 +226,7 @@ const App: React.FC = () => {
           setSearchTerm={setSearchTerm}
           userRole={role}
           onLogout={logout}
+          onAdminClick={() => setIsAdminPanelOpen(true)}
         />
 
         <main className="pb-10">
@@ -206,7 +263,7 @@ const App: React.FC = () => {
           />
         </main>
 
-        <div className="fixed top-20 right-4 z-[100] flex flex-col pointer-events-none">
+        <div className="fixed top-20 right-4 z-[90] flex flex-col pointer-events-none">
           <div className="pointer-events-auto">
             {notifications.map(n => (
               <Toast key={n.id} notification={n} onClose={removeNotification} />
@@ -263,6 +320,19 @@ const App: React.FC = () => {
               onClose={() => setIsSprintModalOpen(false)}
               onSelectSprint={setActiveSprintId}
               onAddNewSprint={() => setIsCreateSprintModalOpen(true)}
+<<<<<<< Updated upstream
+=======
+              onEditSprint={auditLoggedEditSprint}
+              onArchiveSprint={(sprintId) => {
+                const sprintToArchive = sprints.find(s => s.id === sprintId);
+                if (sprintToArchive) {
+                  setSprintToArchive(sprintToArchive);
+                  setIsArchiveSprintModalOpen(true);
+                }
+              }}
+              onSetEditingSprint={setEditingSprint}
+              userRole={role}
+>>>>>>> Stashed changes
             />
           )}
           {isCreateSprintModalOpen && (
@@ -295,6 +365,156 @@ const App: React.FC = () => {
               }}
             />
           )}
+<<<<<<< Updated upstream
+=======
+          {isEnhancedAnalyticsOpen && (
+            <EnhancedAnalyticsDashboard
+              onClose={() => setIsEnhancedAnalyticsOpen(false)}
+              activeSprintId={activeSprintId}
+              sprints={sprints}
+              cards={cards}
+            />
+          )}
+          {editingSprint && (
+            <EditSprintModal
+              sprint={editingSprint}
+              onClose={() => setEditingSprint(null)}
+              onSave={async (updatedSprint) => {
+                await auditLoggedEditSprint(updatedSprint);
+                setEditingSprint(null);
+              }}
+              onArchive={(sprintId) => {
+                const sprintToArchive = sprints.find(s => s.id === sprintId);
+                if (sprintToArchive) {
+                  setSprintToArchive(sprintToArchive);
+                  setIsArchiveSprintModalOpen(true);
+                  setEditingSprint(null);
+                }
+              }}
+              userRole={role}
+            />
+          )}
+          
+          {/* Archive Sprint Modal */}
+          {isArchiveSprintModalOpen && sprintToArchive && (
+            <ArchiveSprintModal
+              sprint={sprintToArchive}
+              cards={cards}
+              onClose={() => {
+                setIsArchiveSprintModalOpen(false);
+                setSprintToArchive(null);
+              }}
+              onConfirm={async (moveToBacklog) => {
+                await auditLoggedArchiveSprint(sprintToArchive.id);
+              }}
+            />
+          )}
+          
+          {/* Archived Sprints View */}
+          {isArchivedSprintsViewOpen && (
+            <ArchivedSprintsView
+              sprints={sprints}
+              cards={cards}
+              onClose={() => setIsArchivedSprintsViewOpen(false)}
+              onUnarchiveSprint={auditLoggedUnarchiveSprint}
+              onSelectSprint={(sprintId) => {
+                setActiveSprintId(sprintId);
+                setIsArchivedSprintsViewOpen(false);
+                addNotification('Sprint selecionada para visualização', 'info');
+              }}
+            />
+          )}
+          
+          {/* Confirmation Modal */}
+          <Suspense fallback={null}>
+            {isConfirmationModalOpen && confirmationConfig && (
+              <ConfirmationModal
+                isOpen={isConfirmationModalOpen}
+                onClose={() => setIsConfirmationModalOpen(false)}
+                onConfirm={confirmationConfig.onConfirm}
+                title={confirmationConfig.title}
+                message={confirmationConfig.message}
+                type={confirmationConfig.type || 'warning'}
+                confirmText="Deletar"
+                cancelText="Cancelar"
+              />
+            )}
+          </Suspense>
+
+          {/* Projects View */}
+          {/* Admin Settings Panel */}
+          <Suspense fallback={null}>
+            {isAdminPanelOpen && (
+              <AdminSettings
+                onClose={() => setIsAdminPanelOpen(false)}
+                userRole={role || 'viewer'}
+              />
+            )}
+          </Suspense>
+
+          {isProjectsViewOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-2 md:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+              <div className="bg-white dark:bg-slate-900 w-full h-full sm:w-[95vw] sm:max-w-6xl sm:rounded-2xl md:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col border border-white/20 sm:h-[95vh] md:h-[90vh]">
+                <div className="flex-1 overflow-y-auto p-2 sm:p-4 md:p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
+                    <div className="md:col-span-1">
+                      <Suspense fallback={<div className="text-center py-4 sm:py-8">Carregando projetos...</div>}>
+                        <ProjectsTab
+                          projects={projects}
+                          selectedProjectId={activeProjectId}
+                          onSelectProject={handleSelectProject}
+                          onCreateProject={handleCreateProject}
+                          onUpdateProject={handleUpdateProject}
+                          onDeleteProject={handleDeleteProject}
+                          userRole={role}
+                        />
+                      </Suspense>
+                    </div>
+                    <div className="md:col-span-2">
+                      <Suspense fallback={<div className="text-center py-4 sm:py-8">Carregando sprints...</div>}>
+                        <ProjectSprintsView
+                          project={activeProjectId ? projects.find(p => p.id === activeProjectId) || null : null}
+                          sprints={sprints}
+                          cards={cards}
+                          onCreateSprint={async (sprintData) => {
+                            const newSprint: Sprint = {
+                              ...sprintData,
+                              id: `sprint-${Date.now()}`,
+                              updatedAt: new Date().toISOString()
+                            };
+                            await auditLoggedCreateSprint(newSprint);
+                          }}
+                          onEditSprint={auditLoggedEditSprint}
+                          onArchiveSprint={(sprintId) => {
+                            const sprintToArchive = sprints.find(s => s.id === sprintId);
+                            if (sprintToArchive) {
+                              setSprintToArchive(sprintToArchive);
+                              setIsArchiveSprintModalOpen(true);
+                            }
+                          }}
+                          onSelectSprint={(sprintId) => {
+                            setActiveSprintId(sprintId);
+                            setIsProjectsViewOpen(false);
+                            addNotification('Sprint selecionada para visualização', 'info');
+                          }}
+                          userRole={role}
+                        />
+                      </Suspense>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-2 sm:p-4 md:p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+                  <button
+                    onClick={() => setIsProjectsViewOpen(false)}
+                    className="w-full py-3 sm:py-3 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all min-h-[44px]"
+                  >
+                    Fechar
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+>>>>>>> Stashed changes
         </Suspense>
 
         {/* Floating Action Button - Only show for editors */}

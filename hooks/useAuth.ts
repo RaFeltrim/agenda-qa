@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { AuthUser, Profile } from '../services/supabaseClient';
+import { AuthUser, Profile, supabase } from '../services/supabaseClient';
 import {
   signIn,
   logout,
@@ -33,37 +33,181 @@ export const useAuth = () => {
 
   // Load user session on mount
   useEffect(() => {
-    const loadSession = async () => {
+    let isMounted = true;
+    
+    // Diagnostic logging
+    console.log('🔄 Auth useEffect triggered - mounting component');
+    console.log('Initial auth state:', { 
+      isAuthenticated: authState.isAuthenticated, 
+      isLoading: authState.isLoading 
+    });
+    
+    const initializeAuth = async () => {
       try {
-        const response = await getCurrentUser();
-
-        if (response.user) {
+        console.log('🔍 Starting authentication initialization...');
+        
+        // Force loading state immediately and ensure minimum loading time
+        if (!authState.isLoading) {
+          console.log('🔧 Setting loading state to true');
+          setAuthState(prev => ({ ...prev, isLoading: true }));
+        }
+        
+        
+        
+        // 1. Verifica sessão no Supabase (cookies httpOnly)
+        console.log('📡 Checking Supabase session...');
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        // Check if session is expired
+        const isExpired = session?.expires_at 
+          ? new Date(session.expires_at * 1000) < new Date()
+          : false;
+        
+        if (isExpired) {
+          console.log('⏰ Session expired, signing out...');
+          await supabase.auth.signOut();
           setAuthState({
-            user: response.user,
-            profile: response.profile,
-            role: response.role,
-            isAuthenticated: true,
+            user: null,
+            profile: null,
+            role: null,
+            isAuthenticated: false,
             isLoading: false,
             error: null,
-            needsPasswordChange: needsPasswordChange(response.profile),
+            needsPasswordChange: false,
           });
-        } else {
-          setAuthState({
-            ...initialState,
-            isLoading: false,
-            error: response.error || null,
-          });
+          localStorage.clear();
+          return;
         }
-      } catch (err) {
+        
+        if (!isMounted) {
+          console.log('🚫 Component unmounted during session check');
+          return;
+        }
+        
+        console.log('📊 Session check result:', { 
+          hasSession: !!session?.user, 
+          hasError: !!error,
+          userId: session?.user?.id || 'none'
+        });
+        
+        // 2. Se não tem sessão válida = deslogado
+        if (error || !session?.user) {
+          console.log('❌ No valid session found, setting unauthenticated state');
+          setAuthState({
+            user: null,
+            profile: null,
+            role: null,
+            isAuthenticated: false,
+            isLoading: false,
+            error: null,
+            needsPasswordChange: false,
+          });
+          localStorage.removeItem('isAuthenticated'); // Limpa localStorage desatualizado
+          console.log('✅ Authentication state set to unauthenticated');
+          return;
+        }
+        
+        // 3. Busca perfil APENAS se sessão existe
+        console.log('👤 Fetching user profile...');
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+        
+        if (!isMounted) {
+          console.log('🚫 Component unmounted during profile fetch');
+          return;
+        }
+        
+        console.log('📊 Profile fetch result:', { 
+          hasProfile: !!profileData, 
+          hasError: !!profileError,
+          profileId: profileData?.id || 'none'
+        });
+        
+        // 4. Se perfil não existe = logout (sessão órfã)
+        if (profileError || !profileData) {
+          console.log('❌ Profile not found, forcing logout');
+          await supabase.auth.signOut();
+          setAuthState({
+            user: null,
+            profile: null,
+            role: null,
+            isAuthenticated: false,
+            isLoading: false,
+            error: 'Perfil não encontrado',
+            needsPasswordChange: false,
+          });
+          localStorage.clear();
+          console.log('✅ Authentication state set to unauthenticated after profile failure');
+          return;
+        }
+        
+        // 5. Tudo OK = autentica
+        console.log('✅ All validation passed, setting authenticated state');
         setAuthState({
-          ...initialState,
+          user: session.user,
+          profile: profileData,
+          role: profileData.role,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+          needsPasswordChange: profileData.first_login === true,
+        });
+        localStorage.setItem('isAuthenticated', 'true');
+        console.log('🎉 Authentication completed successfully');
+        
+      } catch (err) {
+        if (!isMounted) {
+          console.log('🚫 Component unmounted during error handling');
+          return;
+        }
+        console.error('💥 Auth initialization error:', err);
+        setAuthState({
+          user: null,
+          profile: null,
+          role: null,
+          isAuthenticated: false,
           isLoading: false,
           error: 'Erro ao carregar sessão',
+          needsPasswordChange: false,
         });
+        localStorage.clear();
+        console.log('✅ Authentication state set to unauthenticated after error');
       }
     };
-
-    loadSession();
+    
+    initializeAuth();
+    
+    // Listener para mudanças de sessão (logout em outra aba)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event: any, session: any) => {
+        if (!isMounted) return;
+        
+        if (event === 'SIGNED_OUT' || !session) {
+          setAuthState({
+            user: null,
+            profile: null,
+            role: null,
+            isAuthenticated: false,
+            isLoading: false,
+            error: null,
+            needsPasswordChange: false,
+          });
+          localStorage.clear();
+          sessionStorage.clear();
+        } else if (event === 'SIGNED_IN' && session) {
+          // Re-fetch profile após login
+          initializeAuth();
+        }
+      }
+    );
+    
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const login = useCallback(async (username: string, password: string) => {

@@ -33,34 +33,7 @@ VALUES (
   first_login = EXCLUDED.first_login,
   updated_at = NOW();
 
--- User 2: Luiz Muller - Editor
-INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at)
-VALUES (
-  '22222222-2222-2222-2222-222222222222',
-  'board_lmuller@agenda-qa.internal',
-  crypt('Suasenha2', gen_salt('bf')),
-  NOW(),
-  '{"provider":"email","providers":["email"]}'::jsonb,
-  '{"full_name":"Luiz Müller","username":"board_lmuller"}'::jsonb,
-  NOW(),
-  NOW()
-) ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO public.profiles (id, username, full_name, role, first_login, created_at, updated_at)
-VALUES (
-  '22222222-2222-2222-2222-222222222222',
-  'board_lmuller',
-  'Luiz Müller',
-  'editor',
-  TRUE,
-  NOW(),
-  NOW()
-) ON CONFLICT (id) DO UPDATE SET
-  username = EXCLUDED.username,
-  full_name = EXCLUDED.full_name,
-  role = EXCLUDED.role,
-  first_login = EXCLUDED.first_login,
-  updated_at = NOW();
 
 -- User 3: Mauricio Cordeiro - Editor
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at)
@@ -104,8 +77,7 @@ VALUES (
 -- Add all users to the demo team
 INSERT INTO public.team_members (team_id, user_id, role)
 VALUES (
-  '44444444-4444-4444-4444-444444444444', '22222222-2222-2222-2222-222222222222', 'lead'),
-  ('44444444-4444-4444-4444-444444444444', '11111111-1111-1111-1111-111111111111', 'member'),
+
   ('44444444-4444-4444-4444-444444444444', '33333333-3333-3333-3333-333333333333', 'member')
 ON CONFLICT (team_id, user_id) DO NOTHING;
 
@@ -168,7 +140,7 @@ INSERT INTO public.cards (
   '99999999-9999-9999-9999-999999999999',
   'Exportação de Relatórios PDF',
   'Implementar funcionalidade de exportar relatórios completos em formato PDF',
-  'board_lmuller',
+  'Unassigned',
   (CURRENT_DATE + INTERVAL '3 days')::text,
   'backlog',
   ARRAY['relatórios', 'pdf', 'exportação'],
@@ -214,7 +186,7 @@ INSERT INTO public.cards (
   'demo-card-007-blocked-001',
   'Integração com Sistema Legado',
   'Conectar com o sistema antigo de gestão de projetos - BLOQUEADO por falta de documentação da API',
-  'board_lmuller',
+  'Unassigned',
   (CURRENT_DATE + INTERVAL '8 days')::text,
   'bloqueado',
   ARRAY['integração', 'legado', 'bloqueado'],
@@ -269,26 +241,12 @@ VALUES
   '@board_mcordeiro Acabei de liberar o acesso ao staging. As credenciais estão no canal #dev-ops do Slack.',
   NOW() - INTERVAL '12 hours'
 ),
-(
-  'comment-003-demo-card-007',
-  'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
-  'board_lmuller',
-  'Aguardando documentação da API legada do time de infraestrutura. Sem ela não consigo prosseguir com a integração.',
-  NOW() - INTERVAL '2 days'
-);
+
 
 -- Create audit logs for some actions
 INSERT INTO public.audit_logs (id, table_name, record_id, action, new_values, changed_by, created_at)
 VALUES 
-(
-  'audit-001-demo-card-create',
-  'cards',
-  '66666666-6666-6666-6666-666666666666',
-  'INSERT',
-  '{"titulo": "Implementar Autenticação por Biometria", "responsavel": "board_lmuller", "status": "backlog"}'::jsonb,
-  '11111111-1111-1111-1111-111111111111',
-  NOW() - INTERVAL '3 days'
-),
+
 (
   'audit-002-demo-card-update',
   'cards',
@@ -308,7 +266,7 @@ SELECT
   u.email
 FROM public.profiles p
 JOIN auth.users u ON p.id = u.id
-WHERE p.username IN ('rafael.feltrim', 'board_lmuller', 'board_mcordeiro')
+WHERE p.username IN ('rafael.feltrim', 'board_mcordeiro')
 
 UNION ALL
 

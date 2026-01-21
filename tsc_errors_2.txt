@@ -1,0 +1,168 @@
+App.tsx(2,16): error TS6133: 'CardStatus' is declared but its value is never read.
+App.tsx(20,7): error TS6133: 'FinishSprintModal' is declared but its value is never read.
+App.tsx(118,10): error TS6133: 'isFinishSprintModalOpen' is declared but its value is never read.
+App.tsx(429,9): error TS6133: 'handleDeleteExpiredCards' is declared but its value is never read.
+App.tsx(695,15): error TS17001: JSX elements cannot have multiple attributes with the same name.
+App.tsx(761,33): error TS6133: 'moveToBacklog' is declared but its value is never read.
+components/ArchivedSprintsView.tsx(2,40): error TS6133: 'ArrowRight' is declared but its value is never read.
+components/ArchivedSprintsView.tsx(22,10): error TS6133: 'selectedSprint' is declared but its value is never read.
+components/ArchivedSprintsView.tsx(22,26): error TS6133: 'setSelectedSprint' is declared but its value is never read.
+components/AuditLogViewer.tsx(6,3): error TS6133: 'Calendar' is declared but its value is never read.
+components/AuditLogViewer.tsx(9,3): error TS6133: 'User' is declared but its value is never read.
+components/AuditLogViewer.tsx(13,3): error TS6133: 'MessageSquare' is declared but its value is never read.
+components/AuditLogViewer.tsx(38,3): error TS6133: 'entityId' is declared but its value is never read.
+components/EnhancedAnalyticsDashboard.tsx(3,3): error TS6133: 'BarChart3' is declared but its value is never read.
+components/EnhancedAnalyticsDashboard.tsx(11,3): error TS6133: 'Calendar' is declared but its value is never read.
+components/EnhancedAnalyticsDashboard.tsx(14,3): error TS6133: 'Filter' is declared but its value is never read.
+components/EnhancedAnalyticsDashboard.tsx(97,10): error TS6133: 'selectedTeam' is declared but its value is never read.
+components/EnhancedAnalyticsDashboard.tsx(97,24): error TS6133: 'setSelectedTeam' is declared but its value is never read.
+components/EnhancedAnalyticsDashboard.tsx(99,10): error TS6133: 'lastUpdated' is declared but its value is never read.
+components/EnhancedAnalyticsDashboard.tsx(115,11): error TS6133: 'inProgressCards' is declared but its value is never read.
+components/EnhancedAnalyticsDashboard.tsx(117,11): error TS6133: 'backlogCards' is declared but its value is never read.
+components/EnhancedAnalyticsDashboard.tsx(477,46): error TS6133: 'index' is declared but its value is never read.
+components/ForgotPasswordModal.tsx(2,45): error TS6133: 'User' is declared but its value is never read.
+components/ForgotPasswordModal.tsx(2,51): error TS6133: 'Clock' is declared but its value is never read.
+components/Kanban/Card.tsx(4,10): error TS6133: 'Calendar' is declared but its value is never read.
+components/Kanban/Card.tsx(4,35): error TS6133: 'Paperclip' is declared but its value is never read.
+components/Kanban/Card.tsx(4,79): error TS6133: 'Copy' is declared but its value is never read.
+components/Kanban/Card.tsx(4,85): error TS6133: 'Archive' is declared but its value is never read.
+components/Kanban/Card.tsx(4,94): error TS6133: 'ExternalLink' is declared but its value is never read.
+components/Kanban/Card.tsx(4,108): error TS6133: 'Star' is declared but its value is never read.
+components/Kanban/Card.tsx(4,114): error TS6133: 'Flag' is declared but its value is never read.
+components/Kanban/Card.tsx(6,1): error TS6133: 'EllipsisMenu' is declared but its value is never read.
+components/Kanban/Card.tsx(24,3): error TS6133: 'userRole' is declared but its value is never read.
+components/Kanban/Card.tsx(25,3): error TS6133: 'onDuplicate' is declared but its value is never read.
+components/Kanban/Card.tsx(26,3): error TS6133: 'onArchive' is declared but its value is never read.
+components/Kanban/Card.tsx(27,3): error TS6133: 'onCopyLink' is declared but its value is never read.
+components/Kanban/Card.tsx(28,3): error TS6133: 'onToggleFavorite' is declared but its value is never read.
+components/Kanban/Card.tsx(29,3): error TS6133: 'onFlagUrgent' is declared but its value is never read.
+components/Kanban/KanbanBoard.tsx(2,1): error TS6133: 'motion' is declared but its value is never read.
+components/Login.tsx(4,67): error TS6133: 'CheckCircle' is declared but its value is never read.
+components/Meeting/MeetingsDashboard.tsx(2,16): error TS6133: 'Filter' is declared but its value is never read.
+components/Meeting/MeetingsDashboard.tsx(47,11): error TS6133: 'today' is declared but its value is never read.
+components/Modals/AccountModal.tsx(6,1): error TS6133: 'Profile' is declared but its value is never read.
+components/Modals/AuditLogDrawer.tsx(2,20): error TS6133: 'User' is declared but its value is never read.
+components/Modals/CardModal.tsx(2,18): error TS6133: 'AnimatePresence' is declared but its value is never read.
+components/Modals/CardModal.tsx(9,3): error TS6133: 'Tag' is declared but its value is never read.
+components/Modals/CardModal.tsx(113,9): error TS6133: 'handleListenCard' is declared but its value is never read.
+components/Modals/CardModal.tsx(133,9): error TS6133: 'handleGenerateData' is declared but its value is never read.
+components/Modals/CardModal.tsx(144,9): error TS6133: 'handleGenerateReport' is declared but its value is never read.
+components/Modals/ConfirmationModal.tsx(2,10): error TS6133: 'X' is declared but its value is never read.
+components/Modals/CreateCardModal.tsx(5,30): error TS6133: 'parseDateFromInput' is declared but its value is never read.
+components/Modals/CreateSprintModal.tsx(2,31): error TS6133: 'Plus' is declared but its value is never read.
+components/Modals/EnhancedScheduleMeetingModal.tsx(2,62): error TS6133: 'AlertTriangle' is declared but its value is never read.
+components/Modals/FinishSprintModal.tsx(2,40): error TS6133: 'ArrowRight' is declared but its value is never read.
+components/Modals/ImportATA.tsx(10,3): error TS6133: 'File' is declared but its value is never read.
+components/Modals/ImportATA.tsx(37,39): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+components/Modals/ImportATA.tsx(62,11): error TS2322: Type '{ id: string; titulo: string; descricao: string; responsavel: string; prazo: string; status: "backlog"; tags: string[]; urgente: boolean | undefined; dataCriacao: string; dataCriacaoPor: string; comentarios: never[]; anexos: never[]; subTasks: never[]; historico: { ...; }[]; }[]' is not assignable to type 'Card[]'.
+  Type '{ id: string; titulo: string; descricao: string; responsavel: string; prazo: string; status: "backlog"; tags: string[]; urgente: boolean | undefined; dataCriacao: string; dataCriacaoPor: string; comentarios: never[]; anexos: never[]; subTasks: never[]; historico: { ...; }[]; }' is not assignable to type 'Card' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+    Types of property 'urgente' are incompatible.
+      Type 'boolean | undefined' is not assignable to type 'boolean'.
+        Type 'undefined' is not assignable to type 'boolean'.
+components/Modals/ImportATA.tsx(62,52): error TS6133: 'idx' is declared but its value is never read.
+components/Modals/PerformanceModal.tsx(2,27): error TS6133: 'Info' is declared but its value is never read.
+components/Modals/PerformanceModal.tsx(47,53): error TS2532: Object is possibly 'undefined'.
+components/Modals/PerformanceModal.tsx(197,23): error TS2532: Object is possibly 'undefined'.
+components/Modals/PerformanceModal.tsx(198,23): error TS2532: Object is possibly 'undefined'.
+components/Modals/PreferencesModal.tsx(4,66): error TS6133: 'Tablet' is declared but its value is never read.
+components/Modals/PreferencesModal.tsx(85,9): error TS6133: 'getThemeIcon' is declared but its value is never read.
+components/Modals/SprintListModal.tsx(30,10): error TS6133: 'editingSprint' is declared but its value is never read.
+components/Modals/SprintListModal.tsx(30,25): error TS6133: 'setEditingSprint' is declared but its value is never read.
+components/Modals/SprintListModal.tsx(64,9): error TS6133: 'handleSaveEditedSprint' is declared but its value is never read.
+components/Modals/SprintListModal.tsx(73,9): error TS6133: 'handleArchiveSprintLocal' is declared but its value is never read.
+components/Modals/UnarchiveSprintModal.tsx(22,9): error TS6133: 'pendingCards' is declared but its value is never read.
+components/OnboardingTour.tsx(140,60): error TS2532: Object is possibly 'undefined'.
+components/OnboardingTour.tsx(141,52): error TS2532: Object is possibly 'undefined'.
+components/OnboardingTour.tsx(160,45): error TS2532: Object is possibly 'undefined'.
+components/ProjectSprintsView.tsx(2,50): error TS6133: 'Eye' is declared but its value is never read.
+components/ProjectSprintsView.tsx(20,3): error TS6133: 'onCreateSprint' is declared but its value is never read.
+components/ProjectSprintsView.tsx(21,3): error TS6133: 'onEditSprint' is declared but its value is never read.
+components/ProjectsTab.tsx(2,52): error TS6133: 'Circle' is declared but its value is never read.
+components/ProtectedRoute.tsx(1,28): error TS6133: 'useMemo' is declared but its value is never read.
+components/ProtectedRoute.tsx(37,13): error TS7030: Not all code paths return a value.
+components/Transitions.tsx(128,5): error TS2322: Type '{ initial: { opacity: number; y: number; scale: number; }; in: { opacity: number; y: number; scale: number; transition: { duration: number; ease: number[]; }; }; out: { opacity: number; y: number; scale: number; transition: { ...; }; }; }' is not assignable to type 'Variants'.
+  Property 'in' is incompatible with index signature.
+    Type '{ opacity: number; y: number; scale: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; scale: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; scale: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type '{ transition?: Transition<any>; transitionEnd?: ResolvedValues$1; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: number[]; }' is not assignable to type 'Transition<any>'.
+              Type '{ duration: number; ease: number[]; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: number[]; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'number[]' is not assignable to type 'Easing | Easing[]'.
+                      Type 'number[]' is not assignable to type 'EasingFunction | Easing[]'.
+                        Type 'number[]' is not assignable to type 'Easing[]'.
+                          Type 'number' is not assignable to type 'Easing'.
+components/Transitions.tsx(152,9): error TS2322: Type '{ hidden: { opacity: number; scale: number; y: number; }; visible: { opacity: number; scale: number; y: number; transition: { duration: number; ease: string; } | { type: string; damping: number; stiffness: number; mass: number; }; }; exit: { ...; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; scale: number; y: number; transition: { duration: number; ease: string; } | { type: string; damping: number; stiffness: number; mass: number; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; scale: number; y: number; transition: { duration: number; ease: string; } | { type: string; damping: number; stiffness: number; mass: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; scale: number; y: number; transition: { duration: number; ease: string; } | { type: string; damping: number; stiffness: number; mass: number; }; }' is not assignable to type '{ transition?: Transition<any>; transitionEnd?: ResolvedValues$1; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: string; } | { type: string; damping: number; stiffness: number; mass: number; }' is not assignable to type 'Transition<any>'.
+              Type '{ duration: number; ease: string; }' is not assignable to type 'Transition<any>'.
+                Type '{ duration: number; ease: string; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                  Type '{ duration: number; ease: string; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                    Types of property 'ease' are incompatible.
+                      Type 'string' is not assignable to type 'Easing | Easing[]'.
+cypress/e2e/qa-final-suite.cy.js(1,23): error TS2688: Cannot find type definition file for 'cypress'.
+e2e/pages/KanbanPage.ts(1,10): error TS6133: 'Page' is declared but its value is never read.
+e2e/pages/KanbanPage.ts(120,11): error TS6133: 'columnElement' is declared but its value is never read.
+e2e/pages/LoginPage.ts(1,10): error TS6133: 'Page' is declared but its value is never read.
+hooks/useAuth.ts(6,3): error TS6133: 'getCurrentUser' is declared but its value is never read.
+hooks/useStorage.ts(2,1): error TS6133: 'Card' is declared but its value is never read.
+hooks/useStorage.ts(3,1): error TS6133: 'MOCK_CARDS' is declared but its value is never read.
+index.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+playwright.config.ts(3,29): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Argument of type '{ testDir: string; fullyParallel: true; forbidOnly: boolean; retries: number; workers: number | undefined; reporter: "html"; use: { baseURL: string; trace: "on-first-retry"; screenshot: "only-on-failure"; video: "retain-on-failure"; }; projects: { ...; }[]; webServer: { ...; }; }' is not assignable to parameter of type 'PlaywrightTestConfig<unknown, unknown>' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+      Types of property 'workers' are incompatible.
+        Type 'number | undefined' is not assignable to type 'string | number'.
+          Type 'undefined' is not assignable to type 'string | number'.
+services/analyticsService.ts(91,32): error TS6133: 'params' is declared but its value is never read.
+services/analyticsService.ts(130,36): error TS6133: 'params' is declared but its value is never read.
+services/analyticsService.ts(187,34): error TS6133: 'params' is declared but its value is never read.
+services/analyticsService.ts(267,31): error TS6133: 'callback' is declared but its value is never read.
+services/enhancedAIService.ts(56,11): error TS6133: 'requestQueue' is declared but its value is never read.
+services/enhancedAIService.ts(57,11): error TS6133: 'isProcessingQueue' is declared but its value is never read.
+services/enhancedAIService.ts(85,11): error TS6133: 'prompt' is declared but its value is never read.
+services/enhancedAIService.ts(151,11): error TS6133: 'prompt' is declared but its value is never read.
+services/enhancedAIService.ts(223,11): error TS6133: 'prompt' is declared but its value is never read.
+services/enhancedAIService.ts(275,40): error TS6133: 'task' is declared but its value is never read.
+services/enhancedAIService.ts(294,11): error TS6133: 'prompt' is declared but its value is never read.
+services/enhancedAIService.ts(362,11): error TS6133: 'prompt' is declared but its value is never read.
+services/enhancedAuthService.ts(4,20): error TS6133: 'AuthResponse' is declared but its value is never read.
+services/enhancedAuthService.ts(4,34): error TS6133: 'Profile' is declared but its value is never read.
+services/enhancedAuthService.ts(153,5): error TS6133: 'ipAddress' is declared but its value is never read.
+services/enhancedAuthService.ts(154,5): error TS6133: 'userAgent' is declared but its value is never read.
+services/enhancedAuthService.ts(265,23): error TS6133: 'userId' is declared but its value is never read.
+services/enhancedAuthService.ts(407,5): error TS6133: 'userId' is declared but its value is never read.
+services/enhancedAuthService.ts(408,5): error TS6133: 'currentPassword' is declared but its value is never read.
+services/enhancedAuthService.ts(554,39): error TS6133: 'email' is declared but its value is never read.
+services/enhancedAuthService.ts(560,36): error TS6133: 'userId' is declared but its value is never read.
+services/enhancedAuthService.ts(566,42): error TS6133: 'sessionId' is declared but its value is never read.
+services/geminiService.ts(55,32): error TS2379: Argument of type '{ apiKey: string | undefined; }' is not assignable to parameter of type 'GoogleGenAIOptions' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'apiKey' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+services/geminiService.ts(98,23): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+services/geminiService.ts(106,32): error TS2379: Argument of type '{ apiKey: string | undefined; }' is not assignable to parameter of type 'GoogleGenAIOptions' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'apiKey' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+services/geminiService.ts(133,32): error TS2379: Argument of type '{ apiKey: string | undefined; }' is not assignable to parameter of type 'GoogleGenAIOptions' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'apiKey' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+services/geminiService.ts(138,5): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+services/geminiService.ts(146,32): error TS2379: Argument of type '{ apiKey: string | undefined; }' is not assignable to parameter of type 'GoogleGenAIOptions' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+  Types of property 'apiKey' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+services/geminiService.ts(156,7): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+utils/auditIntegration.ts(9,65): error TS6133: 'currentUser' is declared but its value is never read.

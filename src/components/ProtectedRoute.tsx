@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import Login from './Login';
@@ -13,57 +13,14 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole, addNotification }) => {
   const { isAuthenticated, isLoading, role, needsPasswordChange } = useAuth();
 
-<<<<<<< HEAD
   // Debug authentication state
-=======
-<<<<<<< Updated upstream
-  // TEMPORARY: Disable login screen - bypass authentication
-  const bypassAuth = true;
-  const tempIsAuthenticated = bypassAuth ? true : isAuthenticated;
-  const tempRole = bypassAuth ? 'editor' : role;
-=======
-  // Track authentication state changes
->>>>>>> dev
   useEffect(() => {
     console.log('Auth State Changed:', { isAuthenticated, isLoading, role, needsPasswordChange });
   }, [isAuthenticated, isLoading, role, needsPasswordChange]);
 
-<<<<<<< HEAD
-  // Force component update when auth state changes
-  const [, forceUpdate] = React.useReducer(x => x + 1, 0);
-  
-  useEffect(() => {
-    if (isAuthenticated && !isLoading) {
-      console.log('Triggering force update for authenticated state');
-      forceUpdate();
-    }
-  }, [isAuthenticated, isLoading]);
-
   // Use actual authentication state
   const tempIsAuthenticated = isAuthenticated;
   const tempRole = role;
-=======
-  // Use actual authentication state
-  const tempIsAuthenticated = isAuthenticated;
-  const tempRole = role;
->>>>>>> Stashed changes
-
-  // Failsafe: Only redirect to login if we're on a protected route and not authenticated
-  useEffect(() => {
-    const currentPath = window.location.pathname;
-    
-    if (!isAuthenticated && !isLoading && currentPath !== '/login') {
-      // Only redirect if we're not already on the login page
-      const timer = setTimeout(() => {
-        if (!isAuthenticated && !isLoading && window.location.pathname !== '/login') {
-          window.location.replace('/login');
-        }
-      }, 100);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [isAuthenticated, isLoading]);
->>>>>>> dev
 
   // Show loading state while checking auth
   if (isLoading) {
@@ -82,17 +39,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole,
     );
   }
 
-<<<<<<< HEAD
   // Force re-render when auth state changes
   const authKey = `${tempIsAuthenticated}-${isLoading}-${needsPasswordChange}-${tempRole}`;
 
-=======
-<<<<<<< Updated upstream
-=======
-
-
->>>>>>> Stashed changes
->>>>>>> dev
   return (
     <AnimatePresence mode="wait" key={authKey}>
       {tempIsAuthenticated ? (
@@ -165,12 +114,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole,
           exit={{ opacity: 0, scale: 0.9 }}
           transition={{ duration: 0.3 }}
         >
-          <Login 
+          <Login
             onLoginSuccess={() => {
               // Login success handled by auth state change
               console.log('Login successful, waiting for auth state update');
             }}
-            addNotification={addNotification || (() => {})}
+            addNotification={addNotification || (() => { })}
           />
         </motion.div>
       )}

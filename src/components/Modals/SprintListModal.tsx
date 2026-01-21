@@ -9,19 +9,10 @@ interface SprintListModalProps {
   onSelectSprint: (sprintId: string | null) => void;
   activeSprintId: string | null;
   onAddNewSprint: () => void;
-<<<<<<< HEAD
-  onEditSprint?: (sprint: Sprint) => void;
-  onArchiveSprint?: (sprintId: string) => void;
-  userRole?: 'editor' | 'viewer' | null;
-=======
-<<<<<<< Updated upstream
-=======
   onEditSprint?: (sprint: Sprint) => void;
   onArchiveSprint?: (sprintId: string) => void;
   onSetEditingSprint?: (sprint: Sprint | null) => void;
   userRole?: 'editor' | 'viewer' | null;
->>>>>>> Stashed changes
->>>>>>> dev
 }
 
 const SprintListModal: React.FC<SprintListModalProps> = ({
@@ -31,19 +22,10 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
   onSelectSprint,
   activeSprintId,
   onAddNewSprint,
-<<<<<<< HEAD
-  onEditSprint,
-  onArchiveSprint,
-  userRole
-=======
-<<<<<<< Updated upstream
-=======
   onEditSprint,
   onArchiveSprint,
   onSetEditingSprint,
   userRole
->>>>>>> Stashed changes
->>>>>>> dev
 }) => {
   const [editingSprint, setEditingSprint] = useState<Sprint | null>(null);
   const getCompletionData = (sprintId: string) => {
@@ -73,17 +55,9 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
     return { total: sprintCards.length, completed: cardsCompleted, percentage };
   };
 
-<<<<<<< HEAD
-  const handleEditSprint = (sprint: Sprint) => {
-    if (userRole === 'editor') {
-      setEditingSprint(sprint);
-=======
-<<<<<<< Updated upstream
-=======
   const handleEditSprint = (sprint: Sprint) => {
     if (userRole === 'editor' && onSetEditingSprint) {
       onSetEditingSprint(sprint);
->>>>>>> dev
     }
   };
 
@@ -91,34 +65,23 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
     if (onEditSprint) {
       onEditSprint(updatedSprint);
     }
-<<<<<<< HEAD
-    setEditingSprint(null);
-=======
     if (onSetEditingSprint) {
       onSetEditingSprint(null);
     }
->>>>>>> dev
   };
 
   const handleArchiveSprintLocal = (sprintId: string) => {
     if (onArchiveSprint) {
       onArchiveSprint(sprintId);
     }
-<<<<<<< HEAD
-    setEditingSprint(null);
-=======
     if (onSetEditingSprint) {
       onSetEditingSprint(null);
     }
->>>>>>> dev
   };
 
   const canEdit = userRole === 'editor';
 
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> dev
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col border border-white/20 h-[80vh]">
@@ -148,11 +111,10 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
               onSelectSprint(null);
               onClose();
             }}
-            className={`group w-full p-5 rounded-[2rem] border-2 transition-all text-left flex items-center justify-between ${
-              activeSprintId === null
+            className={`group w-full p-5 rounded-[2rem] border-2 transition-all text-left flex items-center justify-between ${activeSprintId === null
                 ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-900/20 shadow-lg shadow-indigo-500/10'
                 : 'border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-800/30 hover:border-indigo-300 dark:hover:border-indigo-700'
-            }`}
+              }`}
           >
             <div className="flex items-center gap-4">
               <div
@@ -187,15 +149,14 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
             return (
               <div
                 key={sprint.id}
-                className={`relative p-6 rounded-[2rem] border-2 transition-all group hover:scale-[1.01] ${
-                  isActive
+                className={`relative p-6 rounded-[2rem] border-2 transition-all group hover:scale-[1.01] ${isActive
                     ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-900/20 shadow-xl shadow-indigo-500/10'
                     : 'border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-indigo-300 dark:hover:border-indigo-700'
-                }`}
+                  }`}
               >
                 {/* Sprint Header with Edit Button */}
                 <div className="flex justify-between items-start mb-3">
-                  <div 
+                  <div
                     className="flex-1 cursor-pointer"
                     onClick={() => {
                       onSelectSprint(sprint.id);
@@ -207,15 +168,14 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
                         {sprint.nome}
                       </h3>
                       <span
-                        className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wide border ${
-                          sprint.status === 'concluida'
+                        className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wide border ${sprint.status === 'concluida'
                             ? 'bg-green-100 text-green-700 border-green-200'
                             : sprint.status === 'ativa'
                               ? 'bg-blue-100 text-blue-700 border-blue-200 animate-pulse'
                               : sprint.status === 'arquivada'
                                 ? 'bg-gray-100 text-gray-600 border-gray-200'
                                 : 'bg-slate-100 text-slate-600 border-slate-200'
-                        }`}
+                          }`}
                       >
                         {sprint.status}
                       </span>
@@ -224,7 +184,7 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
                       {sprint.objetivo}
                     </p>
                   </div>
-                  
+
                   {canEdit && (
                     <div className="flex gap-2 ml-4">
                       <button
@@ -253,12 +213,12 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
                       )}
                     </div>
                   )}
-                  
+
                   {isActive ? (
                     <CheckCircle className="w-6 h-6 text-indigo-600 ml-2" />
                   ) : (
-                    <ArrowRight 
-                      className="w-5 h-5 text-slate-300 group-hover:text-indigo-400 group-hover:translate-x-1 transition-all ml-2" 
+                    <ArrowRight
+                      className="w-5 h-5 text-slate-300 group-hover:text-indigo-400 group-hover:translate-x-1 transition-all ml-2"
                       onClick={() => {
                         onSelectSprint(sprint.id);
                         onClose();
@@ -286,11 +246,10 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
                   </div>
                   <div className="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                     <div
-                      className={`h-full rounded-full transition-all duration-1000 ease-out ${
-                        sprint.status === 'concluida'
+                      className={`h-full rounded-full transition-all duration-1000 ease-out ${sprint.status === 'concluida'
                           ? 'bg-gradient-to-r from-emerald-500 to-teal-400'
                           : 'bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600'
-                      }`}
+                        }`}
                       style={{ width: `${percentage}%` }}
                     ></div>
                   </div>
@@ -310,22 +269,9 @@ const SprintListModal: React.FC<SprintListModalProps> = ({
           </button>
         </div>
       </div>
-<<<<<<< HEAD
-      
-      {/* Edit Sprint Modal */}
-      {editingSprint && (
-        <div className="fixed inset-0 z-[75]">
-          {/* We'll render the EditSprintModal here */}
-        </div>
-      )}
-=======
-<<<<<<< Updated upstream
-=======
-      
+
       {/* Edit Sprint Modal is rendered by parent component (App.tsx) */}
       {/* This component only sets the editingSprint state */}
->>>>>>> Stashed changes
->>>>>>> dev
     </div>
   );
 };

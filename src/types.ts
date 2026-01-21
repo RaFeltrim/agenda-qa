@@ -42,7 +42,7 @@ export interface Card {
   comentarios: Comentario[];
   anexos: Anexo[];
   historico: HistoricoItem[];
-  sprintId?: string;
+  sprintId?: string | null;
   subTasks: SubTask[];
   urgente?: boolean;
 }
@@ -77,7 +77,7 @@ export interface Sprint {
   dataInicio: string;
   dataFim: string;
   status: 'planejada' | 'ativa' | 'concluida' | 'arquivada';
-  projectId?: string;
+  projectId?: string | null;
   updatedAt?: string;
 }
 

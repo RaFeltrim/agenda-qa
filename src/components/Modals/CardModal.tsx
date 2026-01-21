@@ -1,12 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import UserAvatar from '../UserAvatar';
 import { Card, Comentario, Anexo, SubTask, Sprint } from '../../types';
 import { useAuth } from '../../hooks/useAuth';
 import {
   X,
   Calendar,
   User,
-  Tag,
   MessageSquare,
   History,
   Paperclip,
@@ -14,7 +14,6 @@ import {
   Trash2,
   Edit2,
   Save,
-  Link as LinkIcon,
   Clock,
   Plus,
   CheckSquare,
@@ -46,11 +45,11 @@ interface CardModalProps {
   activeSprintId?: string | null;
 }
 
-const CardModal: React.FC<CardModalProps> = ({ 
-  card, 
-  onClose, 
-  onUpdate, 
-  onDelete, 
+const CardModal: React.FC<CardModalProps> = ({
+  card,
+  onClose,
+  onUpdate,
+  onDelete,
   userRole,
   sprints = [],
   activeSprintId = null
@@ -60,10 +59,6 @@ const CardModal: React.FC<CardModalProps> = ({
   const [activeTab, setActiveTab] = useState<'details' | 'comments' | 'ai-help' | 'history'>(
     'details'
   );
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiResult, setAiResult] = useState<{ text: string; sources: any[] } | null>(null);
-  const [testData, setTestData] = useState<string | null>(null);
 
   const [newComment, setNewComment] = useState('');
   const [isEditing, setIsEditing] = useState(false);
@@ -73,7 +68,7 @@ const CardModal: React.FC<CardModalProps> = ({
   const [evidenceFile, setEvidenceFile] = useState<File | null>(null);
   const [evidencePreview, setEvidencePreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  
+
   // Subtask Input State
   const [showSubtaskInput, setShowSubtaskInput] = useState(false);
   const [newSubtaskText, setNewSubtaskText] = useState('');
@@ -87,7 +82,6 @@ const CardModal: React.FC<CardModalProps> = ({
     status: card.status,
   });
 
-  const audioContextRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
     setEditForm({
@@ -106,66 +100,22 @@ const CardModal: React.FC<CardModalProps> = ({
         await markCommentsAsRead(card.id, profile.id);
       }
     };
-    
+
     markAsRead();
   }, [card.id, profile?.id]);
 
-  const handleListenCard = async () => {
-    if (isSpeaking) return;
-    setIsSpeaking(true);
-    try {
-      if (!audioContextRef.current)
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const textToRead = `Tarefa: ${card.titulo}. Descrição: ${card.descricao}. Prazo: ${card.prazo}. Possui ${card.subTasks.length} subtarefas.`;
-      const audioBufferData = await speakText(textToRead);
-      const audioBuffer = await audioContextRef.current.decodeAudioData(audioBufferData);
-      const source = audioContextRef.current.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(audioContextRef.current.destination);
-      source.onended = () => setIsSpeaking(false);
-      source.start(0);
-    } catch (err) {
-      console.error(err);
-      setIsSpeaking(false);
-    }
-  };
+  // handleListenCard removed
 
-  const handleGenerateData = async () => {
-    setAiLoading(true);
-    try {
-      const data = await generateTestData(card.titulo + ' ' + card.descricao);
-      setTestData(data);
-      setActiveTab('ai-help');
-    } finally {
-      setAiLoading(false);
-    }
-  };
+  // handleGenerateData removed
 
-  const handleGenerateReport = async () => {
-    setAiLoading(true);
-    try {
-      const report = await generateAIReport(card.titulo + ' ' + card.descricao);
-      setAiResult(report);
-      setActiveTab('ai-help');
-    } finally {
-      setAiLoading(false);
-    }
-  };
+  // handleGenerateReport removed
 
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-  const handleAddEvidence = () => {
-    if (!evidenceUrl.trim()) return;
-    const anexo: Anexo = {
-=======
->>>>>>> dev
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
+
     setEvidenceFile(file);
-    
+
     // Generate preview for images
     if (file.type.startsWith('image/')) {
       const reader = new FileReader();
@@ -176,14 +126,14 @@ const CardModal: React.FC<CardModalProps> = ({
 
   const handleAddEvidence = async () => {
     if (!evidenceFile) return;
-    
+
     setIsUploading(true);
     try {
       // In a real implementation, this would upload to a storage service
       // For now, we'll create a data URL for demonstration
       let fileUrl = '';
       let fileName = evidenceFile.name;
-      
+
       if (evidenceFile.type.startsWith('image/')) {
         const reader = new FileReader();
         fileUrl = await new Promise((resolve) => {
@@ -195,7 +145,7 @@ const CardModal: React.FC<CardModalProps> = ({
         fileUrl = URL.createObjectURL(evidenceFile);
         fileName = evidenceFile.name;
       }
-      
+
       const anexo: Anexo = {
         id: Math.random().toString(36).substr(2, 9),
         nome: fileName,
@@ -204,20 +154,16 @@ const CardModal: React.FC<CardModalProps> = ({
         uploadadoPor: 'Rafael Feltrim',
         dataUpload: new Date().toISOString(),
       };
-      
-      onUpdate({ 
-        ...card, 
+
+      onUpdate({
+        ...card,
         anexos: [...card.anexos, anexo],
         historico: [
           ...card.historico,
-<<<<<<< HEAD
-          { acao: `Nova evidência adicionada: "${fileName}"`, por: 'Usuário', em: new Date().toISOString() }
-=======
           { acao: `Nova evidência adicionada: "${fileName}"`, por: currentUser, em: new Date().toISOString() }
->>>>>>> dev
         ]
       });
-      
+
       setEvidenceFile(null);
       setEvidencePreview(null);
       setShowEvidenceInput(false);
@@ -231,41 +177,7 @@ const CardModal: React.FC<CardModalProps> = ({
   const handleCancelEvidence = () => {
     setEvidenceFile(null);
     setEvidencePreview(null);
-<<<<<<< HEAD
-=======
     setShowEvidenceInput(false);
-  };
-
-  const handleAddSubtask = () => {
-    if (!newSubtaskText.trim()) return;
-    
-    const newSubtask: SubTask = {
->>>>>>> Stashed changes
-      id: Math.random().toString(36).substr(2, 9),
-      nome: 'Evidência de Validação',
-      url: evidenceUrl,
-      tipo: 'evidencia',
-      uploadadoPor: 'Rafael Feltrim',
-      dataUpload: new Date().toISOString(),
-    };
-<<<<<<< Updated upstream
-    onUpdate({ ...card, anexos: [...card.anexos, anexo] });
-    setEvidenceUrl('');
->>>>>>> dev
-    setShowEvidenceInput(false);
-=======
-    
-    onUpdate({ 
-      ...card, 
-      subTasks: [...card.subTasks, newSubtask],
-      historico: [
-        ...card.historico,
-        { acao: `Nova subtarefa adicionada: "${newSubtask.texto}"`, por: 'Usuário', em: new Date().toISOString() }
-      ]
-    });
-    
-    setNewSubtaskText('');
-    setShowSubtaskInput(false);
   };
 
   const handleCancelSubtask = () => {
@@ -276,14 +188,14 @@ const CardModal: React.FC<CardModalProps> = ({
   // Audit logged subtask operations
   const auditLoggedAddSubtask = async () => {
     if (!newSubtaskText.trim()) return;
-    
+
     try {
       const newSubtask: SubTask = {
         id: Math.random().toString(36).substr(2, 9),
         texto: newSubtaskText.trim(),
         concluida: false
       };
-      
+
       // Log the subtask addition
       await AuditService.logActivity(
         'CREATE',
@@ -292,23 +204,23 @@ const CardModal: React.FC<CardModalProps> = ({
         profile?.id || 'anonymous', // Use actual user ID from auth context
         null,
         newSubtask,
-        { 
-          entity_type: 'subtask', 
+        {
+          entity_type: 'subtask',
           operation: 'add',
           parent_card_id: card.id
         }
       );
-      
+
       // Update the card with new subtask
-      onUpdate({ 
-        ...card, 
+      onUpdate({
+        ...card,
         subTasks: [...card.subTasks, newSubtask],
         historico: [
           ...card.historico,
           { acao: `Nova subtarefa adicionada: "${newSubtask.texto}"`, por: currentUser, em: new Date().toISOString() }
         ]
       });
-      
+
       setNewSubtaskText('');
       setShowSubtaskInput(false);
     } catch (error) {
@@ -319,16 +231,16 @@ const CardModal: React.FC<CardModalProps> = ({
         texto: newSubtaskText.trim(),
         concluida: false
       };
-      
-      onUpdate({ 
-        ...card, 
+
+      onUpdate({
+        ...card,
         subTasks: [...card.subTasks, newSubtask],
         historico: [
           ...card.historico,
           { acao: `Nova subtarefa adicionada: "${newSubtask.texto}"`, por: currentUser, em: new Date().toISOString() }
         ]
       });
-      
+
       setNewSubtaskText('');
       setShowSubtaskInput(false);
     }
@@ -346,19 +258,19 @@ const CardModal: React.FC<CardModalProps> = ({
           profile?.id || 'anonymous', // Use actual user ID from auth context
           { concluida: subtaskToToggle.concluida },
           { concluida: newCompletedStatus },
-          { 
-            entity_type: 'subtask', 
+          {
+            entity_type: 'subtask',
             operation: 'toggle_completion',
             parent_card_id: card.id
           }
         );
       }
-      
+
       // Update the subtask completion status
       const newSub = card.subTasks.map(s =>
         s.id === subtaskId ? { ...s, concluida: newCompletedStatus } : s
       );
-      
+
       onUpdate({ ...card, subTasks: newSub });
     } catch (error) {
       console.error('Audit logging failed:', error);
@@ -366,142 +278,7 @@ const CardModal: React.FC<CardModalProps> = ({
       const newSub = card.subTasks.map(s =>
         s.id === subtaskId ? { ...s, concluida: newCompletedStatus } : s
       );
-      
-      onUpdate({ ...card, subTasks: newSub });
-    }
-  };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      auditLoggedAddSubtask();
-    } else if (e.key === 'Escape') {
-      handleCancelSubtask();
-    }
->>>>>>> Stashed changes
-  };
-
-  const handleAddSubtask = () => {
-    if (!newSubtaskText.trim()) return;
-    
-    const newSubtask: SubTask = {
-      id: Math.random().toString(36).substr(2, 9),
-      texto: newSubtaskText.trim(),
-      concluida: false
-    };
-    
-    onUpdate({ 
-      ...card, 
-      subTasks: [...card.subTasks, newSubtask],
-      historico: [
-        ...card.historico,
-        { acao: `Nova subtarefa adicionada: "${newSubtask.texto}"`, por: 'Usuário', em: new Date().toISOString() }
-      ]
-    });
-    
-    setNewSubtaskText('');
-    setShowSubtaskInput(false);
-  };
-
-  const handleCancelSubtask = () => {
-    setNewSubtaskText('');
-    setShowSubtaskInput(false);
-  };
-
-  // Audit logged subtask operations
-  const auditLoggedAddSubtask = async () => {
-    if (!newSubtaskText.trim()) return;
-    
-    try {
-      const newSubtask: SubTask = {
-        id: Math.random().toString(36).substr(2, 9),
-        texto: newSubtaskText.trim(),
-        concluida: false
-      };
-      
-      // Log the subtask addition
-      await AuditService.logActivity(
-        'CREATE',
-        'subtasks',
-        newSubtask.id,
-        'current-user', // This should be replaced with actual user ID
-        null,
-        newSubtask,
-        { 
-          entity_type: 'subtask', 
-          operation: 'add',
-          parent_card_id: card.id
-        }
-      );
-      
-      // Update the card with new subtask
-      onUpdate({ 
-        ...card, 
-        subTasks: [...card.subTasks, newSubtask],
-        historico: [
-          ...card.historico,
-          { acao: `Nova subtarefa adicionada: "${newSubtask.texto}"`, por: 'Usuário', em: new Date().toISOString() }
-        ]
-      });
-      
-      setNewSubtaskText('');
-      setShowSubtaskInput(false);
-    } catch (error) {
-      console.error('Audit logging failed:', error);
-      // Still add the subtask even if audit logging fails
-      const newSubtask: SubTask = {
-        id: Math.random().toString(36).substr(2, 9),
-        texto: newSubtaskText.trim(),
-        concluida: false
-      };
-      
-      onUpdate({ 
-        ...card, 
-        subTasks: [...card.subTasks, newSubtask],
-        historico: [
-          ...card.historico,
-          { acao: `Nova subtarefa adicionada: "${newSubtask.texto}"`, por: 'Usuário', em: new Date().toISOString() }
-        ]
-      });
-      
-      setNewSubtaskText('');
-      setShowSubtaskInput(false);
-    }
-  };
-
-  const auditLoggedToggleSubtask = async (subtaskId: string, newCompletedStatus: boolean) => {
-    try {
-      const subtaskToToggle = card.subTasks.find(s => s.id === subtaskId);
-      if (subtaskToToggle) {
-        // Log the subtask completion toggle
-        await AuditService.logActivity(
-          'UPDATE',
-          'subtasks',
-          subtaskId,
-          'current-user', // This should be replaced with actual user ID
-          { concluida: subtaskToToggle.concluida },
-          { concluida: newCompletedStatus },
-          { 
-            entity_type: 'subtask', 
-            operation: 'toggle_completion',
-            parent_card_id: card.id
-          }
-        );
-      }
-      
-      // Update the subtask completion status
-      const newSub = card.subTasks.map(s =>
-        s.id === subtaskId ? { ...s, concluida: newCompletedStatus } : s
-      );
-      
-      onUpdate({ ...card, subTasks: newSub });
-    } catch (error) {
-      console.error('Audit logging failed:', error);
-      // Still toggle the subtask even if audit logging fails
-      const newSub = card.subTasks.map(s =>
-        s.id === subtaskId ? { ...s, concluida: newCompletedStatus } : s
-      );
-      
       onUpdate({ ...card, subTasks: newSub });
     }
   };
@@ -732,7 +509,7 @@ const CardModal: React.FC<CardModalProps> = ({
                         </button>
                       </div>
                     ) : (
-                      <button 
+                      <button
                         onClick={() => setShowSubtaskInput(true)}
                         className="w-full py-3 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-bold text-slate-400 hover:text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/10 transition-all flex items-center justify-center gap-2"
                       >
@@ -745,7 +522,7 @@ const CardModal: React.FC<CardModalProps> = ({
                 {/* Meta Info Section */}
                 <div className="space-y-6">
                   {/* Sprint Assignment */}
-                  <SprintAssignment 
+                  <SprintAssignment
                     card={card}
                     sprints={sprints}
                     activeSprintId={activeSprintId}
@@ -753,7 +530,7 @@ const CardModal: React.FC<CardModalProps> = ({
                     onUpdateCard={onUpdate}
                     currentUser={currentUser}
                   />
-                  
+
                   <div className="space-y-2">
                     <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
                       Responsável
@@ -769,11 +546,7 @@ const CardModal: React.FC<CardModalProps> = ({
                       </div>
                     ) : (
                       <div className="flex items-center gap-3 p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl border border-indigo-100 dark:border-indigo-800/50">
-                        <img
-                          src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${card.responsavel}`}
-                          className="w-8 h-8 rounded-lg bg-white"
-                          alt="Avatar"
-                        />
+                        <UserAvatar name={card.responsavel} size="sm" />
                         <span className="text-sm font-bold text-indigo-900 dark:text-indigo-300">
                           {card.responsavel}
                         </span>
@@ -817,14 +590,14 @@ const CardModal: React.FC<CardModalProps> = ({
                             type="checkbox"
                             id="blocked-toggle"
                             checked={editForm.status === 'bloqueado'}
-                            onChange={(e) => setEditForm({ 
-                              ...editForm, 
-                              status: e.target.checked ? 'bloqueado' : 'em-progresso' 
+                            onChange={(e) => setEditForm({
+                              ...editForm,
+                              status: e.target.checked ? 'bloqueado' : 'em-progresso'
                             })}
                             className="w-4 h-4 text-red-600 bg-white border-slate-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-slate-800 focus:ring-2 dark:bg-slate-700 dark:border-slate-600"
                           />
-                          <label 
-                            htmlFor="blocked-toggle" 
+                          <label
+                            htmlFor="blocked-toggle"
                             className="text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2"
                           >
                             <AlertCircle className="w-4 h-4 text-red-500" />
@@ -836,7 +609,7 @@ const CardModal: React.FC<CardModalProps> = ({
                       <div className={`flex items-center gap-3 p-3 rounded-2xl border ${card.status === 'bloqueado' ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800' : 'bg-slate-50 dark:bg-slate-800/50 border-slate-100 dark:border-slate-700'}`}>
                         <AlertCircle className={`w-5 h-5 ${card.status === 'bloqueado' ? 'text-red-500' : 'text-slate-400'}`} />
                         <span className={`text-sm font-bold ${card.status === 'bloqueado' ? 'text-red-700 dark:text-red-400' : 'text-slate-600 dark:text-slate-400'}`}>
-                          {card.status === 'bloqueado' ? 'Bloqueado Manualmente' : 'Em Progresso' }
+                          {card.status === 'bloqueado' ? 'Bloqueado Manualmente' : 'Em Progresso'}
                         </span>
                       </div>
                     )}
@@ -886,9 +659,9 @@ const CardModal: React.FC<CardModalProps> = ({
                                       {evidenceFile.name}
                                     </span>
                                     {evidenceFile.type.startsWith('image/') && evidencePreview && (
-                                      <img 
-                                        src={evidencePreview} 
-                                        alt="Preview" 
+                                      <img
+                                        src={evidencePreview}
+                                        alt="Preview"
                                         className="w-8 h-8 rounded object-cover border border-slate-200"
                                       />
                                     )}
@@ -921,7 +694,7 @@ const CardModal: React.FC<CardModalProps> = ({
                               <X className="w-3 h-3" />
                             </button>
                           </div>
-                          
+
                           {evidenceFile && (
                             <div className="text-[10px] text-slate-500 dark:text-slate-400 px-2">
                               Tipos suportados: PDF, DOC, TXT, MD, imagens, vídeos
@@ -980,154 +753,95 @@ const CardModal: React.FC<CardModalProps> = ({
                   <span className="text-[10px] opacity-70">Disponível na Sprint 3</span>
                 </button>
               </div>
-
-              {aiLoading && (
-                <div className="flex flex-col items-center justify-center py-20 gap-4">
-                  <div className="relative">
-                    <div className="w-16 h-16 border-4 border-slate-200 border-t-indigo-600 rounded-full animate-spin"></div>
-                    <Sparkles className="absolute inset-0 m-auto w-6 h-6 text-indigo-600 animate-pulse" />
-                  </div>
-                  <p className="text-sm font-black text-slate-400 uppercase tracking-widest animate-pulse">
-                    Consultando Orquestrador IA...
-                  </p>
-                </div>
-              )}
-
-              {!aiLoading && (testData || aiResult) && (
-                <div className="bg-slate-900 text-slate-100 p-8 rounded-[2.5rem] font-mono text-xs leading-relaxed overflow-x-auto shadow-2xl border border-slate-800 relative">
-                  <div className="flex justify-between mb-4 border-b border-slate-800 pb-4">
-                    <span className="text-indigo-400 font-bold uppercase tracking-widest flex items-center gap-2">
-                      <Sparkles className="w-4 h-4" /> IA Intelligence Report
-                    </span>
-                    <button
-                      onClick={() => {
-                        setTestData(null);
-                        setAiResult(null);
-                      }}
-                      className="text-slate-500 hover:text-white transition-colors"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                  {testData && (
-                    <pre className="whitespace-pre-wrap font-medium text-emerald-400">
-                      {testData}
-                    </pre>
-                  )}
-                  {aiResult && (
-                    <div className="space-y-4">
-                      <div className="prose prose-invert max-w-none text-slate-300">
-                        {aiResult.text}
-                      </div>
-                      {aiResult.sources.length > 0 && (
-                        <div className="mt-6 pt-6 border-t border-slate-800">
-                          <p className="text-[10px] font-bold text-slate-500 mb-3 uppercase tracking-widest">
-                            Fontes de Pesquisa
-                          </p>
-                          <div className="flex flex-wrap gap-2">
-                            {aiResult.sources.map((s: any, idx: number) => (
-                              <a
-                                key={idx}
-                                href={s.web?.uri || s.maps?.uri}
-                                target="_blank"
-                                className="px-3 py-1.5 bg-slate-800 hover:bg-indigo-600 rounded-lg border border-slate-700 hover:border-indigo-500 text-indigo-400 hover:text-white transition-all flex items-center gap-2"
-                              >
-                                <LinkIcon className="w-3 h-3" />
-                                {s.web?.title || 'Referência Externa'}
-                              </a>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           )}
 
-          {activeTab === 'comments' && (
-            <div className="space-y-6 animate-in fade-in duration-300">
-              <div className="relative group">
-                <textarea
-                  value={newComment}
-                  onChange={e => setNewComment(e.target.value)}
-                  placeholder="Adicionar nota técnica ou feedback..."
-                  className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-3xl p-6 text-sm min-h-[140px] focus:ring-4 focus:ring-indigo-500/10 shadow-inner resize-none transition-all group-hover:bg-slate-100 dark:group-hover:bg-slate-800/80"
-                />
-                <button
-                  onClick={() => {
-                    if (!newComment.trim()) return;
-                    const comment: Comentario = {
-                      id: Date.now().toString(),
-                      autor: currentUser,
-                      texto: newComment,
-                      timestamp: new Date().toISOString(),
-                    };
-                    onUpdate({ ...card, comentarios: [comment, ...card.comentarios] });
-                    setNewComment('');
-                  }}
-                  className="absolute bottom-4 right-4 p-3 bg-indigo-600 text-white rounded-2xl hover:scale-105 transition-all shadow-lg hover:shadow-indigo-500/30 disabled:opacity-50 disabled:scale-100"
-                  disabled={!newComment.trim()}
-                >
-                  <Send className="w-5 h-5" />
-                </button>
-              </div>
 
-              <div className="space-y-4">
-                {card.comentarios.length === 0 && (
-                  <div className="text-center py-10 opacity-40">
-                    <MessageSquare className="w-12 h-12 mx-auto mb-3 text-slate-300" />
-                    <p className="text-xs font-bold uppercase tracking-widest">
-                      Nenhum feedback registrado
-                    </p>
-                  </div>
-                )}
-                {card.comentarios.map(c => (
-                  <div key={c.id} className="flex gap-4 animate-in slide-in-from-bottom-2">
-                    <img
-                      src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${c.autor}`}
-                      className="w-10 h-10 rounded-2xl border-2 border-white dark:border-slate-800 bg-slate-100 shadow-sm"
-                      alt="Avatar"
-                    />
-                    <div className="flex-1 bg-white dark:bg-slate-800/50 p-5 rounded-3xl border border-slate-100 dark:border-slate-700 rounded-tl-none shadow-sm">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-xs font-black dark:text-white">{c.autor}</span>
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
-                          {formatTimeAgo(c.timestamp)}
-                        </span>
+
+          {
+            activeTab === 'comments' && (
+              <div className="space-y-6 animate-in fade-in duration-300">
+                <div className="relative group">
+                  <textarea
+                    value={newComment}
+                    onChange={e => setNewComment(e.target.value)}
+                    placeholder="Adicionar nota técnica ou feedback..."
+                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-3xl p-6 text-sm min-h-[140px] focus:ring-4 focus:ring-indigo-500/10 shadow-inner resize-none transition-all group-hover:bg-slate-100 dark:group-hover:bg-slate-800/80"
+                  />
+                  <button
+                    onClick={() => {
+                      if (!newComment.trim()) return;
+                      const comment: Comentario = {
+                        id: Date.now().toString(),
+                        autor: currentUser,
+                        texto: newComment,
+                        timestamp: new Date().toISOString(),
+                      };
+                      onUpdate({ ...card, comentarios: [comment, ...card.comentarios] });
+                      setNewComment('');
+                    }}
+                    className="absolute bottom-4 right-4 p-3 bg-indigo-600 text-white rounded-2xl hover:scale-105 transition-all shadow-lg hover:shadow-indigo-500/30 disabled:opacity-50 disabled:scale-100"
+                    disabled={!newComment.trim()}
+                  >
+                    <Send className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  {card.comentarios.length === 0 && (
+                    <div className="text-center py-10 opacity-40">
+                      <MessageSquare className="w-12 h-12 mx-auto mb-3 text-slate-300" />
+                      <p className="text-xs font-bold uppercase tracking-widest">
+                        Nenhum feedback registrado
+                      </p>
+                    </div>
+                  )}
+                  {card.comentarios.map(c => (
+                    <div key={c.id} className="flex gap-4 animate-in slide-in-from-bottom-2">
+                      <UserAvatar name={c.autor} size="md" className="flex-shrink-0" />
+                      <div className="flex-1 bg-white dark:bg-slate-800/50 p-5 rounded-3xl border border-slate-100 dark:border-slate-700 rounded-tl-none shadow-sm">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-xs font-black dark:text-white">{c.autor}</span>
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+                            {formatTimeAgo(c.timestamp)}
+                          </span>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                          {c.texto}
+                        </p>
                       </div>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                        {c.texto}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          }
+
+          {
+            activeTab === 'history' && (
+              <div className="space-y-6">
+                {card.historico.map((h, i) => (
+                  <div
+                    key={i}
+                    className="flex gap-4 pb-6 border-l-2 border-slate-100 dark:border-slate-800 pl-6 relative last:pb-0"
+                  >
+                    <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-white dark:bg-slate-900 border-2 border-indigo-500 z-10"></div>
+                    <div>
+                      <p className="text-xs font-black text-slate-800 dark:text-slate-200">
+                        {h.acao}
+                      </p>
+                      <p className="text-[10px] text-slate-400 mt-1">
+                        por <span className="font-bold text-indigo-500">{h.por}</span> •{' '}
+                        {formatTimeAgo(h.em)}
                       </p>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
-          )}
+            )
+          }
 
-          {activeTab === 'history' && (
-            <div className="space-y-6">
-              {card.historico.map((h, i) => (
-                <div
-                  key={i}
-                  className="flex gap-4 pb-6 border-l-2 border-slate-100 dark:border-slate-800 pl-6 relative last:pb-0"
-                >
-                  <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-white dark:bg-slate-900 border-2 border-indigo-500 z-10"></div>
-                  <div>
-                    <p className="text-xs font-black text-slate-800 dark:text-slate-200">
-                      {h.acao}
-                    </p>
-                    <p className="text-[10px] text-slate-400 mt-1">
-                      por <span className="font-bold text-indigo-500">{h.por}</span> •{' '}
-                      {formatTimeAgo(h.em)}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+
         </motion.div>
 
         {/* Footer */}
@@ -1138,29 +852,6 @@ const CardModal: React.FC<CardModalProps> = ({
           className="px-10 py-6 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center"
         >
           {userRole === 'editor' && (
-<<<<<<< HEAD
-            <div className="flex flex-col gap-2">
-              <button
-                onClick={() => onDelete(card.id)}
-                className="flex items-center gap-2 text-red-500 hover:text-red-700 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-red-50 px-4 py-2 rounded-xl"
-              >
-                <Trash2 className="w-4 h-4" /> Deletar Card
-              </button>
-              
-              {/* Special delete button for overdue cards */}
-              {new Date(card.prazo) < new Date() && card.status !== 'concluido' && (
-                <button
-                  onClick={() => {
-                    if (window.confirm(`Tem certeza que deseja deletar este card vencido?\n\n"${card.titulo}"\nVencido em: ${new Date(card.prazo).toLocaleDateString('pt-BR')}`)) {
-=======
-<<<<<<< Updated upstream
-            <button
-              onClick={() => onDelete(card.id)}
-              className="flex items-center gap-2 text-red-500 hover:text-red-700 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-red-50 px-4 py-2 rounded-xl"
-            >
-              <Trash2 className="w-4 h-4" /> Deletar Card
-            </button>
-=======
             <div className="flex flex-col gap-2">
               {/* Verificar se é card vencido */}
               {new Date(card.prazo) < new Date() && card.status !== 'concluido' ? (
@@ -1175,7 +866,6 @@ Este card está vencido desde ${new Date(card.prazo).toLocaleDateString('pt-BR')
 Você deseja:
 1. ARQUIVAR (recomendado)
 2. EXCLUIR PERMANENTEMENTE`)) {
->>>>>>> dev
                       onDelete(card.id);
                     }
                   }}
@@ -1183,10 +873,6 @@ Você deseja:
                 >
                   <AlertCircle className="w-4 h-4" /> Deletar Card Vencido
                 </button>
-<<<<<<< HEAD
-              )}
-            </div>
-=======
               ) : (
                 <button
                   onClick={() => onDelete(card.id)}
@@ -1196,8 +882,6 @@ Você deseja:
                 </button>
               )}
             </div>
->>>>>>> Stashed changes
->>>>>>> dev
           )}
           <div className="flex gap-4">
             {isEditing && (

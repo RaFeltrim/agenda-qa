@@ -13,6 +13,7 @@ import {
   X,
   ExternalLink,
 } from 'lucide-react';
+import UserAvatar from './UserAvatar';
 
 interface DashboardProps {
   cards: Card[];
@@ -22,7 +23,8 @@ interface DashboardProps {
   activeFilter: string;
   activeSprintId: string | null;
   onOpenSprintList: () => void;
-  onFinishSprint: () => void;
+
+
   onOpenPerformance: () => void;
   onOpenScheduleModal: () => void;
   onDeleteMeeting: (id: string) => void;
@@ -247,11 +249,10 @@ const Dashboard: React.FC<DashboardProps> = ({
             <button
               key={f}
               onClick={() => onFilterChange(f)}
-              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
-                activeFilter === f
-                  ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-md scale-100'
-                  : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
-              }`}
+              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${activeFilter === f
+                ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-md scale-100'
+                : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
+                }`}
             >
               {f}
             </button>
@@ -262,16 +263,9 @@ const Dashboard: React.FC<DashboardProps> = ({
             <p className="text-[10px] font-black text-indigo-500 dark:text-indigo-400 uppercase tracking-[0.2em] leading-none mb-1">
               Squad Lead
             </p>
-            <p className="text-sm font-black text-slate-800 dark:text-white">Luiz Muller</p>
+            <p className="text-sm font-black text-slate-800 dark:text-white">Mauricio Cordeiro</p>
           </div>
-          <div className="relative">
-            <img
-              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Luiz"
-              className="w-11 h-11 rounded-2xl shadow-xl border-2 border-white dark:border-slate-700 object-cover"
-              alt="Profile"
-            />
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white dark:border-slate-800 rounded-full"></div>
-          </div>
+          <UserAvatar name="Mauricio Cordeiro" size="lg" showStatus={true} role="editor" />
         </div>
       </div>
     </div>

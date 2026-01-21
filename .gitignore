@@ -39,3 +39,4 @@ coverage/
 
 # System files
 Thumbs.db
+.vercel

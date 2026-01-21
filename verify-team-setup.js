@@ -6,7 +6,6 @@ console.log('=== TEAM DEMO SETUP VERIFICATION ===');
 // Test credentials
 const testCredentials = [
   { username: 'rafael.feltrim', password: 'DemoPass123', name: 'Rafael Feltrim' },
-  { username: 'board_lmuller', password: 'Suasenha2', name: 'Luiz Müller' },
   { username: 'board_mcordeiro', password: 'Suasenha3', name: 'Mauricio Cordeiro' }
 ];
 
@@ -18,11 +17,11 @@ testCredentials.forEach((cred, index) => {
 // Function to simulate login test
 function testLogin(username, password) {
   console.log(`\n🔍 Testing login for: ${username}`);
-  
+
   // This would normally call your login API
   // For now, just verify the credentials exist
   const userExists = testCredentials.some(cred => cred.username === username);
-  
+
   if (userExists) {
     console.log(`✅ Valid username: ${username}`);
     return true;

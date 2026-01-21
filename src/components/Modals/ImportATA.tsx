@@ -7,7 +7,6 @@ import {
   AlertCircle,
   FileText,
   ChevronRight,
-  File,
   UploadCloud,
 } from 'lucide-react';
 import { extractTasksFromDocument } from '../../services/geminiService';
@@ -33,7 +32,7 @@ const ImportATAModal: React.FC<ImportATAModalProps> = ({ onClose, onImport }) =>
     if (rawFile.type === 'application/pdf') {
       const reader = new FileReader();
       reader.onload = () => {
-        const base64 = (reader.result as string).split(',')[1];
+        const base64 = (reader.result as string).split(',')[1] || '';
         setFile({ name: rawFile.name, content: base64, type: rawFile.type });
       };
       reader.readAsDataURL(rawFile);
@@ -59,15 +58,15 @@ const ImportATAModal: React.FC<ImportATAModalProps> = ({ onClose, onImport }) =>
 
   const confirmImport = () => {
     if (!preview) return;
-    const newCards: Card[] = preview.tasks.map((t, idx) => ({
+    const newCards: Card[] = preview.tasks.map((t) => ({
       id: Math.random().toString(36).substr(2, 9),
       titulo: t.titulo,
       descricao: t.descricao,
       responsavel: t.responsavel,
-      prazo: safeParseDate(t.prazo),
+      prazo: (safeParseDate(t.prazo) || new Date().toISOString().split('T')[0]) as string,
       status: 'backlog',
       tags: t.tags,
-      urgente: t.urgente,
+      urgente: t.urgente ?? false,
       dataCriacao: new Date().toISOString(),
       dataCriacaoPor: 'Gemini Orquestrador',
       comentarios: [],

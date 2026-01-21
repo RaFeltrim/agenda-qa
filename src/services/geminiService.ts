@@ -52,16 +52,16 @@ export async function extractTasksFromDocument(
   mimeType: string = 'text/plain'
 ): Promise<ExtractedTasks> {
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
 
     const contents =
       mimeType === 'application/pdf'
         ? {
-            parts: [
-              { inlineData: { data: content, mimeType: 'application/pdf' } },
-              { text: 'Extraia as tarefas desta ATA conforme o schema JSON.' },
-            ],
-          }
+          parts: [
+            { inlineData: { data: content, mimeType: 'application/pdf' } },
+            { text: 'Extraia as tarefas desta ATA conforme o schema JSON.' },
+          ],
+        }
         : `Processe esta ATA e extraia as tarefas em formato JSON:\n\n${content}`;
 
     const response = await ai.models.generateContent({
@@ -95,7 +95,7 @@ export async function extractTasksFromDocument(
       },
     });
 
-    return JSON.parse(response.text);
+    return JSON.parse(response.text || '{}');
   } catch (error) {
     return handleApiError(error);
   }
@@ -103,7 +103,7 @@ export async function extractTasksFromDocument(
 
 export async function speakText(text: string): Promise<ArrayBuffer> {
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-preview-tts',
       contents: [{ parts: [{ text: `Leia calmamente: ${text}` }] }],
@@ -130,12 +130,12 @@ export async function speakText(text: string): Promise<ArrayBuffer> {
 
 export async function generateTestData(context: string): Promise<string> {
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: `Gere uma massa de dados (JSON ou SQL) realista para testar a seguinte funcionalidade: ${context}. Responda apenas com o código.`,
     });
-    return response.text;
+    return response.text || '';
   } catch (error) {
     return handleApiError(error);
   }
@@ -143,7 +143,7 @@ export async function generateTestData(context: string): Promise<string> {
 
 export async function generateAIReport(context: string): Promise<{ text: string; sources: any[] }> {
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
     const response = await ai.models.generateContent({
       model: 'gemini-3-pro-image-preview',
       contents: `Realize uma pesquisa web e gere um relatório técnico detalhado sobre como implementar/testar o seguinte requisito: ${context}. Inclua links de referência.`,
@@ -153,7 +153,7 @@ export async function generateAIReport(context: string): Promise<{ text: string;
     });
 
     return {
-      text: response.text,
+      text: response.text || '',
       sources: response.candidates?.[0]?.groundingMetadata?.groundingChunks || [],
     };
   } catch (error) {

@@ -17,8 +17,6 @@ INSERT INTO public.profiles (
   updated_at
 )
 VALUES 
-  -- Board_LMuller (corrigido: Luiz Müller)
-  ('02eb4ef3-fa66-4392-9048-af85addd3dc7', 'Board_LMuller', 'Luiz Müller', 'editor', TRUE, NULL, NOW(), NOW()),
 
   -- Board_MCordeiro
   ('679e4b9b-c065-4c9d-836d-25e8304298b4', 'Board_MCordeiro', 'Mauricio Cordeiro', 'editor', TRUE, NULL, NOW(), NOW()),
@@ -58,7 +56,6 @@ SELECT
   END as auth_status
 FROM public.profiles p
 WHERE p.username IN (
-  'Board_LMuller',
   'Board_MCordeiro', 
   'Board_FCustodio',
   'Board_JPaulo',
@@ -74,7 +71,6 @@ SELECT
   COUNT(CASE WHEN first_login = TRUE THEN 1 END) as users_needing_password_reset
 FROM public.profiles 
 WHERE username IN (
-  'Board_LMuller',
   'Board_MCordeiro', 
   'Board_FCustodio',
   'Board_JPaulo',

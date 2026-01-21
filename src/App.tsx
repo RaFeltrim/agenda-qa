@@ -3,6 +3,10 @@ import { Card, CardStatus, FilterState, Notification, Sprint, Meeting, Project }
 import { useStorage } from './hooks/useStorage';
 import { useDarkMode } from './hooks/useDarkMode';
 import { useAuth } from './hooks/useAuth';
+import { useCards } from './hooks/useCards';
+import { useSprints } from './hooks/useSprints';
+import { useProjects } from './hooks/useProjects';
+import { useMeetings } from './hooks/useMeetings';
 import { AuditService } from './services/auditService';
 import { MOCK_CARDS, MOCK_SPRINTS } from './constants';
 import Header from './components/Header';
@@ -96,15 +100,15 @@ const MOCK_MEETINGS: Meeting[] = [
 const App: React.FC = () => {
   const { role, profile, logout } = useAuth();
 
-  const [cards, setCards] = useStorage<Card[]>('kanban_cards_v3', MOCK_CARDS);
-  const [sprints, setSprints] = useStorage<Sprint[]>('kanban_sprints_v3', MOCK_SPRINTS);
-  const [projects, setProjects] = useStorage<Project[]>('kanban_projects_v1', MOCK_PROJECTS);
-  const [activeSprintId, setActiveSprintId] = useStorage<string | null>(
-    'active_sprint_v3',
-    'sprint-2'
-  );
+  // Real-time Data Hooks
+  const { data: cards, create: createCard, update: updateCard, remove: deleteCard } = useCards();
+  const { data: sprints, create: createSprint, update: updateSprint } = useSprints();
+  const { data: projects, create: createProject, update: updateProject, remove: deleteProject } = useProjects();
+  const { data: meetings, create: createMeeting, update: updateMeeting, remove: deleteMeeting } = useMeetings();
+
+  // Local UI State
+  const [activeSprintId, setActiveSprintId] = useStorage<string | null>('active_sprint_v3', 'sprint-2');
   const [activeProjectId, setActiveProjectId] = useStorage<string | null>('active_project_v1', null);
-  const [meetings, setMeetings] = useStorage<Meeting[]>('kanban_meetings_v3', MOCK_MEETINGS);
 
   const [isDark, setIsDark] = useDarkMode();
   const [searchTerm, setSearchTerm] = useState('');
@@ -115,7 +119,6 @@ const App: React.FC = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSprintModalOpen, setIsSprintModalOpen] = useState(false);
   const [isCreateSprintModalOpen, setIsCreateSprintModalOpen] = useState(false);
-  const [isFinishSprintModalOpen, setIsFinishSprintModalOpen] = useState(false);
   const [isPerformanceModalOpen, setIsPerformanceModalOpen] = useState(false);
   const [isAuditLogOpen, setIsAuditLogOpen] = useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
@@ -132,7 +135,7 @@ const App: React.FC = () => {
     onConfirm: () => void;
     type?: 'danger' | 'warning' | 'info';
   } | null>(null);
-  
+
   // Admin Panel State
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
 
@@ -198,15 +201,15 @@ const App: React.FC = () => {
           updatedCard
         );
       }
-      
-      // Update the card in state
-      setCards(prev => prev.map(c => (c.id === updatedCard.id ? updatedCard : c)));
+
+      // Update the card in Supabase
+      await updateCard(updatedCard.id, updatedCard);
+      // No need to manually update state, subscription will handle it
     } catch (error) {
-      console.error('Audit logging failed:', error);
-      // Still update the card even if audit logging fails
-      setCards(prev => prev.map(c => (c.id === updatedCard.id ? updatedCard : c)));
+      console.error('Update failed:', error);
+      addNotification('Falha ao atualizar tarefa', 'error');
     }
-  }, [cards, profile?.id, setCards]);
+  }, [cards, profile?.id, updateCard, addNotification]);
 
   const auditLoggedDeleteCard = useCallback(async (cardId: string) => {
     try {
@@ -219,17 +222,16 @@ const App: React.FC = () => {
           cardToDelete
         );
       }
-      
-      // Delete the card from state
-      setCards(prev => prev.filter(c => c.id !== cardId));
+
+      // Delete the card from Supabase
+      await deleteCard(cardId);
       setSelectedCardId(null);
+      addNotification('Card removido com sucesso', 'success');
     } catch (error) {
-      console.error('Audit logging failed:', error);
-      // Still delete the card even if audit logging fails
-      setCards(prev => prev.filter(c => c.id !== cardId));
-      setSelectedCardId(null);
+      console.error('Delete failed:', error);
+      addNotification('Falha ao remover card', 'error');
     }
-  }, [cards, profile?.id, setCards, setSelectedCardId]);
+  }, [cards, profile?.id, deleteCard, setSelectedCardId, addNotification]);
 
   const auditLoggedCreateCard = useCallback(async (newCard: Card) => {
     try {
@@ -245,22 +247,21 @@ const App: React.FC = () => {
           { entity_type: 'card', operation: 'create' }
         );
       }
-      
-      // Add the new card to state
-      setCards(prev => [newCard, ...prev]);
+
+      // Add the new card to Supabase
+      await createCard(newCard);
+
       setIsCreateModalOpen(false);
       delete (window as any).createCardStatus;
+      addNotification('Card criado com sucesso', 'success');
     } catch (error) {
-      console.error('Audit logging failed:', error);
-      // Still create the card even if audit logging fails
-      setCards(prev => [newCard, ...prev]);
-      setIsCreateModalOpen(false);
-      delete (window as any).createCardStatus;
+      console.error('Create failed:', error);
+      addNotification('Falha ao criar card', 'error');
     }
-  }, [profile?.id, setCards, setIsCreateModalOpen]);
+  }, [profile?.id, createCard, setIsCreateModalOpen, addNotification]);
 
   const auditLoggedDeleteExpiredCards = useCallback(async () => {
-    const expiredCards = cards.filter(card => 
+    const expiredCards = cards.filter(card =>
       (() => {
         const today = new Date();
         const deadline = new Date(card.prazo);
@@ -270,21 +271,26 @@ const App: React.FC = () => {
         return isPastDeadline && (!isSameDay || isBusinessHoursOver);
       })() && card.status !== 'concluido'
     );
-    
+
     if (expiredCards.length === 0) {
       addNotification('Não há cards vencidos para deletar.', 'info');
       return;
     }
-    
+
     const confirmMessage = `Tem certeza que deseja deletar ${expiredCards.length} card(s) vencido(s)?\n\nEsta ação não pode ser desfeita.`;
-    
+
     setConfirmationConfig({
       title: 'Deletar Cards Vencidos',
       message: confirmMessage,
       type: 'danger',
       onConfirm: async () => {
         try {
-          // Log deletion of each expired card
+          // Delete expired cards from Supabase logic
+          // optimizing with Promise.all
+          await Promise.all(expiredCards.map(card => deleteCard(card.id)));
+
+          // Log deletion of each expired card 
+          // (Backend triggers might handle this, but keeping AuditService for specific context if needed)
           if (profile?.id) {
             for (const card of expiredCards) {
               await AuditService.logCardDelete(
@@ -294,24 +300,16 @@ const App: React.FC = () => {
               );
             }
           }
-          
-          // Delete expired cards from state
-          setCards(prev => prev.filter(card => 
-            !(new Date(card.prazo) < new Date() && card.status !== 'concluido')
-          ));
+
           addNotification(`${expiredCards.length} card(s) vencido(s) deletado(s) com sucesso!`, 'success');
         } catch (error) {
-          console.error('Audit logging failed:', error);
-          // Still delete the cards even if audit logging fails
-          setCards(prev => prev.filter(card => 
-            !(new Date(card.prazo) < new Date() && card.status !== 'concluido')
-          ));
-          addNotification(`${expiredCards.length} card(s) vencido(s) deletado(s) com sucesso!`, 'success');
+          console.error('Delete failed:', error);
+          addNotification(`Erro ao deletar cards vencidos`, 'error');
         }
       }
     });
     setIsConfirmationModalOpen(true);
-  }, [cards, profile?.id, setCards, addNotification, setConfirmationConfig, setIsConfirmationModalOpen]);
+  }, [cards, profile?.id, deleteCard, addNotification, setConfirmationConfig, setIsConfirmationModalOpen]);
 
   // Audit logging wrappers for sprint operations
   const auditLoggedEditSprint = useCallback(async (updatedSprint: Sprint) => {
@@ -326,23 +324,20 @@ const App: React.FC = () => {
           updatedSprint
         );
       }
-      
-      // Update the sprint in state
-      setSprints(prev => prev.map(s => s.id === updatedSprint.id ? updatedSprint : s));
+
+      // Update the sprint in Supabase
+      await updateSprint(updatedSprint.id, updatedSprint);
       addNotification('Sprint atualizada com sucesso!', 'success');
     } catch (error) {
-      console.error('Audit logging failed:', error);
-      // Still update the sprint even if audit logging fails
-      setSprints(prev => prev.map(s => s.id === updatedSprint.id ? updatedSprint : s));
-      addNotification('Sprint atualizada com sucesso!', 'success');
+      console.error('Update failed:', error);
+      addNotification('Falha ao atualizar Sprint', 'error');
     }
-  }, [sprints, profile?.id, setSprints, addNotification]);
+  }, [sprints, profile?.id, updateSprint, addNotification]);
 
   const auditLoggedArchiveSprint = useCallback(async (sprintId: string) => {
     try {
       const sprintToArchive = sprints.find(s => s.id === sprintId);
       if (sprintToArchive && profile?.id) {
-        // Log the sprint archive
         await AuditService.logSprintArchive(
           sprintId,
           profile.id,
@@ -350,30 +345,22 @@ const App: React.FC = () => {
           'arquivada'
         );
       }
-      
-      // Archive the sprint in state
-      setSprints(prev => prev.map(s => 
-        s.id === sprintId ? { ...s, status: 'arquivada' } : s
-      ));
+
+      // Archive the sprint in Supabase
+      await updateSprint(sprintId, { status: 'arquivada' });
+
       setIsArchiveSprintModalOpen(false);
       setSprintToArchive(null);
       addNotification(`Sprint "${sprintToArchive?.nome}" arquivada com sucesso!`, 'info');
     } catch (error) {
-      console.error('Audit logging failed:', error);
-      // Still archive the sprint even if audit logging fails
-      setSprints(prev => prev.map(s => 
-        s.id === sprintId ? { ...s, status: 'arquivada' } : s
-      ));
-      setIsArchiveSprintModalOpen(false);
-      setSprintToArchive(null);
-      addNotification(`Sprint arquivada com sucesso!`, 'info');
+      console.error('Archive failed:', error);
+      addNotification(`Falha ao arquivar Sprint`, 'error');
     }
-  }, [sprints, profile?.id, setSprints, setIsArchiveSprintModalOpen, setSprintToArchive, addNotification]);
+  }, [sprints, profile?.id, updateSprint, setIsArchiveSprintModalOpen, setSprintToArchive, addNotification]);
 
   const auditLoggedCreateSprint = useCallback(async (newSprint: Sprint) => {
     try {
       if (profile?.id) {
-        // Log the sprint creation
         await AuditService.logActivity(
           'CREATE',
           'sprints',
@@ -384,25 +371,22 @@ const App: React.FC = () => {
           { entity_type: 'sprint', operation: 'create' }
         );
       }
-      
-      // Add the new sprint to state
-      setSprints(prev => [...prev, newSprint]);
+
+      // Add the new sprint to Supabase
+      await createSprint(newSprint);
+
       setIsCreateSprintModalOpen(false);
       setActiveSprintId(newSprint.id);
     } catch (error) {
-      console.error('Audit logging failed:', error);
-      // Still create the sprint even if audit logging fails
-      setSprints(prev => [...prev, newSprint]);
-      setIsCreateSprintModalOpen(false);
-      setActiveSprintId(newSprint.id);
+      console.error('Create failed:', error);
+      addNotification('Falha ao criar Sprint', 'error');
     }
-  }, [profile?.id, setSprints, setIsCreateSprintModalOpen, setActiveSprintId]);
+  }, [profile?.id, createSprint, setIsCreateSprintModalOpen, setActiveSprintId, addNotification]);
 
   const auditLoggedUnarchiveSprint = useCallback(async (sprintId: string, newStatus: 'planejada' | 'ativa' | 'concluida' | 'arquivada') => {
     try {
       const sprintToUnarchive = sprints.find(s => s.id === sprintId);
       if (sprintToUnarchive && profile?.id) {
-        // Log the sprint unarchive
         await AuditService.logSprintEdit(
           sprintId,
           profile.id,
@@ -410,89 +394,60 @@ const App: React.FC = () => {
           { status: newStatus }
         );
       }
-      
-      // Unarchive the sprint in state
-      setSprints(prev => prev.map(s => 
-        s.id === sprintId ? { ...s, status: newStatus } : s
-      ));
+
+      // Unarchive the sprint in Supabase
+      await updateSprint(sprintId, { status: newStatus });
+
       addNotification('Sprint restaurada com sucesso!', 'success');
     } catch (error) {
-      console.error('Audit logging failed:', error);
-      // Still unarchive the sprint even if audit logging fails
-      setSprints(prev => prev.map(s => 
-        s.id === sprintId ? { ...s, status: newStatus } : s
-      ));
-      addNotification('Sprint restaurada com sucesso!', 'success');
+      console.error('Unarchive failed:', error);
+      addNotification('Falha ao restaurar Sprint', 'error');
     }
-  }, [sprints, profile?.id, setSprints, addNotification]);
+  }, [sprints, profile?.id, updateSprint, addNotification]);
 
-  const handleDeleteExpiredCards = () => {
-    const expiredCards = cards.filter(card => 
-      (() => {
-        const today = new Date();
-        const deadline = new Date(card.prazo);
-        const isSameDay = deadline.toDateString() === today.toDateString();
-        const isPastDeadline = deadline < today;
-        const isBusinessHoursOver = today.getHours() >= 18;
-        return isPastDeadline && (!isSameDay || isBusinessHoursOver);
-      })() && card.status !== 'concluido'
-    );
-    
-    if (expiredCards.length === 0) {
-      addNotification('Não há cards vencidos para deletar.', 'info');
-      return;
-    }
-    
-    const confirmMessage = `Tem certeza que deseja deletar ${expiredCards.length} card(s) vencido(s)?\n\nEsta ação não pode ser desfeita.`;
-    
-    setConfirmationConfig({
-      title: 'Deletar Cards Vencidos',
-      message: confirmMessage,
-      type: 'danger',
-      onConfirm: () => {
-        setCards(prev => prev.filter(card => 
-          !(new Date(card.prazo) < new Date() && card.status !== 'concluido')
-        ));
-        addNotification(`${expiredCards.length} card(s) vencido(s) deletado(s) com sucesso!`, 'success');
-      }
-    });
-    setIsConfirmationModalOpen(true);
-  };
+  // handleDeleteExpiredCards removed (replaced by auditLoggedDeleteExpiredCards)
 
   // Project Management Functions
-  const handleCreateProject = (projectData: Omit<Project, 'id' | 'createdAt'>) => {
-    const newProject: Project = {
-      ...projectData,
-      id: `proj-${Date.now()}`,
-      createdAt: new Date().toISOString()
-    };
-    setProjects(prev => [...prev, newProject]);
-    addNotification(`Projeto "${projectData.nome}" criado com sucesso!`, 'success');
+  const handleCreateProject = async (projectData: Omit<Project, 'id' | 'createdAt'>) => {
+    try {
+      const newProjectData = {
+        ...projectData,
+        createdAt: new Date().toISOString()
+      };
+      await createProject(newProjectData);
+      addNotification(`Projeto "${projectData.nome}" criado com sucesso!`, 'success');
+    } catch (e) {
+      addNotification('Erro ao criar projeto', 'error');
+    }
   };
 
-  const handleUpdateProject = (updatedProject: Project) => {
-    setProjects(prev => prev.map(p => p.id === updatedProject.id ? updatedProject : p));
-    addNotification(`Projeto "${updatedProject.nome}" atualizado!`, 'success');
+  const handleUpdateProject = async (updatedProject: Project) => {
+    try {
+      await updateProject(updatedProject.id, updatedProject);
+      addNotification(`Projeto "${updatedProject.nome}" atualizado!`, 'success');
+    } catch (e) {
+      addNotification('Erro ao atualizar projeto', 'error');
+    }
   };
 
-  const handleDeleteProject = (projectId: string) => {
-    setProjects(prev => prev.filter(p => p.id !== projectId));
-    // Also remove project association from sprints
-    setSprints(prev => prev.map(s => {
-      if (s.projectId === projectId) {
-        const { projectId: _, ...rest } = s;
-        return rest as Sprint;
-      }
-      return s;
-    }));
-    addNotification('Projeto excluído com sucesso!', 'info');
+  const handleDeleteProject = async (projectId: string) => {
+    try {
+      // Remove project association from sprints
+      const sprintsInProject = sprints.filter(s => s.projectId === projectId);
+      await Promise.all(sprintsInProject.map(s => updateSprint(s.id, { projectId: null })));
+
+      await deleteProject(projectId);
+      addNotification('Projeto excluído com sucesso!', 'info');
+    } catch (e) {
+      addNotification('Erro ao excluir projeto', 'error');
+    }
   };
 
   const handleSelectProject = (projectId: string | null) => {
     setActiveProjectId(projectId);
     // Reset active sprint when changing projects
     setActiveSprintId(null);
-    const projectName = projectId 
+    const projectName = projectId
       ? projects.find(p => p.id === projectId)?.nome || 'Projeto'
       : 'Todos os Projetos';
     addNotification(`Projeto "${projectName}" selecionado`, 'info');
@@ -569,11 +524,11 @@ const App: React.FC = () => {
             activeFilter={filterType}
             activeSprintId={activeSprintId}
             onOpenSprintList={() => setIsSprintModalOpen(true)}
-            onFinishSprint={() => setIsFinishSprintModalOpen(true)}
+
             onOpenPerformance={() => setIsEnhancedAnalyticsOpen(true)}
             onOpenScheduleModal={() => setIsScheduleModalOpen(true)}
-            onDeleteMeeting={id => {
-              setMeetings(prev => prev.filter(m => m.id !== id));
+            onDeleteMeeting={async id => {
+              await deleteMeeting(id);
               addNotification('Reunião removida.', 'info');
             }}
             onDeleteExpiredCards={role === "editor" ? auditLoggedDeleteExpiredCards : undefined}
@@ -594,19 +549,17 @@ const App: React.FC = () => {
                     { status }
                   );
                 }
-                
-                // Update the card status
-                setCards(prev => prev.map(c => (c.id === id ? { ...c, status } : c)));
+
+                // Update the card status in Supabase
+                await updateCard(id, { status });
               } catch (error) {
-                console.error("Audit logging failed:", error);
-                // Still update the card even if audit logging fails
-                setCards(prev => prev.map(c => (c.id === id ? { ...c, status } : c)));
+                console.error("Update failed:", error);
               }
             }}
+            // ... (rest of props)
             onAddNewToColumn={status => {
               console.log('Creating card for status:', status);
               setIsCreateModalOpen(true);
-              // Store the target status for the modal
               (window as any).createCardStatus = status;
             }}
             userRole={role}
@@ -617,16 +570,16 @@ const App: React.FC = () => {
             <Suspense fallback={<div className="text-center py-8">Carregando reuniões...</div>}>
               <MeetingsDashboard
                 meetings={meetings}
-                onAddMeeting={m => {
-                  setMeetings(prev => [...prev, m]);
+                onAddMeeting={async m => {
+                  await createMeeting(m);
                   addNotification('Reunião agendada com sucesso!', 'success');
                 }}
-                onUpdateMeeting={updated => {
-                  setMeetings(prev => prev.map(m => m.id === updated.id ? updated : m));
+                onUpdateMeeting={async updated => {
+                  await updateMeeting(updated.id, updated);
                   addNotification('Reunião atualizada!', 'success');
                 }}
-                onDeleteMeeting={id => {
-                  setMeetings(prev => prev.filter(m => m.id !== id));
+                onDeleteMeeting={async id => {
+                  await deleteMeeting(id);
                   addNotification('Reunião removida.', 'info');
                 }}
               />
@@ -692,7 +645,6 @@ const App: React.FC = () => {
               }}
               userRole={role}
               onSetEditingSprint={setEditingSprint}
-              userRole={role}
             />
           )}
           {isCreateSprintModalOpen && (
@@ -714,8 +666,8 @@ const App: React.FC = () => {
           {isScheduleModalOpen && (
             <EnhancedScheduleMeetingModal
               onClose={() => setIsScheduleModalOpen(false)}
-              onSchedule={m => {
-                setMeetings(prev => [...prev, m]);
+              onSchedule={async m => {
+                await createMeeting(m);
                 setIsScheduleModalOpen(false);
                 addNotification('Reunião agendada com prioridade!', 'success');
               }}
@@ -748,7 +700,7 @@ const App: React.FC = () => {
               userRole={role}
             />
           )}
-          
+
           {/* Archive Sprint Modal */}
           {isArchiveSprintModalOpen && sprintToArchive && (
             <ArchiveSprintModal
@@ -758,12 +710,12 @@ const App: React.FC = () => {
                 setIsArchiveSprintModalOpen(false);
                 setSprintToArchive(null);
               }}
-              onConfirm={async (moveToBacklog) => {
+              onConfirm={async (_moveToBacklog) => {
                 await auditLoggedArchiveSprint(sprintToArchive.id);
               }}
             />
           )}
-          
+
           {/* Archived Sprints View */}
           {isArchivedSprintsViewOpen && (
             <ArchivedSprintsView
@@ -778,7 +730,7 @@ const App: React.FC = () => {
               }}
             />
           )}
-          
+
           {/* Confirmation Modal */}
           <Suspense fallback={null}>
             {isConfirmationModalOpen && confirmationConfig && (

@@ -1,3 +1,4 @@
+import React from 'react';
 import { X, Clock, User, Tag, ArrowRight, MessageSquare, CheckCircle2 } from 'lucide-react';
 import { formatTimeAgo } from '../../utils/dateUtils';
 import { useAuditLogs } from '../../hooks/useAuditLogs';

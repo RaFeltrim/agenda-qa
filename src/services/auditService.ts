@@ -16,6 +16,7 @@ export interface AuditLogEntry {
   session_id?: string;
   additional_info?: Record<string, any> | null;
   created_at: string;
+  profiles?: { username: string; full_name: string } | null;
 }
 
 export interface AuditFilters {
@@ -43,7 +44,7 @@ export class AuditService {
     try {
       // Get client information
       const clientInfo = this.getClientInfo();
-      
+
       const auditEntry: Omit<AuditLogEntry, 'id' | 'created_at'> = {
         table_name: tableName,
         record_id: recordId,
@@ -73,7 +74,7 @@ export class AuditService {
   }
 
   // Specific logging methods for each activity type
-  
+
   // Card Operations
   static async logCardEdit(cardId: string, userId: string, oldValues: Record<string, any>, newValues: Record<string, any>): Promise<void> {
     return this.logActivity('UPDATE', 'cards', cardId, userId, oldValues, newValues, {
@@ -90,8 +91,8 @@ export class AuditService {
   }
 
   static async logCardArchive(cardId: string, userId: string, oldStatus: string, newStatus: string): Promise<void> {
-    return this.logActivity('ARCHIVE', 'cards', cardId, userId, 
-      { status: oldStatus }, 
+    return this.logActivity('ARCHIVE', 'cards', cardId, userId,
+      { status: oldStatus },
       { status: newStatus },
       {
         entity_type: 'card',
@@ -102,8 +103,8 @@ export class AuditService {
 
   // Comment Operations
   static async logCommentAdd(commentId: string, cardId: string, userId: string, commentText: string): Promise<void> {
-    return this.logActivity('COMMENT_ADD', 'card_comments', commentId, userId, null, 
-      { card_id: cardId, text: commentText }, 
+    return this.logActivity('COMMENT_ADD', 'card_comments', commentId, userId, null,
+      { card_id: cardId, text: commentText },
       {
         entity_type: 'comment',
         operation: 'add',
@@ -133,8 +134,8 @@ export class AuditService {
   // Download Operations
   static async logKanbanDownload(userId: string, filters: Record<string, any>, downloadFormat: string): Promise<void> {
     const downloadId = `download_${Date.now()}_${userId}`;
-    return this.logActivity('DOWNLOAD_KANBAN', 'reports', downloadId, userId, null, 
-      { 
+    return this.logActivity('DOWNLOAD_KANBAN', 'reports', downloadId, userId, null,
+      {
         report_type: 'kanban_board',
         filters,
         format: downloadFormat,
@@ -168,7 +169,7 @@ export class AuditService {
 
   // Authentication Operations
   static async logLogin(userId: string, ipAddress?: string, userAgent?: string): Promise<void> {
-    return this.logActivity('LOGIN', 'auth', userId, userId, null, 
+    return this.logActivity('LOGIN', 'auth', userId, userId, null,
       { login_time: new Date().toISOString(), ip_address: ipAddress, user_agent: userAgent },
       { entity_type: 'auth', operation: 'login' }
     );
@@ -196,7 +197,7 @@ export class AuditService {
       bulkId,
       userId,
       null,
-      { 
+      {
         affected_records: affectedRecords,
         count: affectedRecords.length,
         operation_time: new Date().toISOString()
@@ -224,27 +225,27 @@ export class AuditService {
       if (filters.user_id) {
         query = query.eq('changed_by', filters.user_id);
       }
-      
+
       if (filters.table_name) {
         query = query.eq('table_name', filters.table_name);
       }
-      
+
       if (filters.action) {
         query = query.eq('action', filters.action);
       }
-      
+
       if (filters.record_id) {
         query = query.eq('record_id', filters.record_id);
       }
-      
+
       if (filters.start_date) {
         query = query.gte('created_at', filters.start_date);
       }
-      
+
       if (filters.end_date) {
         query = query.lte('created_at', filters.end_date);
       }
-      
+
       if (filters.limit) {
         query = query.range(
           filters.offset || 0,
@@ -276,7 +277,7 @@ export class AuditService {
   static async getUserActivity(userId: string, daysBack: number = 30): Promise<AuditLogEntry[]> {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - daysBack);
-    
+
     return this.getAuditLogs({
       user_id: userId,
       start_date: startDate.toISOString(),
@@ -293,10 +294,10 @@ export class AuditService {
     // In a real implementation, you'd get this from the server or use a service
     // For now, we'll use placeholder values
     return {
-      ipAddress: typeof window !== 'undefined' ? 
+      ipAddress: typeof window !== 'undefined' ?
         (window as any).clientInformation?.ipAddress || '127.0.0.1' : '127.0.0.1',
       userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown',
-      sessionId: typeof sessionStorage !== 'undefined' ? 
+      sessionId: typeof sessionStorage !== 'undefined' ?
         sessionStorage.getItem('session_id') || `sess_${Date.now()}` : `sess_${Date.now()}`
     };
   }
@@ -311,11 +312,11 @@ export class AuditService {
       if (userId) {
         query = query.eq('changed_by', userId);
       }
-      
+
       if (startDate) {
         query = query.gte('created_at', startDate);
       }
-      
+
       if (endDate) {
         query = query.lte('created_at', endDate);
       }
@@ -338,10 +339,10 @@ export class AuditService {
       data?.forEach((log: any) => {
         // Count by action type
         summary.actionsByType[log.action] = (summary.actionsByType[log.action] || 0) + 1;
-        
+
         // Count by table
         summary.actionsByTable[log.table_name] = (summary.actionsByTable[log.table_name] || 0) + 1;
-        
+
         // Daily activity count
         const dateStr = new Date(log.created_at).toISOString().split('T')[0];
         if (dateStr) {

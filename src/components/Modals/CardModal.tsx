@@ -34,6 +34,7 @@ import { AuditService } from '../../services/auditService';
 import { markCommentsAsRead } from '../../services/commentReadService';
 import { ModalTransition } from '../Transitions';
 import SprintAssignment from './CardModalComponents/SprintAssignment';
+import { useAuditLogs } from '../../hooks/useAuditLogs';
 
 interface CardModalProps {
   card: Card;
@@ -62,6 +63,24 @@ const CardModal: React.FC<CardModalProps> = ({
 
   const [newComment, setNewComment] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+
+  // Audit Log Hook
+  const { logs: historyLogs } = useAuditLogs({
+    record_id: card.id,
+    table_name: 'cards',
+    limit: 50
+  });
+
+  const liveHistory = historyLogs.map(log => ({
+    acao: log.action,
+    por: log.profiles?.full_name || log.changed_by || 'Sistema',
+    em: log.created_at,
+    cardTitle: card.titulo,
+    cardId: card.id
+  }));
+
+  // Combine real logs with local legacy history if needed, or just prefer real logs
+  // For now we will use 'liveHistory' in the render section.
 
   // Evidence Input State
   const [showEvidenceInput, setShowEvidenceInput] = useState(false);
@@ -395,6 +414,22 @@ const CardModal: React.FC<CardModalProps> = ({
             </button>
           </div>
         </motion.div>
+
+  // Audit Log Hook
+        const {logs: historyLogs, loading: loadingHistory } = useAuditLogs({
+          record_id: card.id,
+        table_name: 'cards', // Ensure we get logs for this card
+        limit: 50
+  });
+
+  const cardHistory = historyLogs.map(log => ({
+          acao: log.action,
+        por: log.profiles?.full_name || log.changed_by || 'Sistema',
+        em: log.created_at,
+     // Map other fields if necessary
+  }));
+
+        // ... rest of the component ...
 
         {/* Navigation Tabs */}
         <motion.div
@@ -820,23 +855,32 @@ const CardModal: React.FC<CardModalProps> = ({
           {
             activeTab === 'history' && (
               <div className="space-y-6">
-                {card.historico.map((h, i) => (
-                  <div
-                    key={i}
-                    className="flex gap-4 pb-6 border-l-2 border-slate-100 dark:border-slate-800 pl-6 relative last:pb-0"
-                  >
-                    <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-white dark:bg-slate-900 border-2 border-indigo-500 z-10"></div>
-                    <div>
-                      <p className="text-xs font-black text-slate-800 dark:text-slate-200">
-                        {h.acao}
-                      </p>
-                      <p className="text-[10px] text-slate-400 mt-1">
-                        por <span className="font-bold text-indigo-500">{h.por}</span> •{' '}
-                        {formatTimeAgo(h.em)}
-                      </p>
-                    </div>
+                {liveHistory.length === 0 ? (
+                  <div className="text-center py-10 opacity-40">
+                    <History className="w-12 h-12 mx-auto mb-3 text-slate-300" />
+                    <p className="text-xs font-bold uppercase tracking-widest">
+                      Sem histórico registrado
+                    </p>
                   </div>
-                ))}
+                ) : (
+                  liveHistory.map((h, i) => (
+                    <div
+                      key={i}
+                      className="flex gap-4 pb-6 border-l-2 border-slate-100 dark:border-slate-800 pl-6 relative last:pb-0 animate-in slide-in-from-bottom-2"
+                    >
+                      <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-white dark:bg-slate-900 border-2 border-indigo-500 z-10"></div>
+                      <div>
+                        <p className="text-xs font-black text-slate-800 dark:text-slate-200">
+                          {h.acao}
+                        </p>
+                        <p className="text-[10px] text-slate-400 mt-1">
+                          por <span className="font-bold text-indigo-500">{h.por}</span> •{' '}
+                          {formatTimeAgo(h.em)}
+                        </p>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             )
           }

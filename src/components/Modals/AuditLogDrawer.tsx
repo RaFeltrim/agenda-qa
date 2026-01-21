@@ -1,23 +1,21 @@
-import React from 'react';
 import { X, Clock, User, Tag, ArrowRight, MessageSquare, CheckCircle2 } from 'lucide-react';
-import { Card } from '../../types';
 import { formatTimeAgo } from '../../utils/dateUtils';
+import { useAuditLogs } from '../../hooks/useAuditLogs';
 
 interface AuditLogDrawerProps {
-  cards: Card[];
   onClose: () => void;
 }
 
-const AuditLogDrawer: React.FC<AuditLogDrawerProps> = ({ cards, onClose }) => {
-  const allHistory = cards
-    .flatMap(card =>
-      card.historico.map(h => ({
-        ...h,
-        cardTitle: card.titulo,
-        cardId: card.id,
-      }))
-    )
-    .sort((a, b) => new Date(b.em).getTime() - new Date(a.em).getTime());
+const AuditLogDrawer: React.FC<AuditLogDrawerProps> = ({ onClose }) => {
+  const { logs, loading } = useAuditLogs({ limit: 50 });
+
+  const allHistory = logs.map(log => ({
+    acao: log.action,
+    por: log.profiles?.full_name || log.changed_by || 'Sistema',
+    em: log.created_at,
+    cardTitle: log.additional_info?.entity_type === 'card' ? 'Card Update' : log.table_name, // Fallback if no specific title
+    cardId: log.record_id,
+  }));
 
   const getIcon = (acao: string) => {
     if (acao.includes('comentário')) return <MessageSquare className="w-3 h-3" />;

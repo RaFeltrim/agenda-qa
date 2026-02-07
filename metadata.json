@@ -1,5 +1,0 @@
-{
-  "name": "Agenda Kanban v3.0 - QA/Dev Team",
-  "description": "A high-performance Kanban board integrated with Gemini AI to extract tasks from meeting minutes (ATA) in PDF or Markdown format. Built for Equifax and Foursys teams.",
-  "requestFramePermissions": ["camera", "microphone"]
-}

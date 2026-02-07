@@ -1,107 +1,85 @@
-export type CardStatus = 'backlog' | 'em-progresso' | 'bloqueado' | 'concluido';
+export type CardStatus = 'todo' | 'in-progress' | 'done' | 'backlog' | 'blocked';
+export type Priority = 'low' | 'medium' | 'high' | 'critical';
 
 export interface SubTask {
-  id: string;
-  texto: string;
-  concluida: boolean;
+    id: string;
+    text: string;
+    completed: boolean;
 }
 
-export interface Comentario {
-  id: string;
-  autor: string;
-  texto: string;
-  timestamp: string;
+export interface Comment {
+    id: string;
+    authorId: string;
+    text: string;
+    createdAt: string;
 }
 
-export interface Anexo {
-  id: string;
-  nome: string;
-  tipo: 'link' | 'imagem' | 'pdf' | 'evidencia';
-  url: string;
-  uploadadoPor: string;
-  dataUpload: string;
+export interface Attachment {
+    id: string;
+    name: string;
+    type: 'link' | 'image' | 'file';
+    url: string;
+    uploadedBy: string;
+    uploadedAt: string;
 }
 
-export interface HistoricoItem {
-  acao: string;
-  por: string;
-  em: string;
+export interface HistoryItem {
+    id: string;
+    action: string; // e.g., "moved from todo to in-progress"
+    userId: string;
+    timestamp: string;
 }
 
 export interface Card {
-  id: string;
-  titulo: string;
-  descricao: string;
-  responsavel: string;
-  subResponsaveis?: string[];
-  prazo: string;
-  status: CardStatus;
-  tags: string[];
-  dataCriacao: string;
-  dataCriacaoPor: string;
-  comentarios: Comentario[];
-  anexos: Anexo[];
-  historico: HistoricoItem[];
-  sprintId?: string | null;
-  subTasks: SubTask[];
-  urgente?: boolean;
-}
+    id: string;
+    title: string;
+    description?: string;
+    priority: Priority;
+    status: CardStatus;
+    assigneeId?: string;
+    dueDate?: string;
+    tags: string[];
+    sprintId?: string | null;
+    projectId?: string | null; // Projects support
 
-export interface Meeting {
-  id: string;
-  titulo: string;
-  horario: string;
-  pauta: string;
-  participantes: string[];
-  local: 'Google Meet' | 'Presencial' | 'Teams';
-  prioridade: 'baixa' | 'media' | 'alta';
-  linkReuniao?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
+    // New detailed fields
+    subTasks: SubTask[];
+    comments: Comment[];
+    attachments: Attachment[];
+    history: HistoryItem[];
 
-export interface Project {
-  id: string;
-  nome: string;
-  descricao: string;
-  cor: string;
-  squadLead?: string;
-  createdAt: string;
-  updatedAt?: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface Sprint {
-  id: string;
-  nome: string;
-  objetivo: string;
-  dataInicio: string;
-  dataFim: string;
-  status: 'planejada' | 'ativa' | 'concluida' | 'arquivada';
-  projectId?: string | null;
-  updatedAt?: string;
+    id: string;
+    name: string;
+    goal: string;
+    startDate: string;
+    endDate: string;
+    status: 'planning' | 'active' | 'completed' | 'archived';
+    projectId?: string | null;
 }
 
-export interface Notification {
-  id: string;
-  message: string;
-  type: 'success' | 'error' | 'info' | 'warning';
+export interface Project {
+    id: string;
+    name: string;
+    description: string;
+    color: string; // Hex color for UI
+    createdAt: string;
 }
 
-export interface FilterState {
-  type: 'todas' | 'minhas' | 'vencidas' | 'em-progresso';
-  search: string;
-}
-
-export interface ExtractedTasks {
-  dataMeeting: string;
-  participantes: string[];
-  tasks: Array<{
-    titulo: string;
-    descricao: string;
-    responsavel: string;
-    subResponsaveis: string[];
-    prazo: string | null;
-    tags: string[];
-    urgente?: boolean;
-  }>;
+export interface Meeting {
+    id: string;
+    title: string;
+    date: string;
+    time: string;
+    duration?: number; // in minutes
+    status: 'scheduled' | 'confirmed' | 'completed' | 'canceled';
+    description?: string;
+    attendees?: string[]; // email or userIds
+    location?: string; // e.g. "Google Meet"
+    meetingLink?: string;
+    projectId?: string;
 }

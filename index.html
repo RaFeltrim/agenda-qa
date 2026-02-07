@@ -1,127 +1,13 @@
 <!doctype html>
-<html lang="pt-BR">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#4f46e5" />
-  <title>Agenda Kanban v3.0 | AI Workspace</title>
-
-  <!-- Favicon dinâmico (SVG) -->
-  <link rel="icon"
-    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>" />
-
-  <!-- Production-ready Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
-  <script>
-    // Theme initialization to prevent FOIT (Flash of Incorrect Theme)
-    (function () {
-      const savedTheme = localStorage.getItem('theme');
-      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const isDark = savedTheme === 'dark' || (!savedTheme && systemPrefersDark);
-
-      // Apply theme immediately
-      if (isDark) {
-        document.documentElement.classList.add('dark', 'dark-theme');
-      } else {
-        document.documentElement.classList.remove('dark', 'dark-theme');
-      }
-
-      // Add loading class to prevent transitions during initial load
-      document.documentElement.classList.add('theme-loading');
-
-      // Remove loading class after DOM is ready
-      document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(() => {
-          document.documentElement.classList.remove('theme-loading');
-        }, 100);
-      });
-    })();
-
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-        },
-      },
-    };
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet" />
-  <style>
-    :root {
-      --mesh-color: rgba(99, 102, 241, 0.03);
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      scroll-behavior: smooth;
-      background-image:
-        radial-gradient(at 0% 0%, var(--mesh-color) 0, transparent 50%),
-        radial-gradient(at 50% 0%, rgba(20, 184, 166, 0.03) 0, transparent 50%);
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .dark body {
-      background-image:
-        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.07) 0, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(20, 184, 166, 0.07) 0, transparent 50%);
-    }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #e2e8f0;
-      border-radius: 10px;
-    }
-
-    .dark ::-webkit-scrollbar-thumb {
-      background: #334155;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #cbd5e1;
-    }
-
-    /* Glassmorphism utility */
-    .glass {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-
-    .dark .glass {
-      background: rgba(15, 23, 42, 0.7);
-    }
-  </style>
-  <script type="importmap">
-      {
-        "imports": {
-          "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-          "react/": "https://esm.sh/react@^19.2.3/",
-          "react": "https://esm.sh/react@^19.2.3",
-          "@google/genai": "https://esm.sh/@google/genai@^1.36.0",
-          "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
-        }
-      }
-    </script>
-  <link rel="stylesheet" href="/src/styles.css" />
-</head>
-
-<body class="bg-slate-50 text-slate-900 transition-colors duration-500 selection:bg-indigo-500 selection:text-white">
-  <div id="root"></div>
-  <script type="module" src="/src/index.tsx"></script>
-</body>
-
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>agenda-qa-v2</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

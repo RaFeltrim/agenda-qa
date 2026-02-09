@@ -55,9 +55,9 @@ const MeetingCard: React.FC<MeetingCardProps> = ({
                             key: col.id,
                             label: (
                                                 <span className="flex items-center gap-2">
-                                                                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: col.color }}></span>span>
+                                                                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: col.color }}></span>
                                                     {col.title}
-                                                </span>span>
+                                                </span>
                                             ),
                             onClick: () => onMove(col.id)
             }));
@@ -71,49 +71,49 @@ const MeetingCard: React.FC<MeetingCardProps> = ({
                                                         ...(canEditContent ? [
                                                                                 <div key="edit" className="hover:text-brand-500 py-1 min-h-[44px] flex items-center justify-center" onClick={onEdit}>
                                                                                                         <EditOutlined />
-                                                                                    </div>div>
+                                                                                    </div>
                                                                             ] : []),
                                                         ...(canManageMeetings ? [
                                                                                 <div key="delete" className="hover:text-red-500 py-1 min-h-[44px] flex items-center justify-center" onClick={onDelete}>
                                                                                                         <DeleteOutlined />
-                                                                                    </div>div>
+                                                                                    </div>
                                                                             ] : [])
                                                     ]}
                                 >
                                 <Space direction="vertical" size="small" className="w-full">
-                                                <Text className="font-semibold text-base block mb-1">{meeting.title}</Text>Text>
+                                                <Text className="font-semibold text-base block mb-1">{meeting.title}</Text>
                                                 <div className="flex flex-col gap-1 mt-1">
                                                                     <div className="flex items-center gap-2 text-slate-500 text-xs">
                                                                                             <CalendarOutlined />
-                                                                                            <span>{dayjs(meeting.date).format('DD/MM/YYYY')}</span>span>
-                                                                    </div>div>
+                                                                                            <span>{dayjs(meeting.date).format('DD/MM/YYYY')}</span>
+                                                                    </div>
                                                                     <div className="flex items-center gap-2 text-slate-500 text-xs text-brand-500">
                                                                                             <ClockCircleOutlined />
-                                                                                            <span>{meeting.time}</span>span>
-                                                                    </div>div>
-                                                </div>div>
+                                                                                            <span>{meeting.time}</span>
+                                                                    </div>
+                                                </div>
                                                 <div className="mt-3 flex items-center justify-between gap-2 flex-wrap">
                                                                     <Tag color={statusColors[meeting.status]} className="rounded-full text-[10px] font-bold uppercase tracking-wider border-none px-3">
                                                                         {meeting.status}
-                                                                    </Tag>Tag>
+                                                                    </Tag>
                                                     {canEditContent && (isMobile || window.matchMedia('(hover: none)').matches) && (
                                                             <Dropdown menu={{ items: moveMenuItems }} trigger={['click']}>
                                                                                         <Button size="small" icon={<SwapOutlined />} className="text-xs rounded-lg min-h-[32px] touch-manipulation">
                                                                                                                         Mover
-                                                                                            </Button>Button>
-                                                            </Dropdown>Dropdown>
+                                                                                            </Button>
+                                                            </Dropdown>
                                                                     )}
-                                                </div>div>
+                                                </div>
                                     {meeting.meetingLink && (
                                                         <Button type="primary" ghost size="small" block icon={<LinkOutlined />}
                                                                                     className="mt-3 border-brand-500 text-brand-500 hover:bg-brand-50 min-h-[44px] touch-manipulation"
                                                                                     onClick={(e) => { e.stopPropagation(); window.open(meeting.meetingLink, '_blank'); }}
                                                                                 >
                                                                                 Entrar na Reunião
-                                                        </Button>Button>
+                                                        </Button>
                                                 )}
-                                </Space>Space>
-                    </Card>Card>
+                                </Space>
+                    </Card>
                 );
 };
 
@@ -136,12 +136,12 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
                     <div className="flex-shrink-0 w-full md:w-80 snap-center">
                                 <div className="flex items-center justify-between mb-4 px-2">
                                                 <Space size="small">
-                                                                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: column.color }}></div>div>
-                                                                    <Title level={5} style={{ margin: 0, fontSize: '14px' }}>{column.title}</Title>Title>
+                                                                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: column.color }}></div>
+                                                                    <Title level={5} style={{ margin: 0, fontSize: '14px' }}>{column.title}</Title>
                                                                     <Badge count={meetings.length} className="ml-1"
                                                                                                 style={{ backgroundColor: '#e2e8f0', color: '#475569', boxShadow: 'none' }} />
-                                                </Space>Space>
-                                </div>div>
+                                                </Space>
+                                </div>
                                 <Droppable droppableId={column.id}>
                                     {(provided) => (
                                             <div {...provided.droppableProps} ref={provided.innerRef}
@@ -171,15 +171,15 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
                                                                                                                                                                                                                                                                                         }}
                                                                                                                                                                                                                                         onMove={(newStatus) => onMove(meeting.id, newStatus)}
                                                                                                                                                                                                                                     />
-                                                                                                                                                    </div>div>
+                                                                                                                                                    </div>
                                                                                                                                         )}
-                                                                                                            </Draggable>Draggable>
+                                                                                                            </Draggable>
                                                                                                     ))}
                                                 {provided.placeholder}
-                                            </div>div>
+                                            </div>
                                                 )}
-                                </Droppable>Droppable>
-                    </div>div>
+                                </Droppable>
+                    </div>
                 );
 };
 
@@ -226,11 +226,11 @@ export const KanbanBoard = () => {
                                     key: col.id,
                                     label: (
                                                         <span className="flex items-center gap-2">
-                                                                            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: col.color }}></span>span>
+                                                                            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: col.color }}></span>
                                                             {col.title}
                                                                             <Badge count={colMeetings.length}
                                                                                                         style={{ backgroundColor: '#e2e8f0', color: '#475569', boxShadow: 'none' }} />
-                                                        </span>span>
+                                                        </span>
                                                     ),
                                     children: (
                                                         <KanbanColumn column={col} meetings={colMeetings}
@@ -250,15 +250,15 @@ export const KanbanBoard = () => {
                                                                                 className="rounded-lg h-12 sm:h-11 px-6 font-semibold w-full sm:w-auto min-h-[44px] touch-manipulation"
                                                                                 data-testid="new-meeting-btn">
                                                                             Nova Reunião
-                                                </Button>Button>
+                                                </Button>
                                                                     )}
                                                                     <Search placeholder="Buscar reuniões..." allowClear
                                                                                                 onChange={(e) => setSearch(e.target.value)} className="w-full sm:w-64" size="large" />
-                                                </div>div>
+                                                </div>
                                                 <Text type="secondary" className="font-medium text-center sm:text-right">
                                                     {filteredMeetings.length} reuniões
-                                                </Text>Text>
-                                </div>div>
+                                                </Text>
+                                </div>
                     
                                 <DragDropContext onDragEnd={onDragEnd}>
                                     {isMobile ? (
@@ -275,12 +275,12 @@ export const KanbanBoard = () => {
                                                                                                                                                         isMobile={isMobile} onEdit={handleEdit} onDelete={deleteMeeting} onMove={handleMoveCard} />
                                                                                                             );
                                             })}
-                                            </div>div>
+                                            </div>
                                                 )}
-                                </DragDropContext>DragDropContext>
+                                </DragDropContext>
                     
                                 <MeetingModal open={isModalOpen} onOpenChange={setModalOpen}
                                                     initialValues={selectedMeeting || undefined} />
-                    </div>div>
+                    </div>
                 );
 };</span>

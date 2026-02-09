@@ -1,5 +1,33 @@
 import { create } from 'zustand';
+import { supabase } from '../services/supabase';
+import { toastError, toastSuccess } from '../lib/toast';
 import type { Sprint } from '../types';
+
+/** DB row type for sprints table */
+interface SprintDBRow {
+    id: string;
+    nome: string;
+    objetivo: string | null;
+    data_inicio: string;
+    data_fim: string;
+    status: string;
+    project_id: string | null;
+    created_by: string;
+    deleted_at: string | null;
+}
+
+/** Map DB row to frontend Sprint type */
+function mapFromDB(row: SprintDBRow): Sprint {
+    return {
+        id: row.id,
+        name: row.nome,
+        goal: row.objetivo || '',
+        startDate: row.data_inicio,
+        endDate: row.data_fim,
+        status: (row.status as Sprint['status']) || 'planning',
+        projectId: row.project_id,
+    };
+}
 
 interface SprintStore {
     sprints: Sprint[];
@@ -7,10 +35,10 @@ interface SprintStore {
     loading: boolean;
 
     fetchSprints: () => Promise<void>;
-    addSprint: (sprint: Omit<Sprint, 'id' | 'status'> & { id?: string, status?: Sprint['status'] }) => void;
-    updateSprint: (id: string, updates: Partial<Sprint>) => void;
+    addSprint: (sprint: Omit<Sprint, 'id' | 'status'> & { id?: string; status?: Sprint['status'] }) => Promise<void>;
+    updateSprint: (id: string, updates: Partial<Sprint>) => Promise<void>;
     setActiveSprint: (id: string | null) => void;
-    archiveSprint: (id: string) => void;
+    archiveSprint: (id: string) => Promise<void>;
 }
 
 export const useSprintStore = create<SprintStore>((set) => ({
@@ -20,44 +48,132 @@ export const useSprintStore = create<SprintStore>((set) => ({
 
     fetchSprints: async () => {
         set({ loading: true });
-        // Mock fetch
-        setTimeout(() => {
+        try {
+            const { data, error } = await supabase
+                .from('sprints')
+                .select('id, nome, objetivo, data_inicio, data_fim, status, project_id, created_by, deleted_at')
+                .is('deleted_at', null)
+                .order('data_inicio', { ascending: false });
+
+            if (error) {
+                console.error('[SprintStore] fetchSprints error:', error);
+                toastError('Erro ao carregar sprints');
+                set({ loading: false });
+                return;
+            }
+
+            const sprints = (data || []).map(mapFromDB);
+            const activeSprint = sprints.find((s) => s.status === 'active');
+
             set({
-                sprints: [
-                    { id: '1', name: 'Sprint 1', goal: 'MVP', startDate: '2026-01-01', endDate: '2026-01-14', status: 'completed' },
-                    { id: '2', name: 'Sprint 2', goal: 'Features', startDate: '2026-01-15', endDate: '2026-01-29', status: 'active' }
-                ],
-                activeSprintId: '2',
-                loading: false
+                sprints,
+                activeSprintId: activeSprint?.id || null,
+                loading: false,
             });
-        }, 500);
+        } catch (err) {
+            console.error('[SprintStore] fetchSprints exception:', err);
+            toastError('Erro inesperado ao carregar sprints');
+            set({ loading: false });
+        }
     },
 
-    addSprint: (newSprintData) => {
-        const newSprint: Sprint = {
-            id: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(7),
-            status: 'planning', // Default status
-            ...newSprintData,
-        };
+    addSprint: async (newSprintData) => {
+        try {
+            const { data: session } = await supabase.auth.getSession();
+            const userId = session?.session?.user?.id;
+            if (!userId) {
+                toastError('Login necessário para criar sprint');
+                return;
+            }
 
-        set((state) => ({
-            sprints: [...state.sprints, newSprint]
-        }));
+            const { data, error } = await supabase
+                .from('sprints')
+                .insert({
+                    nome: newSprintData.name,
+                    objetivo: newSprintData.goal || null,
+                    data_inicio: newSprintData.startDate,
+                    data_fim: newSprintData.endDate,
+                    status: newSprintData.status || 'planning',
+                    project_id: newSprintData.projectId || null,
+                    created_by: userId,
+                })
+                .select()
+                .single();
+
+            if (error) {
+                console.error('[SprintStore] addSprint error:', error);
+                toastError('Erro ao criar sprint');
+                return;
+            }
+
+            const newSprint = mapFromDB(data as SprintDBRow);
+            set((state) => ({
+                sprints: [newSprint, ...state.sprints],
+            }));
+            toastSuccess('Sprint criada com sucesso');
+        } catch (err) {
+            console.error('[SprintStore] addSprint exception:', err);
+            toastError('Erro inesperado ao criar sprint');
+        }
     },
 
-    updateSprint: (id, updates) => {
-        set((state) => ({
-            sprints: state.sprints.map((s) => (s.id === id ? { ...s, ...updates } : s))
-        }));
+    updateSprint: async (id, updates) => {
+        try {
+            const dbUpdates: Record<string, unknown> = {};
+            if (updates.name !== undefined) dbUpdates.nome = updates.name;
+            if (updates.goal !== undefined) dbUpdates.objetivo = updates.goal;
+            if (updates.startDate !== undefined) dbUpdates.data_inicio = updates.startDate;
+            if (updates.endDate !== undefined) dbUpdates.data_fim = updates.endDate;
+            if (updates.status !== undefined) dbUpdates.status = updates.status;
+            if (updates.projectId !== undefined) dbUpdates.project_id = updates.projectId;
+
+            const { error } = await supabase
+                .from('sprints')
+                .update(dbUpdates)
+                .eq('id', id);
+
+            if (error) {
+                console.error('[SprintStore] updateSprint error:', error);
+                toastError('Erro ao atualizar sprint');
+                return;
+            }
+
+            set((state) => ({
+                sprints: state.sprints.map((s) => (s.id === id ? { ...s, ...updates } : s)),
+            }));
+            toastSuccess('Sprint atualizada');
+        } catch (err) {
+            console.error('[SprintStore] updateSprint exception:', err);
+            toastError('Erro inesperado ao atualizar sprint');
+        }
     },
 
     setActiveSprint: (id) => {
         set({ activeSprintId: id });
     },
 
-    archiveSprint: (id) => {
-        set((state) => ({
-            sprints: state.sprints.map((s) => (s.id === id ? { ...s, status: 'archived' } : s))
-        }));
-    }
+    archiveSprint: async (id) => {
+        try {
+            const { error } = await supabase
+                .from('sprints')
+                .update({ status: 'archived' })
+                .eq('id', id);
+
+            if (error) {
+                console.error('[SprintStore] archiveSprint error:', error);
+                toastError('Erro ao arquivar sprint');
+                return;
+            }
+
+            set((state) => ({
+                sprints: state.sprints.map((s) =>
+                    s.id === id ? { ...s, status: 'archived' as const } : s
+                ),
+            }));
+            toastSuccess('Sprint arquivada');
+        } catch (err) {
+            console.error('[SprintStore] archiveSprint exception:', err);
+            toastError('Erro inesperado ao arquivar sprint');
+        }
+    },
 }));

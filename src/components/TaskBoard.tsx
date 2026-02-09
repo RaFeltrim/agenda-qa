@@ -1,4 +1,4 @@
-import { Card, Space, Button, Badge, Tag, Typography, Select, Empty, Tooltip } from 'antd';
+import { Card, Space, Button, Badge, Tag, Typography, Select, Empty, Tooltip, Modal } from 'antd';
 import { PlusOutlined, InfoCircleOutlined, CalendarOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DropResult } from 'react-beautiful-dnd';
@@ -126,9 +126,18 @@ export const TaskBoard = () => {
     };
 
     const handleArchiveSprint = () => {
-        if (activeSprint && window.confirm(`Tem certeza que deseja arquivar a sprint "${activeSprint.name}"?`)) {
-            archiveSprint(activeSprint.id);
-            setActiveSprint(null); // Clear selection or select next available
+        if (activeSprint) {
+            Modal.confirm({
+                title: 'Arquivar Sprint',
+                content: `Tem certeza que deseja arquivar a sprint "${activeSprint.name}"?`,
+                okText: 'Arquivar',
+                cancelText: 'Cancelar',
+                okType: 'danger',
+                onOk: () => {
+                    archiveSprint(activeSprint.id);
+                    setActiveSprint(null);
+                },
+            });
         }
     };
 

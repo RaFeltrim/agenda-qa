@@ -1,14 +1,14 @@
 {
   "editor": {
-    "email": "teste2e.agendaqa@gmail.com",
-    "password": "TestE2E@2026"
+    "email": "qa.tester@gmail.com",
+    "password": "QaTester@2026"
   },
   "admin": {
-    "email": "admin_sarah@agenda-qa.internal",
-    "password": "Admin@2025"
+    "email": "qa.tester@gmail.com",
+    "password": "QaTester@2026"
   },
   "viewer": {
-    "email": "viewer_john@agenda-qa.internal",
-    "password": "Viewer@2025"
+    "email": "qa.tester@gmail.com",
+    "password": "QaTester@2026"
   }
 }

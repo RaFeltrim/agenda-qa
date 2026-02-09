@@ -5,18 +5,18 @@
 
 export const TEST_USERS = {
   admin: {
-    email: 'admin_sarah@agenda-qa.internal',
-    password: 'AdminPass123!',
+    email: 'qa.tester@gmail.com',
+    password: 'QaTester@2026',
     role: 'admin',
   },
   editor: {
-    email: 'rafael.feltrim@agenda-qa.internal',
-    password: 'DemoPass123',
+    email: 'qa.tester@gmail.com',
+    password: 'QaTester@2026',
     role: 'user',
   },
   viewer: {
-    email: 'viewer_john@agenda-qa.internal',
-    password: 'ViewerPass123!',
+    email: 'qa.tester@gmail.com',
+    password: 'QaTester@2026',
     role: 'viewer',
   },
 } as const;

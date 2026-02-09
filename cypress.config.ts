@@ -13,11 +13,20 @@ export default defineConfig({
     defaultCommandTimeout: 15000,
     requestTimeout: 15000,
     responseTimeout: 30000,
+    chromeWebSecurity: false,
     video: true,
     screenshotOnRunFailure: true,
     retries: {
       runMode: 2,
       openMode: 0,
+    },
+    setupNodeEvents(on) {
+      on('task', {
+        log(message: string) {
+          console.log(message);
+          return null;
+        },
+      });
     },
   },
 });

@@ -112,6 +112,14 @@ export const useCardStore = create<CardStore>((set, get) => ({
     addCard: async (cardData) => {
         const state = get();
         const userId = state.currentUserId;
+
+
+                // BUG-013 fix: require authentication before creating cards
+                if (!userId) {
+                                toastError('Login necessário para criar cards');
+                                return;
+                }
+
         
         // Validate required fields
         const title = sanitizeString(cardData.title);
@@ -132,7 +140,7 @@ export const useCardStore = create<CardStore>((set, get) => ({
                 urgente: false,
                 sprint_id: cardData.sprintId ?? undefined
             },
-            userId || 'anonymous'
+            userId!
         );
 
         if (result.success && result.data) {

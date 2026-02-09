@@ -13,11 +13,13 @@ import { CardDetailModal } from './Modals/CardDetailModal';
 const { Text, Title } = Typography;
 
 /** Valid column statuses for the TaskBoard - typed explicitly */
-const VALID_STATUSES: CardStatus[] = ['todo', 'in-progress', 'done'];
+const VALID_STATUSES: CardStatus[] = ['backlog', 'todo', 'in-progress', 'blocked', 'done'];
 
 const columns: { id: CardStatus; title: string; color: string }[] = [
+    { id: 'backlog', title: 'Backlog', color: '#94a3b8' },
     { id: 'todo', title: 'A Fazer', color: '#64748b' },
     { id: 'in-progress', title: 'Em Progresso', color: '#3b82f6' },
+    { id: 'blocked', title: 'Bloqueado', color: '#ef4444' },
     { id: 'done', title: 'Concluído', color: '#10b981' }
 ];
 
@@ -113,11 +115,11 @@ export const TaskBoard = () => {
         }
     };
 
-    const handleSprintSubmit = (values: SprintFormValues) => {
+    const handleSprintSubmit = async (values: SprintFormValues) => {
         if (editingSprint) {
-            updateSprint(editingSprint.id, values);
+            await updateSprint(editingSprint.id, values);
         } else {
-            addSprint(values);
+            await addSprint(values);
         }
         setIsSprintModal(false);
         setEditingSprint(undefined);

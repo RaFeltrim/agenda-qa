@@ -101,7 +101,7 @@ const STATUS_TO_DB: Record<FrontendCardStatus, DBCardStatus> = {
 };
 
 const STATUS_FROM_DB: Record<DBCardStatus, FrontendCardStatus> = {
-    'backlog': 'todo',
+    'backlog': 'backlog',
     'em-progresso': 'in-progress',
     'bloqueado': 'blocked',
     'concluido': 'done'

@@ -283,4 +283,4 @@ export const KanbanBoard = () => {
                                                     initialValues={selectedMeeting || undefined} />
                     </div>
                 );
-};</span>
+};

@@ -2,10 +2,12 @@ import { ProTable, type ProColumns } from '@ant-design/pro-components';
 import { Button, Tag, Space, Typography, message, Popconfirm } from 'antd';
 import { PlusOutlined, DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
 import { useAuth } from '../../../hooks/useAuth';
+import { supabase } from '../../../services/supabase';
+import { useState } from 'react';
 
 const { Title, Text } = Typography;
 
-interface UserMock {
+interface UserProfile {
     id: string;
     name: string;
     email: string;
@@ -14,39 +16,13 @@ interface UserMock {
     lastLogin: string;
 }
 
-const mockUsers: UserMock[] = [
-    {
-        id: '1',
-        name: 'Desenvolvedor Local',
-        email: 'dev@local',
-        role: 'admin',
-        status: 'active',
-        lastLogin: new Date().toISOString(),
-    },
-    {
-        id: '2',
-        name: 'Analista de QA',
-        email: 'qa@empresa.com',
-        role: 'user',
-        status: 'active',
-        lastLogin: new Date(Date.now() - 86400000).toISOString(),
-    },
-    {
-        id: '3',
-        name: 'Visitante',
-        email: 'guest@empresa.com',
-        role: 'viewer',
-        status: 'inactive',
-        lastLogin: new Date(Date.now() - 1000000000).toISOString(),
-    },
-];
-
 export default function UsersPage() {
-    const { user } = useAuth();
+    const { role } = useAuth();
     const [messageApi, contextHolder] = message.useMessage();
+    const [actionRef, setActionRef] = useState<{ reload: () => void } | null>(null);
 
     // Guardrail: Only admin can access this page
-    if (user?.user_metadata?.role !== 'admin') {
+    if (role !== 'admin') {
         return (
             <div className="flex flex-col items-center justify-center p-12 text-center">
                 <Title level={4}>Acesso Negado</Title>
@@ -55,7 +31,7 @@ export default function UsersPage() {
         );
     }
 
-    const columns: ProColumns<UserMock>[] = [
+    const columns: ProColumns<UserProfile>[] = [
         {
             title: 'Avatar',
             dataIndex: 'name',
@@ -121,7 +97,18 @@ export default function UsersPage() {
                 <Popconfirm
                     key="delete"
                     title="Excluir usuário?"
-                    onConfirm={() => messageApi.success('Usuário removido (Mock)')}
+                    onConfirm={async () => {
+                        const { error } = await supabase
+                            .from('profiles')
+                            .update({ is_active: false })
+                            .eq('id', record.id);
+                        if (error) {
+                            messageApi.error('Erro ao desativar usuário');
+                        } else {
+                            messageApi.success('Usuário desativado');
+                            actionRef?.reload();
+                        }
+                    }}
                 >
                     <a className="text-red-500">
                         <DeleteOutlined /> Excluir
@@ -139,21 +126,61 @@ export default function UsersPage() {
                 <Text type="secondary">Administre o acesso e as permissões da equipe.</Text>
             </div>
 
-            <ProTable<UserMock>
+            <ProTable<UserProfile>
                 columns={columns}
                 cardBordered
-                request={async () => {
-                    await new Promise((resolve) => setTimeout(resolve, 500));
+                actionRef={(ref) => setActionRef(ref as { reload: () => void })}
+                request={async (params) => {
+                    const { data, error } = await supabase
+                        .from('profiles')
+                        .select('id, full_name, email, role, is_active, updated_at')
+                        .order('updated_at', { ascending: false });
+
+                    if (error) {
+                        messageApi.error('Erro ao carregar usuários');
+                        return { data: [], success: false };
+                    }
+
+                    const users: UserProfile[] = (data || []).map((p: Record<string, unknown>) => ({
+                        id: p.id as string,
+                        name: (p.full_name as string) || 'Sem nome',
+                        email: (p.email as string) || '',
+                        role: (p.role as UserProfile['role']) || 'viewer',
+                        status: (p.is_active ? 'active' : 'inactive') as UserProfile['status'],
+                        lastLogin: (p.updated_at as string) || new Date().toISOString(),
+                    }));
+
+                    // Apply search filters
+                    let filtered = users;
+                    if (params.name) {
+                        filtered = filtered.filter((u) => u.name.toLowerCase().includes(params.name.toLowerCase()));
+                    }
+                    if (params.email) {
+                        filtered = filtered.filter((u) => u.email.toLowerCase().includes(params.email.toLowerCase()));
+                    }
+
                     return {
-                        data: mockUsers,
+                        data: filtered,
                         success: true,
                     };
                 }}
                 editable={{
                     type: 'multiple',
-                    onSave: async () => {
-                        await new Promise(resolve => setTimeout(resolve, 500));
-                        messageApi.success('Usuário atualizado!');
+                    onSave: async (key, record) => {
+                        const updates: Record<string, unknown> = {};
+                        if (record.name) updates.full_name = record.name;
+                        if (record.role) updates.role = record.role;
+
+                        const { error } = await supabase
+                            .from('profiles')
+                            .update(updates)
+                            .eq('id', key);
+
+                        if (error) {
+                            messageApi.error('Erro ao atualizar usuário');
+                        } else {
+                            messageApi.success('Usuário atualizado!');
+                        }
                     },
                 }}
                 columnsState={{

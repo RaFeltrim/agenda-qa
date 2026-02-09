@@ -186,7 +186,7 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
 export const KanbanBoard = () => {
         const { meetings, moveMeeting, createMeeting, deleteMeeting,
                        setSelectedMeeting, setModalOpen, isModalOpen, selectedMeeting } = useMeetingStore();
-        const { user, role } = useAuth();
+        const { role } = useAuth();
         const [search, setSearch] = useState('');
         const [activeTab, setActiveTab] = useState('a-agendar');
         const isMobile = useIsMobile();

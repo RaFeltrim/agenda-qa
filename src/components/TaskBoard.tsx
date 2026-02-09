@@ -36,10 +36,10 @@ function isValidCardStatus(status: string): status is CardStatus {
 export const TaskBoard = () => {
     const { cards, fetchCards, moveCard, addCard, setCurrentUserId } = useCardStore();
     const { sprints, activeSprintId, fetchSprints, setActiveSprint, addSprint, updateSprint, archiveSprint } = useSprintStore();
-    const { user } = useAuth();
+    const { user, role } = useAuth();
 
     // Permissions
-    const userRole = user?.user_metadata?.role || 'viewer';
+    const userRole = role;
     const canManageSprints = userRole === 'admin';
     const canEditContent = userRole === 'admin' || userRole === 'user';
 

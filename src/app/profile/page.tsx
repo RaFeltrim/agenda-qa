@@ -1,143 +1,155 @@
+import { useState, useEffect } from 'react';
+import { Card, Typography, Button, Space, Divider, message } from 'antd';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
-import { Card, Typography, message, Divider, Space, Button } from 'antd';
-import { UserOutlined, SaveOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../services/supabase';
 
 const { Title, Text } = Typography;
 
 export default function ProfilePage() {
-        const { user } = useAuth();
-        const [messageApi, contextHolder] = message.useMessage();
+  const { user, role } = useAuth();
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [passwordLoading, setPasswordLoading] = useState(false);
+  const [profileData, setProfileData] = useState<{ full_name: string; avatar_url: string }>({
+    full_name: '',
+    avatar_url: '',
+  });
 
-    const handleSaveProfile = async (values: {
-                name?: string;
-                oldPassword?: string;
-                newPassword?: string;
-    }) => {
-                try {
-                                // Update profile name in profiles table
-                    if (values.name && user?.id) {
-                                        const { error: profileError } = await supabase
-                                            .from('profiles')
-                                            .update({
-                                                                        full_name: values.name,
-                                                                        username: values.name.toLowerCase().replace(/\s+/g, '_'),
-                                            })
-                                            .eq('id', user.id);
+  useEffect(() => {
+    if (user) {
+      loadProfile();
+    }
+  }, [user]);
 
-                                    if (profileError) {
-                                                            messageApi.error(`Erro ao atualizar perfil: ${profileError.message}`);
-                                                            return;
-                                    }
-                    }
+  const loadProfile = async () => {
+    if (!user) return;
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('full_name, avatar_url')
+      .eq('id', user.id)
+      .single();
 
-                    // Update password if provided
-                    if (values.newPassword) {
-                                        if (!values.oldPassword) {
-                                                                messageApi.error('Insira a senha atual para alterar a senha.');
-                                                                return;
-                                        }
-                                        if (values.newPassword.length < 6) {
-                                                                messageApi.error('A nova senha deve ter no mínimo 6 caracteres.');
-                                                                return;
-                                        }
+    if (!error && data) {
+      setProfileData({
+        full_name: data.full_name || '',
+        avatar_url: data.avatar_url || '',
+      });
+    }
+  };
 
-                                    // Verify old password by trying to sign in
-                                    const { error: signInError } = await supabase.auth.signInWithPassword({
-                                                            email: user?.email || '',
-                                                            password: values.oldPassword,
-                                    });
+  const handleSaveProfile = async (values: { full_name: string; avatar_url: string }) => {
+    if (!user) return;
+    setProfileLoading(true);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          full_name: values.full_name,
+          avatar_url: values.avatar_url,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', user.id);
 
-                                    if (signInError) {
-                                                            messageApi.error('Senha atual incorreta.');
-                                                            return;
-                                    }
+      if (error) throw error;
+      message.success('Perfil atualizado com sucesso!');
+      setProfileData({ full_name: values.full_name, avatar_url: values.avatar_url });
+    } catch (error) {
+      console.error(error);
+      message.error('Erro ao salvar perfil');
+    } finally {
+      setProfileLoading(false);
+    }
+  };
 
-                                    // Update password
-                                    const { error: passwordError } = await supabase.auth.updateUser({
-                                                            password: values.newPassword,
-                                    });
+  const handleChangePassword = async (values: { newPassword: string; confirmPassword: string }) => {
+    if (values.newPassword !== values.confirmPassword) {
+      message.error('As senhas nao coincidem');
+      return;
+    }
+    if (values.newPassword.length < 6) {
+      message.error('A senha deve ter no minimo 6 caracteres');
+      return;
+    }
+    setPasswordLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: values.newPassword,
+      });
+      if (error) throw error;
+      message.success('Senha alterada com sucesso!');
+    } catch (error) {
+      console.error(error);
+      const msg = error instanceof Error ? error.message : 'Erro ao alterar senha';
+      message.error(msg);
+    } finally {
+      setPasswordLoading(false);
+    }
+  };
 
-                                    if (passwordError) {
-                                                            messageApi.error(`Erro ao alterar senha: ${passwordError.message}`);
-                                                            return;
-                                    }
-                    }
+  return (
+    <div style={{ maxWidth: 800, margin: '0 auto', padding: '24px' }}>
+      <Space direction="vertical" size="large" style={{ width: '100%' }}>
+        <div>
+          <Title level={3}>Meu Perfil</Title>
+          <Text type="secondary">Gerencie suas informacoes pessoais</Text>
+        </div>
 
-                    messageApi.success('Perfil atualizado com sucesso!');
-                } catch (error) {
-                                console.error('Profile update error:', error);
-                                messageApi.error('Erro inesperado ao atualizar perfil.');
-                }
-    };
+        <Card>
+          <Title level={5}>
+            <UserOutlined /> Informacoes Pessoais
+          </Title>
+          <Divider />
+          <ProForm
+            initialValues={profileData}
+            onFinish={handleSaveProfile}
+            submitter={{
+              searchConfig: { submitText: 'Salvar Perfil' },
+              submitButtonProps: { loading: profileLoading },
+              resetButtonProps: false,
+            }}
+          >
+            <ProFormText name="full_name" label="Nome Completo" placeholder="Seu nome completo" />
+            <ProFormText name="avatar_url" label="URL do Avatar" placeholder="https://exemplo.com/avatar.jpg" />
+            <div style={{ marginTop: 8 }}>
+              <Text type="secondary">Email: {user?.email}</Text>
+              <br />
+              <Text type="secondary">Role: {role}</Text>
+            </div>
+          </ProForm>
+        </Card>
 
-    return (
-                <div className="max-w-3xl mx-auto py-8">
-                    {contextHolder}
-                            <Space direction="vertical" size="large" style={{ width: '100%' }}>
-                                            <div>
-                                                                <Title level={2} style={{ margin: 0 }}>Meu Perfil</Title>Title>
-                                                                <Text type="secondary">Gerencie suas informações pessoais e segurança.</Text>Text>
-                                            </div>div>
-                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                                                <Card className="md:col-span-1 text-center" bordered={false}>
-                                                                                        <div className="mb-4 flex justify-center">
-                                                                                                                    <div className="w-24 h-24 bg-brand-100 rounded-full flex items-center justify-center text-brand-500 text-3xl font-bold border-4 border-white shadow-soft">
-                                                                                                                        {user?.email?.charAt(0).toUpperCase() || <UserOutlined />}
-                                                                                                                        </div>div>
-                                                                                            </div>div>
-                                                                                        <Title level={4}>{user?.email?.split('@')[0]}</Title>Title>
-                                                                                        <Text type="secondary">{user?.email}</Text>Text>
-                                                                                        <Divider />
-                                                                                        <Button disabled>Alterar Foto (Em breve)</Button>Button>
-                                                                </Card>Card>
-                                                                <Card className="md:col-span-2" bordered={false} title="Informações Básicas">
-                                                                                        <ProForm
-                                                                                                                        submitter={{
-                                                                                                                                                            searchConfig: { submitText: 'Salvar Alterações' },
-                                                                                                                                                            submitButtonProps: {
-                                                                                                                                                                                                    icon: <SaveOutlined />,
-                                                                                                                                                                                                    size: 'large',
-                                                                                                                                                                                                    className: 'w-full md:w-auto',
-                                                                                                                                                                },
-                                                                                                                                                            resetButtonProps: { style: { display: 'none' } },
-                                                                                                                            }}
-                                                                                                                        onFinish={handleSaveProfile}
-                                                                                                                    >
-                                                                                                                    <ProFormText
-                                                                                                                                                        name="name"
-                                                                                                                                                        label="Nome Completo"
-                                                                                                                                                        placeholder="Seu nome"
-                                                                                                                                                        initialValue={user?.user_metadata?.name || user?.email?.split('@')[0] || ''}
-                                                                                                                                                        fieldProps={{ size: 'large' }}
-                                                                                                                                                    />
-                                                                                                                    <ProFormText
-                                                                                                                                                        name="email"
-                                                                                                                                                        label="Email"
-                                                                                                                                                        disabled
-                                                                                                                                                        initialValue={user?.email}
-                                                                                                                                                        fieldProps={{ size: 'large' }}
-                                                                                                                                                        tooltip="O email não pode ser alterado."
-                                                                                                                                                    />
-                                                                                                                    <Divider orientation="left">Segurança</Divider>Divider>
-                                                                                                                    <ProFormText.Password
-                                                                                                                                                        name="oldPassword"
-                                                                                                                                                        label="Senha Atual"
-                                                                                                                                                        placeholder="Digitar senha atual"
-                                                                                                                                                    />
-                                                                                                                    <ProFormText.Password
-                                                                                                                                                        name="newPassword"
-                                                                                                                                                        label="Nova Senha"
-                                                                                                                                                        placeholder="Nova senha segura"
-                                                                                                                                                        rules={[
-                                                                                                                                                            { min: 6, message: 'A senha deve ter no mínimo 6 caracteres' }
-                                                                                                                                                                                            ]}
-                                                                                                                                                    />
-                                                                                            </ProForm>ProForm>
-                                                                </Card>Card>
-                                            </div>div>
-                            </Space>Space>
-                </div>div>
-            );
-}</div>
+        <Card>
+          <Title level={5}>
+            <LockOutlined /> Alterar Senha
+          </Title>
+          <Divider />
+          <ProForm
+            onFinish={handleChangePassword}
+            submitter={{
+              searchConfig: { submitText: 'Alterar Senha' },
+              submitButtonProps: { loading: passwordLoading, danger: true },
+              resetButtonProps: false,
+            }}
+          >
+            <ProFormText.Password
+              name="newPassword"
+              label="Nova Senha"
+              placeholder="Minimo 6 caracteres"
+              rules={[
+                { required: true, message: 'Insira a nova senha' },
+                { min: 6, message: 'Minimo 6 caracteres' },
+              ]}
+            />
+            <ProFormText.Password
+              name="confirmPassword"
+              label="Confirmar Nova Senha"
+              placeholder="Repita a nova senha"
+              rules={[{ required: true, message: 'Confirme a nova senha' }]}
+            />
+          </ProForm>
+        </Card>
+      </Space>
+    </div>
+  );
+}

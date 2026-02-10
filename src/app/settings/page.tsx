@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card, Typography, Switch, Space, message } from 'antd';
+import { Card, Typography, Switch, Space, App } from 'antd';
 import { SettingOutlined, BellOutlined, EyeOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
@@ -42,6 +42,7 @@ function saveSettings(settings: AppSettings) {
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState<AppSettings>(loadSettings);
+  const { message } = App.useApp();
 
   useEffect(() => {
     saveSettings(settings);

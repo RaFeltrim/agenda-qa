@@ -1,4 +1,4 @@
-import { ConfigProvider, theme, Dropdown } from 'antd';
+import { ConfigProvider, theme, Dropdown, App } from 'antd';
 import ptBR from 'antd/locale/pt_BR';
 import { ProLayout } from '@ant-design/pro-components';
 import { useAuth } from '../hooks/useAuth';
@@ -8,9 +8,13 @@ import {
   LogoutOutlined,
   UserOutlined,
   SettingOutlined,
-  TeamOutlined
+  TeamOutlined,
+  CalendarOutlined,
+  ProjectOutlined
 } from '@ant-design/icons';
 import { useEffect } from 'react';
+import type { User } from '@supabase/supabase-js';
+import { initializeToast } from '../lib/toast';
 
 export default function RootLayout() {
   const { user, role, logout, loading } = useAuth();
@@ -40,6 +44,7 @@ export default function RootLayout() {
   }
 
   const isAdmin = role === 'admin';
+  const isAdminOrUser = role === 'admin' || role === 'user';
 
   const menuItems = [
     {
@@ -47,6 +52,25 @@ export default function RootLayout() {
       name: 'Dashboard',
       icon: <DashboardOutlined />,
     },
+    {
+      path: '/profile',
+      name: 'Meu Perfil',
+      icon: <UserOutlined />,
+    },
+    {
+      path: '/settings',
+      name: 'Configurações',
+      icon: <SettingOutlined />,
+    },
+    ...(isAdmin
+      ? [
+          {
+            path: '/admin/users',
+            name: 'Gestão de Usuários',
+            icon: <TeamOutlined />,
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -67,6 +91,43 @@ export default function RootLayout() {
         },
       }}
     >
+      <App>
+      <LayoutInner
+        user={user}
+        role={role}
+        logout={logout}
+        menuItems={menuItems}
+        isAdmin={isAdmin}
+      />
+      </App>
+    </ConfigProvider>
+  );
+}
+
+/** Inner layout that lives inside Ant App context — has access to message/notification */
+function LayoutInner({
+  user,
+  role,
+  logout,
+  menuItems,
+  isAdmin,
+}: {
+  user: User;
+  role: string;
+  logout: () => Promise<void>;
+  menuItems: { path: string; name: string; icon: React.ReactNode }[];
+  isAdmin: boolean;
+}) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { message: messageApi } = App.useApp();
+
+  // Initialize the global toast service with context-aware message API
+  useEffect(() => {
+    initializeToast(messageApi as any);
+  }, [messageApi]);
+
+  return (
       <ProLayout
         title="Agenda QA"
         logo={
@@ -106,13 +167,13 @@ export default function RootLayout() {
                     {
                       key: 'settings',
                       icon: <SettingOutlined />,
-                      label: 'Configuracoes',
+                      label: 'Configurações',
                       onClick: () => navigate('/settings'),
                     },
                     {
                       key: 'users',
                       icon: <TeamOutlined />,
-                      label: 'Gestao de Usuarios',
+                      label: 'Gestão de Usuários',
                       onClick: () => navigate('/admin/users'),
                     },
                   ]
@@ -140,6 +201,5 @@ export default function RootLayout() {
           <Outlet />
         </div>
       </ProLayout>
-    </ConfigProvider>
   );
 }

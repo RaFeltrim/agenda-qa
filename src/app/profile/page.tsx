@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Card, Typography, Space, Divider, message } from 'antd';
+import { Card, Typography, Space, Divider, App, Skeleton, Tag } from 'antd';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, MailOutlined, SafetyCertificateOutlined } from '@ant-design/icons';
 import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../services/supabase';
 
@@ -9,8 +9,10 @@ const { Title, Text } = Typography;
 
 export default function ProfilePage() {
   const { user, role } = useAuth();
+  const { message } = App.useApp();
   const [profileLoading, setProfileLoading] = useState(false);
   const [passwordLoading, setPasswordLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
   const [profileData, setProfileData] = useState<{ full_name: string; avatar_url: string }>({
     full_name: '',
     avatar_url: '',
@@ -19,22 +21,31 @@ export default function ProfilePage() {
   useEffect(() => {
     if (user) {
       loadProfile();
+    } else {
+      setPageLoading(false);
     }
   }, [user]);
 
   const loadProfile = async () => {
     if (!user) return;
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('full_name, avatar_url')
-      .eq('id', user.id)
-      .single();
+    setPageLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('full_name, avatar_url')
+        .eq('id', user.id)
+        .single();
 
-    if (!error && data) {
-      setProfileData({
-        full_name: data.full_name || '',
-        avatar_url: data.avatar_url || '',
-      });
+      if (!error && data) {
+        setProfileData({
+          full_name: data.full_name || '',
+          avatar_url: data.avatar_url || '',
+        });
+      }
+    } catch (err) {
+      console.warn('[Profile] Error loading profile:', err);
+    } finally {
+      setPageLoading(false);
     }
   };
 
@@ -92,31 +103,37 @@ export default function ProfilePage() {
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <div>
           <Title level={3}>Meu Perfil</Title>
-          <Text type="secondary">Gerencie suas informacoes pessoais</Text>
+          <Text type="secondary">Gerencie suas informações pessoais</Text>
         </div>
 
         <Card>
           <Title level={5}>
-            <UserOutlined /> Informacoes Pessoais
+            <UserOutlined /> Informações Pessoais
           </Title>
           <Divider />
-          <ProForm
-            initialValues={profileData}
-            onFinish={handleSaveProfile}
-            submitter={{
-              searchConfig: { submitText: 'Salvar Perfil' },
-              submitButtonProps: { loading: profileLoading },
-              resetButtonProps: false,
-            }}
-          >
-            <ProFormText name="full_name" label="Nome Completo" placeholder="Seu nome completo" />
-            <ProFormText name="avatar_url" label="URL do Avatar" placeholder="https://exemplo.com/avatar.jpg" />
-            <div style={{ marginTop: 8 }}>
-              <Text type="secondary">Email: {user?.email}</Text>
-              <br />
-              <Text type="secondary">Role: {role}</Text>
-            </div>
-          </ProForm>
+          {pageLoading ? (
+            <Skeleton active paragraph={{ rows: 4 }} />
+          ) : (
+            <ProForm
+              key={profileData.full_name}
+              initialValues={profileData}
+              onFinish={handleSaveProfile}
+              submitter={{
+                searchConfig: { submitText: 'Salvar Perfil' },
+                submitButtonProps: { loading: profileLoading },
+                resetButtonProps: false,
+              }}
+            >
+              <ProFormText name="full_name" label="Nome Completo" placeholder="Seu nome completo" />
+              <ProFormText name="avatar_url" label="URL do Avatar" placeholder="https://exemplo.com/avatar.jpg" />
+              <div style={{ marginTop: 12, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+                <Text type="secondary"><MailOutlined /> {user?.email}</Text>
+                <Tag icon={<SafetyCertificateOutlined />} color={role === 'admin' ? 'red' : role === 'user' ? 'blue' : 'default'}>
+                  {role.toUpperCase()}
+                </Tag>
+              </div>
+            </ProForm>
+          )}
         </Card>
 
         <Card>

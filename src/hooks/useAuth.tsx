@@ -16,22 +16,60 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-/** Fetch user role from profiles table (source of truth) */
-async function fetchUserRole(userId: string): Promise<UserRole> {
+/**
+ * Ensure a profile row exists for the given user.
+ * If no profile exists, upsert one with a default role:
+ *   - 'admin' if this is the first profile in the system
+ *   - 'viewer' otherwise
+ */
+async function ensureProfile(user: User): Promise<UserRole> {
   try {
+    // Try to fetch existing profile
     const { data, error } = await supabase
       .from('profiles')
       .select('role')
-      .eq('id', userId)
+      .eq('id', user.id)
       .single();
 
-    if (error || !data) {
-      console.warn('[Auth] Could not fetch role from profiles, defaulting to viewer:', error?.message);
-      return 'viewer';
+    if (data?.role) {
+      return (data.role as UserRole) || 'viewer';
     }
-    return (data.role as UserRole) || 'viewer';
+
+    // Profile doesn't exist or table just created — upsert a new one
+    if (error) {
+      console.info('[Auth] Profile not found, creating one for', user.email);
+
+      // Determine role: first user → admin, rest → viewer
+      const { count } = await supabase
+        .from('profiles')
+        .select('id', { count: 'exact', head: true });
+
+      const defaultRole: UserRole = (count === 0 || count === null) ? 'admin' : 'viewer';
+
+      const { error: upsertError } = await supabase
+        .from('profiles')
+        .upsert({
+          id: user.id,
+          email: user.email || '',
+          full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || '',
+          role: defaultRole,
+          is_active: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'id' });
+
+      if (upsertError) {
+        console.warn('[Auth] Failed to upsert profile:', upsertError.message);
+        return 'viewer';
+      }
+
+      console.info('[Auth] Profile created with role:', defaultRole);
+      return defaultRole;
+    }
+
+    return 'viewer';
   } catch (err) {
-    console.error('[Auth] Error fetching role:', err);
+    console.error('[Auth] Error in ensureProfile:', err);
     return 'viewer';
   }
 }
@@ -69,7 +107,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const currentUser = session?.user ?? null;
       setUser(currentUser);
       if (currentUser) {
-        const userRole = await fetchUserRole(currentUser.id);
+        const userRole = await ensureProfile(currentUser);
         setRole(userRole);
       }
       setLoading(false);
@@ -84,7 +122,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const currentUser = session?.user ?? null;
         setUser(currentUser);
         if (currentUser) {
-          const userRole = await fetchUserRole(currentUser.id);
+          const userRole = await ensureProfile(currentUser);
           setRole(userRole);
         } else {
           setRole('viewer');

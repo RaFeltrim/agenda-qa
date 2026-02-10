@@ -1,6 +1,6 @@
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
-import { message, Tabs, ConfigProvider, Typography, Modal, Input } from 'antd';
+import { App, Tabs, ConfigProvider, Typography, Modal, Input } from 'antd';
 import ptBR from 'antd/locale/pt_BR';
 import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
@@ -9,8 +9,19 @@ import { useNavigate } from 'react-router-dom';
 const { Title, Text } = Typography;
 
 export default function LoginPage() {
+  return (
+    <ConfigProvider locale={ptBR}>
+      <App>
+        <LoginPageInner />
+      </App>
+    </ConfigProvider>
+  );
+}
+
+function LoginPageInner() {
   const { login, signup, resetPassword } = useAuth();
   const navigate = useNavigate();
+  const { message } = App.useApp();
   const [loginType, setLoginType] = useState<string>('login');
   const [resetModalOpen, setResetModalOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
@@ -64,7 +75,6 @@ export default function LoginPage() {
   };
 
   return (
-    <ConfigProvider locale={ptBR}>
       <div className="min-h-screen flex items-center justify-center bg-[#f8fafc] relative overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-50 rounded-full blur-3xl opacity-50"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-100 rounded-full blur-3xl opacity-50"></div>
@@ -211,6 +221,5 @@ export default function LoginPage() {
           </div>
         </Modal>
       </div>
-    </ConfigProvider>
   );
 }

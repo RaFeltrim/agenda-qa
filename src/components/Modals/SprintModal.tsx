@@ -70,7 +70,7 @@ export const SprintModal: React.FC<SprintModalProps> = ({
             open={open}
             onCancel={onClose}
             footer={null}
-            destroyOnClose
+            destroyOnHidden
         >
             <Form
                 form={form}

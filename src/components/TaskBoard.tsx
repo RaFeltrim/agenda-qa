@@ -163,7 +163,7 @@ export const TaskBoard = () => {
                                 .filter(s => s.status !== 'archived') // Only show active/planned
                                 .map(s => ({ label: s.name, value: s.id }))
                             }
-                            dropdownRender={(menu) => (
+                            popupRender={(menu) => (
                                 <>
                                     {menu}
                                     {canManageSprints && (

@@ -231,4 +231,10 @@ CREATE INDEX IF NOT EXISTS idx_audit_logs_user_id   ON public.audit_logs(user_id
 CREATE INDEX IF NOT EXISTS idx_audit_logs_entity    ON public.audit_logs(entity_type, entity_id);
 
 
+-- =============================================================
+-- 7. Reload PostgREST schema cache (fixes 404 errors)
+-- =============================================================
+NOTIFY pgrst, 'reload schema';
+
+
 COMMIT;

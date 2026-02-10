@@ -9,8 +9,6 @@ import {
   UserOutlined,
   SettingOutlined,
   TeamOutlined,
-  CalendarOutlined,
-  ProjectOutlined
 } from '@ant-design/icons';
 import { useEffect } from 'react';
 import type { User } from '@supabase/supabase-js';
@@ -44,7 +42,6 @@ export default function RootLayout() {
   }
 
   const isAdmin = role === 'admin';
-  const isAdminOrUser = role === 'admin' || role === 'user';
 
   const menuItems = [
     {
@@ -107,7 +104,7 @@ export default function RootLayout() {
 /** Inner layout that lives inside Ant App context — has access to message/notification */
 function LayoutInner({
   user,
-  role,
+  role: _role,
   logout,
   menuItems,
   isAdmin,

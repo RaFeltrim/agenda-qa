@@ -1,6 +1,33 @@
 # Checklist de Prontidão para Produção
 
-## Status: ✅ Pronto para Deploy
+## Status: ⚠️ Infraestrutura Restaurada — Pendente Execução da Migration
+
+> **Pré-requisito:** Execute `database/migration_001_create_tables.sql` no Supabase SQL Editor antes de usar em produção.
+
+---
+
+## 0. Restauração de Infraestrutura (v2.0)
+
+### ✅ Banco de Dados
+- Migration criada com 5 tabelas: `profiles`, `sprints`, `meetings`, `cards`, `audit_logs`
+- RLS policies para segurança por usuário
+- Trigger `on_auth_user_created` para auto-criação de perfil
+- Índices para performance em queries frequentes
+
+### ✅ Autenticação e Perfis
+- `ensureProfile()` em `useAuth.tsx` faz upsert no login
+- Primeiro usuário = admin, demais = viewer
+- Sidebar dinâmica baseada no role do usuário
+
+### ✅ Resiliência de Stores
+- `cardStore`, `sprintStore`, `meetingStore` tratam PGRST205 (tabela inexistente) graciosamente
+- Sem crash ou spam de erros no console quando tabelas não existem
+
+### ✅ Ant Design v5 Compliance
+- `dropdownRender` → `popupRender`
+- `destroyOnClose` → `destroyOnHidden`
+- `message` estático → `App.useApp()` em todas as páginas
+- `initializeToast()` invocado no mount do layout
 
 ---
 
@@ -150,15 +177,31 @@ ErrorMessages = {
 
 ## 4. Arquivos Criados/Modificados
 
-### Novos Arquivos
+### Novos Arquivos (v1.0)
 - `src/lib/env.ts` - Validação de ambiente
 - `src/lib/validation.ts` - Sanitização e validação
 - `src/lib/toast.ts` - Sistema de notificações
 - `src/lib/index.ts` - Exports centralizados
 
-### Arquivos Modificados
-- `src/store/cardStore.ts` - Rollback + Toast + Sanitização
-- `src/store/meetingStore.ts` - Rollback + Toast + Validação
+### Novos Arquivos (v2.0 — Infraestrutura)
+- `database/migration_001_create_tables.sql` - Migration completa (5 tabelas, RLS, triggers)
+- `e2e/playwright/human-test.spec.ts` - 8 testes human-like
+- `CHANGELOG.md` - Histórico de mudanças
+- `RELATORIO_FALHAS_COMPLETO.md` - Relatório completo de 39 defeitos
+
+### Arquivos Modificados (v2.0)
+- `src/hooks/useAuth.tsx` - Auth com ensureProfile() + upsert
+- `src/app/layout.tsx` - Sidebar dinâmica + App wrapper + initializeToast()
+- `src/app/login/page.tsx` - App wrapper para message context
+- `src/app/profile/page.tsx` - App.useApp() + Skeleton + Tag
+- `src/app/settings/page.tsx` - App.useApp()
+- `src/store/cardStore.ts` - Resiliência PGRST205
+- `src/store/sprintStore.ts` - Resiliência PGRST205
+- `src/store/meetingStore.ts` - Resiliência PGRST205
+- `src/components/KanbanBoard.tsx` - fetchMeetings() on mount
+- `src/services/cardsService.ts` - Status 'a-fazer', fix STATUS_TO_DB/FROM_DB
+- `src/components/TaskBoard.tsx` - popupRender (Ant Design v5)
+- `src/components/Modals/SprintModal.tsx` - destroyOnHidden (Ant Design v5)
 
 ---
 
@@ -189,5 +232,5 @@ npm run preview
 
 ---
 
-**Data de Geração:** 2026-02-06  
+**Data de Geração:** 2026-02-06 (atualizado 2026-02-10)  
 **Responsável:** Tech Lead de Engenharia de Conclusão

@@ -1,49 +1,76 @@
 # Agenda QA - Sistema de Gestão de Reuniões
 
-![Status](https://img.shields.io/badge/status-production--ready-brightgreen)
+![Status](https://img.shields.io/badge/status-infrastructure--restored-blue)
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
 ![TypeScript](https://img.shields.io/badge/typescript-0%20errors-brightgreen)
+![Playwright](https://img.shields.io/badge/playwright-30%20passed-brightgreen)
+![Cypress](https://img.shields.io/badge/cypress-21%20passed-brightgreen)
 
 Sistema completo de gestão de reuniões com Kanban, autenticação via Supabase, e integração com IA Gemini.
 
 ---
 
-## 📋 Estado de Conclusão (Definition of Done)
+## 📋 Estado Atual do Projeto
+
+### Resumo
+
+O projeto passou por uma restauração completa de infraestrutura em fevereiro de 2026. Foram identificados **39 defeitos** durante a fase de QA, dos quais **12 foram corrigidos** nesta iteração (incluindo todos os 8 críticos de infraestrutura). Os testes E2E foram expandidos para cobrir mais cenários.
+
+### ✅ Resultados de Testes
+
+| Suite | Resultado | Detalhes |
+|-------|-----------|----------|
+| **Playwright** | 30 passed, 2 skipped | Auth, Dashboard, Navigation, Human tests |
+| **Cypress** | 21 passed, 0 failed | Auth, Dashboard, Navigation |
+| **TypeScript** | 0 erros | `npx tsc --noEmit` limpo |
 
 ### ✅ Critérios de Aceite Validados
 
 | Critério | Status | Detalhes |
 |----------|--------|----------|
 | **Tipagem** | ✅ Passou | `npm run build` com 0 erros TypeScript |
-| **Feedback UI** | ✅ Passou | Toast notifications em todas as operações CRUD |
+| **Feedback UI** | ✅ Passou | Toast notifications via `App.useApp()` (Ant Design v5) |
 | **Segurança (RLS)** | ✅ Implementado | Políticas Row Level Security no Supabase |
 | **Mobile Friendly** | ✅ Corrigido | KanbanBoard com Tabs em mobile + botões "Mover" |
 | **Persistência** | ✅ Passou | Todas as operações salvam no Supabase |
+| **Auth + Perfil** | ✅ Corrigido | Auto-criação de perfil no login (primeiro user = admin) |
+| **Sidebar dinâmica** | ✅ Corrigido | 4 itens + Gestão de Usuários para admins |
+| **Stores resilientes** | ✅ Corrigido | Tratamento gracioso de tabelas inexistentes (PGRST205) |
 
-### 🔧 Correções Críticas Realizadas
+### 🔧 Correções da Restauração de Infraestrutura (v2.0)
 
-1. **KanbanBoard Mobile Responsivo**
-   - Implementado sistema de **Tabs** para telas < 768px
-   - Scroll horizontal com **CSS snap** para desktop
-   - Botão **"Mover para..."** em cada card para touch devices
-   - Header adaptativo (flex-col em mobile, flex-row em desktop)
+1. **SQL Migration criada** (`database/migration_001_create_tables.sql`)
+   - 5 tabelas: `profiles`, `sprints`, `meetings`, `cards`, `audit_logs`
+   - RLS policies, indexes, triggers, seed data
+   - Auto-criação de perfil via trigger `on_auth_user_created`
 
-2. **Modais Responsivos**
-   - `MeetingModal`: width="95%" com maxWidth de 520px
-   - `CardDetailModal`: width="95%" com maxWidth de 800px
-   - Inputs com min-height de 44px para touch targets
+2. **Auth refatorada** (`src/hooks/useAuth.tsx`)
+   - `fetchUserRole()` → `ensureProfile()` com upsert automático
+   - Primeiro usuário recebe role `admin`, demais `viewer`
 
-3. **DnD em Touch Devices**
-   - Drag-and-drop desabilitado em mobile (`isDragDisabled={isMobile}`)
-   - Substituído por dropdown "Mover" com as colunas de destino
+3. **Sidebar expandida** (`src/app/layout.tsx`)
+   - De 1 item (Dashboard) para 4+ itens dinâmicos
+   - Wrapping com `<App>` para contexto Ant Design v5
+   - `initializeToast()` invocado no mount
 
-4. **Smoke Tests Implementados**
-   - Auth Check, Contact Flow, Kanban Flow, Audit Check
-   - 13 testes passando via Vitest
+4. **Páginas corrigidas**
+   - Profile: `App.useApp()`, Skeleton loader, Tag para role
+   - Settings: `App.useApp()` em vez de `message` estático
+   - Login: Wrapped com `<App>` para contexto de mensagens
+
+5. **Stores resilientes** (cardStore, sprintStore, meetingStore)
+   - Tratamento PGRST205 (tabela inexistente) com `console.warn`
+   - Sem crash/spam de erros no console
+
+6. **Correção de dados**: `todo` → `a-fazer` no DB (evita perda de dados)
+
+7. **Ant Design v5**: `dropdownRender` → `popupRender`, `destroyOnClose` → `destroyOnHidden`
+
+8. **KanbanBoard**: `fetchMeetings()` agora é chamado no mount
 
 ---
 
-## 🚀 Como Rodar em Produção
+## 🚀 Como Rodar
 
 ### Pré-requisitos
 - Node.js >= 18.x
@@ -60,6 +87,21 @@ VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6...
 VITE_GEMINI_API_KEY=AIzaSy... (opcional, para sugestões IA)
 ```
 
+### Configuração do Banco de Dados
+
+**IMPORTANTE:** Execute a migration SQL no Supabase antes de usar a aplicação:
+
+1. Acesse o **Supabase Dashboard** → **SQL Editor**
+2. Cole o conteúdo de `database/migration_001_create_tables.sql`
+3. Execute o script
+
+O script cria automaticamente:
+- **5 tabelas**: `profiles`, `sprints`, `meetings`, `cards`, `audit_logs`
+- **RLS policies** para segurança por usuário
+- **Trigger** `on_auth_user_created` para auto-criação de perfil
+- **Índices** para performance
+- **Seed data** (primeiro usuário = admin)
+
 ### Build & Deploy
 
 ```bash
@@ -72,8 +114,21 @@ npm run build
 # Preview local da build
 npm run preview
 
-# Rodar testes
+# Rodar testes unitários
 npm run test
+```
+
+### Testes E2E
+
+```bash
+# Playwright (30 testes)
+npx playwright test
+
+# Cypress (21 testes)
+npx cypress run
+
+# Playwright com UI
+npx playwright test --ui
 ```
 
 ### Deploy Recomendado (Vercel)
@@ -93,19 +148,34 @@ vercel --prod
 ```
 src/
 ├── app/                  # Rotas/Páginas (React Router)
-│   ├── dashboard/        # Dashboard principal
-│   ├── login/            # Autenticação
+│   ├── admin/users/      # Gestão de usuários (admin only)
+│   ├── dashboard/        # Dashboard principal (Kanban + TaskBoard)
+│   ├── login/            # Autenticação (login + signup)
 │   ├── profile/          # Perfil do usuário
-│   └── settings/         # Configurações admin
+│   └── settings/         # Configurações da aplicação
 ├── components/           # Componentes reutilizáveis
-│   ├── KanbanBoard.tsx   # Kanban responsivo
+│   ├── KanbanBoard.tsx   # Kanban de reuniões (3 colunas)
+│   ├── TaskBoard.tsx     # Board de tarefas (5 colunas por sprint)
 │   ├── MeetingModal.tsx  # Modal de reuniões
-│   └── Modals/           # Outros modais
-├── hooks/                # Custom hooks (useAuth, etc)
-├── lib/                  # Utilitários (toast, supabase)
-├── services/             # Camada de API
-├── store/                # Zustand stores
-└── tests/                # Smoke tests
+│   └── Modals/           # SprintModal, CardDetailModal
+├── hooks/                # Custom hooks
+│   └── useAuth.tsx       # Auth context com auto-criação de perfil
+├── lib/                  # Utilitários (toast, supabase, validation)
+├── services/             # Camada de API (cardsService, gemini)
+├── store/                # Zustand stores (card, meeting, sprint)
+└── tests/                # Testes unitários
+
+database/
+├── migration_001_create_tables.sql  # Migration principal (5 tabelas)
+└── SUPABASE_SETUP_COMPLETE.sql      # Backup de setup
+
+e2e/
+├── playwright/           # Testes Playwright (30 specs)
+│   ├── auth.spec.ts
+│   ├── dashboard.spec.ts
+│   ├── navigation.spec.ts
+│   └── human-test.spec.ts  # Testes interativos human-like
+└── cypress/              # Testes Cypress (21 specs)
 ```
 
 ---
@@ -149,6 +219,42 @@ src/
 
 ## 🧪 Testes
 
+### Suites Disponíveis
+
+| Suite | Testes | Comando |
+|-------|--------|---------|
+| **Playwright** | 30 passed, 2 skipped | `npx playwright test` |
+| **Cypress** | 21 passed | `npx cypress run` |
+| **Vitest** | Smoke tests | `npm run test` |
+
+### Playwright (E2E)
+
+```bash
+# Rodar todos
+npx playwright test
+
+# Com interface gráfica
+npx playwright test --ui
+
+# Spec específico
+npx playwright test e2e/playwright/human-test.spec.ts
+
+# Último resultado
+npx playwright show-report
+```
+
+### Cypress (E2E)
+
+```bash
+# Headless
+npx cypress run
+
+# Com interface gráfica
+npx cypress open
+```
+
+### Vitest (Unit)
+
 ```bash
 # Rodar todos os testes
 npm run test
@@ -166,21 +272,37 @@ npm run test -- --coverage
 
 ### Para Desenvolvedores
 
-1. **Adicionar nova coluna no Kanban:**
+1. **Configuração do banco:**
+   - Execute `database/migration_001_create_tables.sql` no Supabase SQL Editor
+   - O trigger `on_auth_user_created` cria perfis automaticamente
+   - Primeiro usuário a logar = admin
+
+2. **Adicionar nova coluna no Kanban:**
    - Editar array `columns` em `KanbanBoard.tsx`
    - Adicionar status correspondente em `statusColors`
 
-2. **Modificar RLS policies:**
+3. **Modificar RLS policies:**
    - Acessar Supabase Dashboard > SQL Editor
-   - Arquivos de referência em `Arquivos_mortos/database/`
+   - Referência em `database/migration_001_create_tables.sql`
 
-3. **Adicionar novos testes:**
-   - Criar em `src/tests/`
-   - Seguir padrão do `smoke-tests.test.ts`
+4. **Adicionar novos testes:**
+   - Playwright: `e2e/playwright/`
+   - Cypress: `e2e/cypress/e2e/`
+   - Unit: `src/tests/`
 
-4. **Build size warning:**
+5. **Build size warning:**
    - Considerar code-splitting com `React.lazy()`
    - Separar Ant Design em chunks manuais
+
+### Bugs Conhecidos (Não Corrigidos)
+
+Consulte [RELATORIO_FALHAS_COMPLETO.md](RELATORIO_FALHAS_COMPLETO.md) para a lista completa.
+Principais pendências:
+- BUG-009: Bypass Cypress sem proteção `import.meta.env.DEV`
+- BUG-012: `CardDetailModal` usa ID de usuário hardcoded
+- BUG-013: Update a cada keystroke sem debounce
+- BUG-014: Upload de arquivos é mock
+- BUG-024: `handleCreateTask()` usa `prompt()`
 
 ---
 
@@ -188,12 +310,13 @@ npm run test -- --coverage
 
 | Camada | Tecnologia |
 |--------|-----------|
-| Frontend | React 18 + TypeScript |
-| UI | Ant Design + Tailwind CSS |
+| Frontend | React 18 + TypeScript 5.6 |
+| UI | Ant Design 5 + @ant-design/pro-components + Tailwind CSS |
 | State | Zustand |
-| Backend | Supabase (Postgres + Auth) |
-| Build | Vite |
-| Test | Vitest |
+| Backend | Supabase (Postgres + Auth + RLS) |
+| Build | Vite 5.4 |
+| Test Unit | Vitest |
+| Test E2E | Playwright 1.58 + Cypress 15.10 |
 | DnD | react-beautiful-dnd |
 | IA | Google Gemini API |
 

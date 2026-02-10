@@ -30,3 +30,7 @@ dist-ssr
 
 # Archived files
 Arquivos_mortos/
+
+# Test results/artifacts
+test-results/
+playwright-report/

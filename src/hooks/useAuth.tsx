@@ -51,6 +51,7 @@ async function ensureProfile(user: User): Promise<UserRole> {
         .upsert({
           id: user.id,
           email: user.email || '',
+          username: user.email?.split('@')[0] || user.id,
           full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || '',
           role: defaultRole,
           is_active: true,

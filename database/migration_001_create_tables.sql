@@ -1,241 +1,234 @@
--- ============================================================================
--- AGENDA-QA: Migração Completa — Criação de Tabelas Faltantes
--- Executar no Editor SQL do Supabase (Dashboard → SQL Editor → New Query)
--- ============================================================================
+-- =====================================================
+-- Migration 001: Align existing DB schema with code
+-- Target: Supabase SQL Editor
+-- Date: 2026-02-10
+-- 
+-- This migration ALTERS existing tables to add missing
+-- columns and fix CHECK constraints. All tables already
+-- exist in the database.
+-- =====================================================
 
--- 1. PROFILES — Dados de perfil vinculados ao auth.users
--- ============================================================================
-CREATE TABLE IF NOT EXISTS public.profiles (
-    id          uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-    full_name   text DEFAULT '',
-    email       text DEFAULT '',
-    avatar_url  text DEFAULT '',
-    role        text NOT NULL DEFAULT 'viewer' CHECK (role IN ('admin', 'user', 'viewer')),
-    is_active   boolean NOT NULL DEFAULT true,
-    created_at  timestamptz NOT NULL DEFAULT now(),
-    updated_at  timestamptz NOT NULL DEFAULT now()
-);
+BEGIN;
 
-COMMENT ON TABLE public.profiles IS 'Perfis de usuário do Agenda-QA';
+-- =============================================================
+-- 1. MEETINGS: Add missing 'status' and 'updated_by' columns
+--    Code expects: status ('a-agendar','confirmada','realizada')
+--    Code expects: updated_by uuid
+-- =============================================================
+ALTER TABLE public.meetings
+  ADD COLUMN IF NOT EXISTS status text NOT NULL DEFAULT 'a-agendar',
+  ADD COLUMN IF NOT EXISTS updated_by uuid REFERENCES auth.users(id);
 
--- 2. SPRINTS — Ciclos de trabalho
--- ============================================================================
-CREATE TABLE IF NOT EXISTS public.sprints (
-    id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    nome        text NOT NULL,
-    objetivo    text,
-    data_inicio date NOT NULL,
-    data_fim    date NOT NULL,
-    status      text NOT NULL DEFAULT 'planning' CHECK (status IN ('planning', 'active', 'completed', 'archived')),
-    project_id  uuid REFERENCES public.projects(id) ON DELETE SET NULL,
-    created_by  uuid REFERENCES auth.users(id) ON DELETE SET NULL,
-    created_at  timestamptz NOT NULL DEFAULT now(),
-    updated_at  timestamptz NOT NULL DEFAULT now(),
-    deleted_at  timestamptz
-);
-
-COMMENT ON TABLE public.sprints IS 'Sprints / ciclos de trabalho';
-
--- 3. MEETINGS — Reuniões do Kanban
--- ============================================================================
-CREATE TABLE IF NOT EXISTS public.meetings (
-    id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    titulo          text NOT NULL,
-    data            date NOT NULL,
-    horario_inicio  text,
-    descricao       text,
-    status          text NOT NULL DEFAULT 'a-agendar' CHECK (status IN ('a-agendar', 'confirmada', 'realizada')),
-    link_reuniao    text,
-    project_id      uuid REFERENCES public.projects(id) ON DELETE SET NULL,
-    created_by      uuid REFERENCES auth.users(id) ON DELETE SET NULL,
-    created_at      timestamptz NOT NULL DEFAULT now(),
-    updated_at      timestamptz NOT NULL DEFAULT now(),
-    updated_by      uuid REFERENCES auth.users(id) ON DELETE SET NULL,
-    deleted_at      timestamptz
-);
-
-COMMENT ON TABLE public.meetings IS 'Reuniões gerenciadas no Kanban';
-
--- 4. CARDS — Tarefas do TaskBoard
--- ============================================================================
-CREATE TABLE IF NOT EXISTS public.cards (
-    id                      uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    titulo                  text NOT NULL,
-    descricao               text,
-    status                  text NOT NULL DEFAULT 'backlog' CHECK (status IN ('backlog', 'a-fazer', 'em-progresso', 'bloqueado', 'concluido')),
-    priority                text NOT NULL DEFAULT 'medium' CHECK (priority IN ('low', 'medium', 'high', 'critical')),
-    responsavel_principal   text,
-    responsavel             text,
-    sub_responsaveis        text[] DEFAULT '{}',
-    prazo                   date,
-    tags                    text[] DEFAULT '{}',
-    urgente                 boolean NOT NULL DEFAULT false,
-    sprint_id               uuid REFERENCES public.sprints(id) ON DELETE SET NULL,
-    reuniao_id              uuid REFERENCES public.meetings(id) ON DELETE SET NULL,
-    sub_tasks               jsonb DEFAULT '[]'::jsonb,
-    comentarios             jsonb DEFAULT '[]'::jsonb,
-    anexos                  jsonb DEFAULT '[]'::jsonb,
-    historico               jsonb DEFAULT '[]'::jsonb,
-    version                 integer NOT NULL DEFAULT 1,
-    created_by              uuid REFERENCES auth.users(id) ON DELETE SET NULL,
-    created_at              timestamptz NOT NULL DEFAULT now(),
-    updated_by              uuid REFERENCES auth.users(id) ON DELETE SET NULL,
-    updated_at              timestamptz NOT NULL DEFAULT now(),
-    deleted_at              timestamptz
-);
-
-COMMENT ON TABLE public.cards IS 'Tarefas / cards do TaskBoard';
-
--- 5. AUDIT_LOGS — Rastreamento de ações
--- ============================================================================
-CREATE TABLE IF NOT EXISTS public.audit_logs (
-    id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id     uuid REFERENCES auth.users(id) ON DELETE SET NULL,
-    action      text NOT NULL,
-    entity_type text NOT NULL,
-    entity_id   text,
-    details     jsonb DEFAULT '{}'::jsonb,
-    created_at  timestamptz NOT NULL DEFAULT now()
-);
-
-COMMENT ON TABLE public.audit_logs IS 'Log de auditoria de ações no sistema';
-
--- ============================================================================
--- INDEXES — Performance
--- ============================================================================
-CREATE INDEX IF NOT EXISTS idx_profiles_role        ON public.profiles(role);
-CREATE INDEX IF NOT EXISTS idx_cards_status          ON public.cards(status) WHERE deleted_at IS NULL;
-CREATE INDEX IF NOT EXISTS idx_cards_sprint_id       ON public.cards(sprint_id) WHERE deleted_at IS NULL;
-CREATE INDEX IF NOT EXISTS idx_cards_deleted_at      ON public.cards(deleted_at);
-CREATE INDEX IF NOT EXISTS idx_meetings_status       ON public.meetings(status) WHERE deleted_at IS NULL;
-CREATE INDEX IF NOT EXISTS idx_meetings_data         ON public.meetings(data) WHERE deleted_at IS NULL;
-CREATE INDEX IF NOT EXISTS idx_sprints_status        ON public.sprints(status) WHERE deleted_at IS NULL;
-CREATE INDEX IF NOT EXISTS idx_audit_logs_entity     ON public.audit_logs(entity_type, entity_id);
-CREATE INDEX IF NOT EXISTS idx_audit_logs_user       ON public.audit_logs(user_id);
-CREATE INDEX IF NOT EXISTS idx_audit_logs_created    ON public.audit_logs(created_at DESC);
-
--- ============================================================================
--- ROW LEVEL SECURITY — Habilitar e criar políticas
--- ============================================================================
-
--- Ativar RLS em todas as tabelas
-ALTER TABLE public.profiles   ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.sprints    ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.meetings   ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.cards      ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
-
--- PROFILES: Usuários autenticados podem ler todos, mas só editar o próprio
-DROP POLICY IF EXISTS "profiles_select_authenticated" ON public.profiles;
-CREATE POLICY "profiles_select_authenticated" ON public.profiles
-    FOR SELECT TO authenticated USING (true);
-
-DROP POLICY IF EXISTS "profiles_insert_own" ON public.profiles;
-CREATE POLICY "profiles_insert_own" ON public.profiles
-    FOR INSERT TO authenticated WITH CHECK (auth.uid() = id);
-
-DROP POLICY IF EXISTS "profiles_update_own" ON public.profiles;
-CREATE POLICY "profiles_update_own" ON public.profiles
-    FOR UPDATE TO authenticated USING (auth.uid() = id) WITH CHECK (auth.uid() = id);
-
--- SPRINTS: Full access para todos autenticados (equipe pequena)
-DROP POLICY IF EXISTS "sprints_all_authenticated" ON public.sprints;
-CREATE POLICY "sprints_all_authenticated" ON public.sprints
-    FOR ALL TO authenticated USING (true) WITH CHECK (true);
-
--- MEETINGS: Full access para todos autenticados
-DROP POLICY IF EXISTS "meetings_all_authenticated" ON public.meetings;
-CREATE POLICY "meetings_all_authenticated" ON public.meetings
-    FOR ALL TO authenticated USING (true) WITH CHECK (true);
-
--- CARDS: Full access para todos autenticados
-DROP POLICY IF EXISTS "cards_all_authenticated" ON public.cards;
-CREATE POLICY "cards_all_authenticated" ON public.cards
-    FOR ALL TO authenticated USING (true) WITH CHECK (true);
-
--- AUDIT_LOGS: Todos podem inserir/ler, ninguém deleta
-DROP POLICY IF EXISTS "audit_logs_select_authenticated" ON public.audit_logs;
-CREATE POLICY "audit_logs_select_authenticated" ON public.audit_logs
-    FOR SELECT TO authenticated USING (true);
-
-DROP POLICY IF EXISTS "audit_logs_insert_authenticated" ON public.audit_logs;
-CREATE POLICY "audit_logs_insert_authenticated" ON public.audit_logs
-    FOR INSERT TO authenticated WITH CHECK (true);
-
--- ============================================================================
--- TRIGGER: Auto-criar profile quando novo usuário se registra
--- ============================================================================
-CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS trigger AS $$
-DECLARE
-    user_count integer;
-    default_role text;
+-- Add CHECK constraint for meeting status
+DO $$
 BEGIN
-    -- Contar profiles existentes para determinar role
-    SELECT count(*) INTO user_count FROM public.profiles;
-    
-    -- Primeiro usuário vira admin, demais viram viewer
-    IF user_count = 0 THEN
-        default_role := 'admin';
-    ELSE
-        default_role := 'viewer';
-    END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint
+    WHERE conname = 'meetings_status_check'
+      AND conrelid = 'public.meetings'::regclass
+  ) THEN
+    ALTER TABLE public.meetings
+      ADD CONSTRAINT meetings_status_check
+      CHECK (status IN ('a-agendar', 'confirmada', 'realizada'));
+  END IF;
+END $$;
 
-    INSERT INTO public.profiles (id, email, full_name, role, is_active, created_at, updated_at)
-    VALUES (
-        NEW.id,
-        COALESCE(NEW.email, ''),
-        COALESCE(NEW.raw_user_meta_data->>'full_name', split_part(COALESCE(NEW.email, ''), '@', 1)),
-        default_role,
-        true,
-        now(),
-        now()
-    )
-    ON CONFLICT (id) DO NOTHING;
 
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
--- Remover trigger antigo se existir
-DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
-
--- Criar trigger
-CREATE TRIGGER on_auth_user_created
-    AFTER INSERT ON auth.users
-    FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
-
--- ============================================================================
--- SEED: Criar profiles para usuários existentes que ainda não têm
--- ============================================================================
-INSERT INTO public.profiles (id, email, full_name, role, is_active, created_at, updated_at)
-SELECT 
-    u.id,
-    COALESCE(u.email, ''),
-    COALESCE(u.raw_user_meta_data->>'full_name', split_part(COALESCE(u.email, ''), '@', 1)),
-    CASE 
-        WHEN ROW_NUMBER() OVER (ORDER BY u.created_at ASC) = 1 THEN 'admin'
-        ELSE 'viewer'
-    END,
-    true,
-    now(),
-    now()
-FROM auth.users u
-WHERE NOT EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = u.id)
-ORDER BY u.created_at ASC;
-
--- ============================================================================
--- VERIFICAÇÃO FINAL
--- ============================================================================
+-- =============================================================
+-- 2. CARDS: Expand status CHECK to include 'a-fazer'
+--    Current DB: backlog, em-progresso, bloqueado, concluido
+--    Code needs: + 'a-fazer'
+-- =============================================================
 DO $$
 DECLARE
-    tbl text;
-    cnt integer;
+  cname text;
 BEGIN
-    FOR tbl IN SELECT unnest(ARRAY['profiles','sprints','meetings','cards','audit_logs'])
-    LOOP
-        EXECUTE format('SELECT count(*) FROM public.%I', tbl) INTO cnt;
-        RAISE NOTICE 'Tabela %: % registros', tbl, cnt;
-    END LOOP;
-    RAISE NOTICE '✅ Migração concluída com sucesso!';
+  -- Find existing CHECK constraint on cards.status
+  SELECT con.conname INTO cname
+  FROM pg_constraint con
+  JOIN pg_class rel ON rel.oid = con.conrelid
+  JOIN pg_namespace nsp ON nsp.oid = rel.relnamespace
+  WHERE rel.relname = 'cards'
+    AND nsp.nspname = 'public'
+    AND con.contype = 'c'
+    AND pg_get_constraintdef(con.oid) LIKE '%status%';
+
+  IF cname IS NOT NULL THEN
+    EXECUTE format('ALTER TABLE public.cards DROP CONSTRAINT %I', cname);
+  END IF;
 END $$;
+
+ALTER TABLE public.cards
+  ADD CONSTRAINT cards_status_check
+  CHECK (status IN ('backlog', 'a-fazer', 'em-progresso', 'bloqueado', 'concluido'));
+
+
+-- =============================================================
+-- 3. SPRINTS: Update status values Portuguese → English
+--    DB has:   planejada, ativa, concluida, arquivada
+--    Code uses: planning, active, completed, archived
+-- =============================================================
+DO $$
+DECLARE
+  cname text;
+BEGIN
+  SELECT con.conname INTO cname
+  FROM pg_constraint con
+  JOIN pg_class rel ON rel.oid = con.conrelid
+  JOIN pg_namespace nsp ON nsp.oid = rel.relnamespace
+  WHERE rel.relname = 'sprints'
+    AND nsp.nspname = 'public'
+    AND con.contype = 'c'
+    AND pg_get_constraintdef(con.oid) LIKE '%status%';
+
+  IF cname IS NOT NULL THEN
+    EXECUTE format('ALTER TABLE public.sprints DROP CONSTRAINT %I', cname);
+  END IF;
+END $$;
+
+-- Convert existing Portuguese values to English
+UPDATE public.sprints SET status = 'planning'  WHERE status = 'planejada';
+UPDATE public.sprints SET status = 'active'    WHERE status = 'ativa';
+UPDATE public.sprints SET status = 'completed' WHERE status = 'concluida';
+UPDATE public.sprints SET status = 'archived'  WHERE status = 'arquivada';
+
+-- Change default and add new constraint
+ALTER TABLE public.sprints ALTER COLUMN status SET DEFAULT 'planning';
+ALTER TABLE public.sprints
+  ADD CONSTRAINT sprints_status_check
+  CHECK (status IN ('planning', 'active', 'completed', 'archived'));
+
+
+-- =============================================================
+-- 4. PROFILES: Add avatar_url, fix username default, fix role CHECK
+--    Missing column: avatar_url
+--    username is NOT NULL but code doesn't set it → add default
+--    Role CHECK: add 'user' value used by code
+-- =============================================================
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS avatar_url text;
+
+-- Set a default for username so upserts without it don't fail
+ALTER TABLE public.profiles
+  ALTER COLUMN username SET DEFAULT '';
+
+-- Drop old role CHECK and add updated one (include 'user')
+DO $$
+DECLARE
+  cname text;
+BEGIN
+  SELECT con.conname INTO cname
+  FROM pg_constraint con
+  JOIN pg_class rel ON rel.oid = con.conrelid
+  JOIN pg_namespace nsp ON nsp.oid = rel.relnamespace
+  WHERE rel.relname = 'profiles'
+    AND nsp.nspname = 'public'
+    AND con.contype = 'c'
+    AND pg_get_constraintdef(con.oid) LIKE '%role%';
+
+  IF cname IS NOT NULL THEN
+    EXECUTE format('ALTER TABLE public.profiles DROP CONSTRAINT %I', cname);
+  END IF;
+END $$;
+
+ALTER TABLE public.profiles
+  ADD CONSTRAINT profiles_role_check
+  CHECK (role IN ('viewer', 'user', 'editor', 'admin'));
+
+
+-- =============================================================
+-- 5. RLS Policies — ensure RLS is enabled & basic policies exist
+-- =============================================================
+ALTER TABLE public.meetings   ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.cards      ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.sprints    ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.profiles   ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
+
+-- Meetings: everyone can read, authenticated users can write
+DROP POLICY IF EXISTS meetings_select ON public.meetings;
+CREATE POLICY meetings_select ON public.meetings FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS meetings_insert ON public.meetings;
+CREATE POLICY meetings_insert ON public.meetings FOR INSERT
+  WITH CHECK (auth.uid() = created_by);
+
+DROP POLICY IF EXISTS meetings_update ON public.meetings;
+CREATE POLICY meetings_update ON public.meetings FOR UPDATE USING (true);
+
+DROP POLICY IF EXISTS meetings_delete ON public.meetings;
+CREATE POLICY meetings_delete ON public.meetings FOR DELETE
+  USING (auth.uid() = created_by);
+
+-- Cards: everyone can read, authenticated users can write
+DROP POLICY IF EXISTS cards_select ON public.cards;
+CREATE POLICY cards_select ON public.cards FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS cards_insert ON public.cards;
+CREATE POLICY cards_insert ON public.cards FOR INSERT
+  WITH CHECK (auth.uid() IS NOT NULL);
+
+DROP POLICY IF EXISTS cards_update ON public.cards;
+CREATE POLICY cards_update ON public.cards FOR UPDATE USING (true);
+
+DROP POLICY IF EXISTS cards_delete ON public.cards;
+CREATE POLICY cards_delete ON public.cards FOR DELETE
+  USING (auth.uid() IS NOT NULL);
+
+-- Sprints: everyone can read, authenticated users can write
+DROP POLICY IF EXISTS sprints_select ON public.sprints;
+CREATE POLICY sprints_select ON public.sprints FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS sprints_insert ON public.sprints;
+CREATE POLICY sprints_insert ON public.sprints FOR INSERT
+  WITH CHECK (auth.uid() = created_by);
+
+DROP POLICY IF EXISTS sprints_update ON public.sprints;
+CREATE POLICY sprints_update ON public.sprints FOR UPDATE USING (true);
+
+DROP POLICY IF EXISTS sprints_delete ON public.sprints;
+CREATE POLICY sprints_delete ON public.sprints FOR DELETE
+  USING (auth.uid() = created_by);
+
+-- Profiles: users can read all, update own
+DROP POLICY IF EXISTS profiles_select ON public.profiles;
+CREATE POLICY profiles_select ON public.profiles FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS profiles_insert ON public.profiles;
+CREATE POLICY profiles_insert ON public.profiles FOR INSERT
+  WITH CHECK (auth.uid() = id);
+
+DROP POLICY IF EXISTS profiles_update ON public.profiles;
+CREATE POLICY profiles_update ON public.profiles FOR UPDATE
+  USING (auth.uid() = id);
+
+-- Audit logs: users can read own, insert own
+DROP POLICY IF EXISTS audit_logs_select ON public.audit_logs;
+CREATE POLICY audit_logs_select ON public.audit_logs FOR SELECT
+  USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS audit_logs_insert ON public.audit_logs;
+CREATE POLICY audit_logs_insert ON public.audit_logs FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+
+
+-- =============================================================
+-- 6. Indexes for performance
+-- =============================================================
+CREATE INDEX IF NOT EXISTS idx_meetings_status     ON public.meetings(status);
+CREATE INDEX IF NOT EXISTS idx_meetings_created_by ON public.meetings(created_by);
+CREATE INDEX IF NOT EXISTS idx_meetings_data       ON public.meetings(data);
+
+CREATE INDEX IF NOT EXISTS idx_cards_status         ON public.cards(status);
+CREATE INDEX IF NOT EXISTS idx_cards_sprint_id      ON public.cards(sprint_id);
+CREATE INDEX IF NOT EXISTS idx_cards_created_by     ON public.cards(created_by);
+CREATE INDEX IF NOT EXISTS idx_cards_deleted_at     ON public.cards(deleted_at);
+
+CREATE INDEX IF NOT EXISTS idx_sprints_status       ON public.sprints(status);
+CREATE INDEX IF NOT EXISTS idx_sprints_created_by   ON public.sprints(created_by);
+
+CREATE INDEX IF NOT EXISTS idx_audit_logs_user_id   ON public.audit_logs(user_id);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_entity    ON public.audit_logs(entity_type, entity_id);
+
+
+COMMIT;

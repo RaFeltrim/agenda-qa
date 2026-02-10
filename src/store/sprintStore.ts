@@ -56,9 +56,13 @@ export const useSprintStore = create<SprintStore>((set) => ({
                 .order('data_inicio', { ascending: false });
 
             if (error) {
-                console.error('[SprintStore] fetchSprints error:', error);
-                toastError('Erro ao carregar sprints');
-                set({ loading: false });
+                // Gracefully handle missing table
+                if (error.code === 'PGRST205') {
+                    console.warn('[SprintStore] Table "sprints" not found — run migration SQL');
+                } else {
+                    console.error('[SprintStore] fetchSprints error:', error);
+                }
+                set({ loading: false, sprints: [] });
                 return;
             }
 

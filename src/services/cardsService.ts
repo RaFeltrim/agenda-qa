@@ -10,7 +10,7 @@ import { supabase, validateSession } from './supabase';
 // =============================================================================
 
 /** Status values as defined in DB constraint */
-export type DBCardStatus = 'backlog' | 'em-progresso' | 'bloqueado' | 'concluido';
+export type DBCardStatus = 'backlog' | 'a-fazer' | 'em-progresso' | 'bloqueado' | 'concluido';
 
 /** Priority values as defined in DB */
 export type DBCardPriority = 'low' | 'medium' | 'high' | 'critical';
@@ -93,7 +93,7 @@ export interface IAuditLog {
 export type FrontendCardStatus = 'todo' | 'in-progress' | 'done' | 'backlog' | 'blocked';
 
 const STATUS_TO_DB: Record<FrontendCardStatus, DBCardStatus> = {
-    'todo': 'backlog',
+    'todo': 'a-fazer',
     'backlog': 'backlog',
     'in-progress': 'em-progresso',
     'blocked': 'bloqueado',
@@ -102,6 +102,7 @@ const STATUS_TO_DB: Record<FrontendCardStatus, DBCardStatus> = {
 
 const STATUS_FROM_DB: Record<DBCardStatus, FrontendCardStatus> = {
     'backlog': 'backlog',
+    'a-fazer': 'todo',
     'em-progresso': 'in-progress',
     'bloqueado': 'blocked',
     'concluido': 'done'
@@ -155,7 +156,7 @@ export class NotFoundError extends CardsServiceError {
 // Validation Functions
 // =============================================================================
 
-const VALID_DB_STATUSES: DBCardStatus[] = ['backlog', 'em-progresso', 'bloqueado', 'concluido'];
+const VALID_DB_STATUSES: DBCardStatus[] = ['backlog', 'a-fazer', 'em-progresso', 'bloqueado', 'concluido'];
 const VALID_PRIORITIES: DBCardPriority[] = ['low', 'medium', 'high', 'critical'];
 
 function validateUUID(value: string, fieldName: string): void {

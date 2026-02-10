@@ -102,8 +102,14 @@ export const useCardStore = create<CardStore>((set, get) => ({
             set({ cards: mappedCards });
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Failed to fetch cards';
-            console.error('Error fetching cards:', error);
-            set({ error: errorMessage });
+            // Gracefully handle missing table (PGRST205)
+            const isTableMissing = typeof error === 'object' && error !== null && 'code' in error && (error as any).code === 'PGRST205';
+            if (isTableMissing) {
+                console.warn('[CardStore] Table "cards" not found — run migration SQL');
+            } else {
+                console.error('Error fetching cards:', error);
+            }
+            set({ error: errorMessage, cards: [] });
         } finally {
             set({ loading: false });
         }

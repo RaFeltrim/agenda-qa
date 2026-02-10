@@ -184,12 +184,19 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
 };
 
 export const KanbanBoard = () => {
-        const { meetings, moveMeeting, createMeeting, deleteMeeting,
+        const { meetings, fetchMeetings, moveMeeting, createMeeting, deleteMeeting,
                        setSelectedMeeting, setModalOpen, isModalOpen, selectedMeeting } = useMeetingStore();
-        const { role } = useAuth();
+        const { user, role } = useAuth();
         const [search, setSearch] = useState('');
         const [activeTab, setActiveTab] = useState('a-agendar');
         const isMobile = useIsMobile();
+
+        // Fetch meetings on mount and when user changes
+        useEffect(() => {
+                    if (user) {
+                                    fetchMeetings();
+                    }
+        }, [user, fetchMeetings]);
     
         const canEditContent = role === 'admin' || role === 'user';
         const canManageMeetings = role === 'admin';

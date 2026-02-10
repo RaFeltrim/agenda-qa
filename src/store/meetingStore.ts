@@ -117,8 +117,14 @@ export const useMeetingStore = create<MeetingStore>((set, get) => ({
             set({ meetings: mappedMeetings, currentUserId: session.userId });
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Erro ao buscar reuniões';
-            console.error('Erro ao buscar reuniões:', error);
-            set({ error: errorMessage });
+            // Gracefully handle missing table
+            const isTableMissing = typeof error === 'object' && error !== null && 'code' in error && (error as any).code === 'PGRST205';
+            if (isTableMissing) {
+                console.warn('[MeetingStore] Table "meetings" not found — run migration SQL');
+            } else {
+                console.error('Erro ao buscar reuniões:', error);
+            }
+            set({ error: errorMessage, meetings: [] });
         } finally {
             set({ loading: false });
         }

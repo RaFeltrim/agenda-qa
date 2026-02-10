@@ -9,6 +9,7 @@ import {
   UserOutlined,
   SettingOutlined,
   TeamOutlined,
+    BarChartOutlined,
 } from '@ant-design/icons';
 import { useEffect } from 'react';
 import type { User } from '@supabase/supabase-js';
@@ -66,6 +67,15 @@ export default function RootLayout() {
             name: 'Gestão de Usuários',
             icon: <TeamOutlined />,
           },
+              ...(user?.role === 'admin' || user?.role === 'manager'
+                          ? [
+                            {
+                                            path: '/ExecutiveDashboard',
+                                            name: 'Visão Executiva',
+                                            icon: <BarChartOutlined />,
+                            },
+                                      ]
+                          : []),
         ]
       : []),
   ];

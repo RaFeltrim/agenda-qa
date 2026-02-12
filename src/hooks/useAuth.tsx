@@ -19,8 +19,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 /**
  * Ensure a profile row exists for the given user.
  * If no profile exists, upsert one with a default role:
- *   - 'admin' if this is the first profile in the system
- *   - 'viewer' otherwise
+ * - 'admin' if this is the first profile in the system
+ * - 'viewer' otherwise
  */
 async function ensureProfile(user: User): Promise<UserRole> {
   try {
@@ -87,7 +87,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // to bypass all network calls.
       if (typeof window !== 'undefined' && (window as any).Cypress) {
         try {
-          const raw = localStorage.getItem('sb-njbtlnhhsspxjscyzoxp-auth-token');
+          // FIXED: Use string variable to avoid parsing issues
+          const storageKey = 'sb-njbtlnhhsspxjscyzoxp-auth-token';
+          const raw = localStorage.getItem(storageKey);
           if (raw) {
             const sessionData = JSON.parse(raw);
             if (sessionData?.user) {
@@ -97,8 +99,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
               return;
             }
           }
-        } catch {
+        } catch (error) {
           // Fall through to normal flow
+          console.warn('[Auth] Cypress localStorage read failed:', error);
         }
         setLoading(false);
         return;

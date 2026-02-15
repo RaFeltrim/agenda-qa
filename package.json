@@ -9,13 +9,18 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
+    "test:unit": "npm run test",
     "test:pw": "npx playwright test",
     "test:pw:ui": "npx playwright test --ui",
     "test:pw:headed": "npx playwright test --headed",
+    "test:pw:smoke": "npx playwright test --grep @smoke",
+    "test:pw:regression": "npx playwright test --grep-invert @smoke",
     "test:cy": "npx cypress run --config-file cypress.config.ts",
     "test:cy:open": "npx cypress open --config-file cypress.config.ts",
     "test:e2e": "npm run test:pw && npm run test:cy",
-    "test:all": "npm run test && npm run test:e2e"
+    "test:all": "npm run test && npm run test:e2e",
+    "test:optimized": "bash scripts/run-optimized-test-suite.sh",
+    "test:optimized:win": "scripts\\run-optimized-test-suite.bat"
   },
   "dependencies": {
     "@ant-design/pro-components": "^2.6.43",

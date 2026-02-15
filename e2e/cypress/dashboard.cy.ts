@@ -13,7 +13,7 @@ describe('Dashboard - Reuniões (KanbanBoard)', () => {
   it('TC-CY-DASH-001: Dashboard loads with title and description', () => {
     // Debug: check where we actually are
     cy.url().then(url => cy.log('Current URL: ' + url));
-    cy.wait(2000);
+    cy.get('[data-testid="dashboard-content"]', { timeout: 5000 }).should('be.visible');
     cy.url().then(url => cy.log('URL after wait: ' + url));
     cy.get('body').then($body => cy.log('Body text: ' + $body.text().substring(0, 200)));
     cy.contains('Portal de Governança', { timeout: 15000 }).should('be.visible');
@@ -82,20 +82,21 @@ describe('Dashboard - Tarefas (TaskBoard)', () => {
   it('TC-CY-TASK-002: TaskBoard shows columns or empty state', () => {
     cy.get('[data-testid="view-toggle-switch"]').click();
     cy.get('[data-testid="task-board"]', { timeout: 10000 }).should('be.visible');
-    cy.wait(1000);
 
-    // When there are no cards/sprints, the TaskBoard shows an empty state;
-    // when there ARE cards, it shows 5 status columns.
-    cy.get('body').then($body => {
-      if ($body.text().includes('A Fazer')) {
-        // Columns are visible — verify all 5
+    // Check for empty state first
+    cy.get('[data-testid="task-board"]').then($taskBoard => {
+      const taskBoardText = $taskBoard.text();
+      
+      if (taskBoardText.includes('Selecione uma sprint') || taskBoardText.includes('Criar Primeira Sprint')) {
+        // Empty state — verify fallback message
+        cy.contains('Selecione uma sprint ou crie uma tarefa').should('be.visible');
+        cy.log('TaskBoard in empty state - showing appropriate message');
+      } else {
+        // Columns should be visible — verify all 5
         const columns = ['Backlog', 'A Fazer', 'Em Progresso', 'Bloqueado', 'Concluído'];
         columns.forEach(col => {
-          cy.contains(col).should('exist');
+          cy.contains(col).should('be.visible');
         });
-      } else {
-        // Empty state — verify fallback message
-        cy.contains('Selecione uma sprint ou crie uma tarefa').should('exist');
       }
     });
   });

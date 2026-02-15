@@ -35,7 +35,7 @@ describe('Authentication Flow', () => {
     cy.get('[data-testid="login-submit-button"]')
       .click();
 
-    cy.wait(3000);
+    cy.get('div[data-testid="login-form"]').should('be.visible');
     cy.url().should('include', '/login');
   });
 
@@ -57,7 +57,7 @@ describe('Authentication Flow', () => {
 
   it('TC-CY-AUTH-007: Unauthenticated access to /dashboard redirects to login', () => {
     cy.visit('/dashboard');
-    cy.wait(3000);
+    cy.get('div[data-testid="login-form"]').should('be.visible');
     cy.url().should('include', '/login');
   });
 });

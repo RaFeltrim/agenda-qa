@@ -62,7 +62,7 @@ Cypress.Commands.add('login', (email: string, password: string) => {
     cy.get('.ant-pro-layout, .ant-layout', { timeout: 15000 }).should('exist');
 
     // Stabilization
-    cy.wait(1000);
+    cy.get('.ant-pro-layout, .ant-layout').should('be.visible');
   });
 });
 

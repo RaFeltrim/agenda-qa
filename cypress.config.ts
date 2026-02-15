@@ -10,23 +10,37 @@ export default defineConfig({
     videosFolder: 'test-results/cypress-videos',
     viewportWidth: 1280,
     viewportHeight: 720,
-    defaultCommandTimeout: 15000,
-    requestTimeout: 15000,
-    responseTimeout: 30000,
+    
+    // Optimized timeouts to prevent hanging
+    defaultCommandTimeout: 10000,
+    requestTimeout: 10000,
+    responseTimeout: 20000,
+    
     chromeWebSecurity: false,
-    video: true,
+    
+    // Disable video recording in CI to save resources
+    video: !process.env.CI,
     screenshotOnRunFailure: true,
+    
+    // Optimize retries
     retries: {
-      runMode: 2,
+      runMode: process.env.CI ? 1 : 2,
       openMode: 0,
     },
-    setupNodeEvents(on) {
+    setupNodeEvents(on, config) {
+      // Ensure headless mode in CI
+      if (process.env.CI) {
+        config.video = false;
+      }
+      
       on('task', {
         log(message: string) {
           console.log(message);
           return null;
         },
       });
+      
+      return config;
     },
   },
 });

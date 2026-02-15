@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
-import { X, Calendar, User, Tag, MessageSquare, Clock, CheckSquare, Save, Trash2 } from 'lucide-react';
+import { X, MessageSquare, Save, Trash2, Paperclip, Activity } from 'lucide-react';
 import type { Card, CardStatus } from '../../types';
 import { useAuth } from '../../hooks/useAuth';
-import UserAvatar from '../UserAvatar';
+import { useComments } from '../../hooks/useComments';
+import { useAttachments } from '../../hooks/useAttachments';
+import CardComments from './CardComments';
+import CardAttachments from './CardAttachments';
 
 interface CardModalProps {
   card: Card | null;
@@ -27,6 +30,27 @@ const PRIORITY_OPTIONS: { value: boolean; label: string }[] = [
 export default function CardModal({ card, isOpen, onClose, onSave, onDelete }: CardModalProps) {
   const { role } = useAuth();
   const canEdit = role === 'admin' || role === 'user';
+
+  // Tab state
+  const [activeTab, setActiveTab] = useState<'details' | 'comments' | 'attachments' | 'activity'>('details');
+  
+  // Comments and attachments hooks
+  const {
+    comments,
+    loading: commentsLoading,
+    addComment,
+    editComment,
+    deleteComment
+  } = useComments(card?.id || '');
+  
+  const {
+    attachments,
+    loading: attachmentsLoading,
+    uploadAttachment,
+    deleteAttachment,
+    getFileIcon,
+    formatFileSize
+  } = useAttachments(card?.id || '');
 
   const [formData, setFormData] = useState<Partial<Card>>({});
   const [newTag, setNewTag] = useState('');
@@ -82,11 +106,11 @@ export default function CardModal({ card, isOpen, onClose, onSave, onDelete }: C
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-800 rounded-2xl shadow-2xl m-4">
+      <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-800 rounded-2xl shadow-2xl m-4">
         {/* Header */}
         <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-4 flex items-center justify-between rounded-t-2xl">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-            Edit Card
+            {card.titulo || card.title || 'Card Details'}
           </h2>
           <button
             onClick={onClose}
@@ -98,143 +122,222 @@ export default function CardModal({ card, isOpen, onClose, onSave, onDelete }: C
 
         {/* Content */}
         <div className="p-4 space-y-4">
-          {/* Title */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Title
-            </label>
-            <input
-              type="text"
-              value={formData.titulo || formData.title || ''}
-              onChange={(e) => handleChange('titulo', e.target.value)}
-              disabled={!canEdit}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60"
-            />
+          {/* Tabs */}
+          <div className="flex border-b border-slate-200 dark:border-slate-700">
+            <button
+              onClick={() => setActiveTab('details')}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                activeTab === 'details'
+                  ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                  : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'
+              }`}
+            >
+              Details
+            </button>
+            <button
+              onClick={() => setActiveTab('comments')}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors flex items-center gap-2 ${
+                activeTab === 'comments'
+                  ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                  : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'
+              }`}
+            >
+              <MessageSquare className="w-4 h-4" />
+              Comments ({comments.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('attachments')}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors flex items-center gap-2 ${
+                activeTab === 'attachments'
+                  ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                  : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'
+              }`}
+            >
+              <Paperclip className="w-4 h-4" />
+              Attachments ({attachments.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('activity')}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors flex items-center gap-2 ${
+                activeTab === 'activity'
+                  ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                  : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'
+              }`}
+            >
+              <Activity className="w-4 h-4" />
+              Activity
+            </button>
           </div>
 
-          {/* Description */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Description
-            </label>
-            <textarea
-              value={formData.descricao || formData.description || ''}
-              onChange={(e) => handleChange('descricao', e.target.value)}
-              disabled={!canEdit}
-              rows={3}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 resize-none"
-            />
-          </div>
+          {/* Tab Content */}
+          <div className="pt-2">
+            {activeTab === 'details' && (
+              <div className="space-y-4">
+                {/* Title */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                    Title
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.titulo || formData.title || ''}
+                    onChange={(e) => handleChange('titulo', e.target.value)}
+                    disabled={!canEdit}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60"
+                  />
+                </div>
 
-          {/* Status & Priority Row */}
-          <div className="grid grid-cols-2 gap-4">
-            {/* Status */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Status
-              </label>
-              <select
-                value={formData.status || 'backlog'}
-                onChange={(e) => handleChange('status', e.target.value)}
-                disabled={!canEdit}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60"
-              >
-                {STATUS_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+                {/* Description */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                    Description
+                  </label>
+                  <textarea
+                    value={formData.descricao || formData.description || ''}
+                    onChange={(e) => handleChange('descricao', e.target.value)}
+                    disabled={!canEdit}
+                    rows={3}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 resize-none"
+                  />
+                </div>
 
-            {/* Priority */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Priority
-              </label>
-              <select
-                value={formData.urgente ? 'true' : 'false'}
-                onChange={(e) => handleChange('urgente', e.target.value === 'true')}
-                disabled={!canEdit}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60"
-              >
-                {PRIORITY_OPTIONS.map((opt) => (
-                  <option key={String(opt.value)} value={String(opt.value)}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Due Date */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Due Date
-            </label>
-            <input
-              type="date"
-              value={formData.prazo ? formData.prazo.split('T')[0] : ''}
-              onChange={(e) => handleChange('prazo', e.target.value)}
-              disabled={!canEdit}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60"
-            />
-          </div>
-
-          {/* Assignee */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Assignee
-            </label>
-            <input
-              type="text"
-              value={formData.responsavel || ''}
-              onChange={(e) => handleChange('responsavel', e.target.value)}
-              disabled={!canEdit}
-              placeholder="Enter name..."
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60"
-            />
-          </div>
-
-          {/* Tags */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Tags
-            </label>
-            <div className="flex flex-wrap gap-2 mb-2">
-              {(formData.tags || []).map((tag, idx) => (
-                <span
-                  key={idx}
-                  className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-sm"
-                >
-                  {tag}
-                  {canEdit && (
-                    <button
-                      onClick={() => handleRemoveTag(tag)}
-                      className="hover:text-red-500"
+                {/* Status & Priority Row */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                      Status
+                    </label>
+                    <select
+                      value={formData.status || 'backlog'}
+                      onChange={(e) => handleChange('status', e.target.value)}
+                      disabled={!canEdit}
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60"
                     >
-                      <X className="w-3 h-3" />
-                    </button>
+                      {STATUS_OPTIONS.map((opt) => (
+                        <option key={String(opt.value)} value={String(opt.value)}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                      Priority
+                    </label>
+                    <select
+                      value={formData.urgente ? 'true' : 'false'}
+                      onChange={(e) => handleChange('urgente', e.target.value === 'true')}
+                      disabled={!canEdit}
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60"
+                    >
+                      {PRIORITY_OPTIONS.map((opt) => (
+                        <option key={String(opt.value)} value={String(opt.value)}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Due Date */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                    Due Date
+                  </label>
+                  <input
+                    type="date"
+                    value={formData.prazo ? formData.prazo.split('T')[0] : ''}
+                    onChange={(e) => handleChange('prazo', e.target.value)}
+                    disabled={!canEdit}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60"
+                  />
+                </div>
+
+                {/* Assignee */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                    Assignee
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.responsavel || ''}
+                    onChange={(e) => handleChange('responsavel', e.target.value)}
+                    disabled={!canEdit}
+                    placeholder="Enter name..."
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60"
+                  />
+                </div>
+
+                {/* Tags */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                    Tags
+                  </label>
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {(formData.tags || []).map((tag, idx) => (
+                      <span
+                        key={idx}
+                        className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-sm"
+                      >
+                        {tag}
+                        {canEdit && (
+                          <button
+                            onClick={() => handleRemoveTag(tag)}
+                            className="hover:text-red-500"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        )}
+                      </span>
+                    ))}
+                  </div>
+                  {canEdit && (
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={newTag}
+                        onChange={(e) => setNewTag(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleAddTag()}
+                        placeholder="Add tag..."
+                        className="flex-1 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                      />
+                      <button
+                        onClick={handleAddTag}
+                        className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700"
+                      >
+                        Add
+                      </button>
+                    </div>
                   )}
-                </span>
-              ))}
-            </div>
-            {canEdit && (
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={newTag}
-                  onChange={(e) => setNewTag(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleAddTag()}
-                  placeholder="Add tag..."
-                  className="flex-1 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
-                />
-                <button
-                  onClick={handleAddTag}
-                  className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700"
-                >
-                  Add
-                </button>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'comments' && (
+              <CardComments
+                comments={comments}
+                loading={commentsLoading}
+                onAddComment={addComment}
+                onEditComment={editComment}
+                onDeleteComment={deleteComment}
+              />
+            )}
+
+            {activeTab === 'attachments' && (
+              <CardAttachments
+                attachments={attachments}
+                loading={attachmentsLoading}
+                onUpload={uploadAttachment}
+                onDelete={deleteAttachment}
+                getFileIcon={getFileIcon}
+                formatFileSize={formatFileSize}
+              />
+            )}
+
+            {activeTab === 'activity' && (
+              <div className="text-center py-8 text-slate-500 dark:text-slate-400">
+                Activity log coming soon...
               </div>
             )}
           </div>

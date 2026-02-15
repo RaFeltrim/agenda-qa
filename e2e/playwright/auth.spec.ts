@@ -17,7 +17,7 @@ async function loginAs(page: Page, email: string, password: string) {
   await page.locator(SELECTORS.login.submitButton).click();
 }
 
-test.describe('Authentication Flow', () => {
+test.describe('Authentication Flow @regression', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto(ROUTES.login);
@@ -50,12 +50,14 @@ test.describe('Authentication Flow', () => {
     await loginAs(page, 'fake@email.com', 'wrongpassword');
 
     // Should stay on login page
-    await page.waitForTimeout(3000);
     await expect(page).toHaveURL(/\/login/);
 
     // Error notification or message should appear
     const errorVisible = await page.locator('.ant-message-error, .ant-notification-error, text=Credenciais inválidas, text=Invalid login').first().isVisible().catch(() => false);
-    expect(errorVisible || (await page.url()).includes('/login')).toBeTruthy();
+    const stayedOnLoginPage = (await page.url()).includes('/login');
+    
+    // Verify that either error message appeared OR user stayed on login page
+    expect(errorVisible || stayedOnLoginPage).toBe(true);
   });
 
   test('TC-AUTH-004: Login form validates empty fields', async ({ page }) => {
@@ -68,7 +70,7 @@ test.describe('Authentication Flow', () => {
 
   test('TC-AUTH-005: Signup tab is accessible and has correct fields', async ({ page }) => {
     await page.locator('text=Cadastro').click();
-    await page.waitForTimeout(500);
+
 
     // Signup submit button should be visible
     await expect(page.locator(SELECTORS.login.signupButton)).toBeVisible({ timeout: 5000 });
@@ -84,7 +86,7 @@ test.describe('Authentication Flow', () => {
   test('TC-AUTH-007: Unauthenticated user is redirected to login', async ({ page }) => {
     // Try to access dashboard without login
     await page.goto(ROUTES.dashboard);
-    await page.waitForTimeout(3000);
+
     await expect(page).toHaveURL(/\/login/);
   });
 

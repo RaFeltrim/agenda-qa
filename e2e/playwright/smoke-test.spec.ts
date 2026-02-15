@@ -52,7 +52,7 @@ async function switchToTasks(page: Page) {
   await expect(taskBoard).toBeVisible({ timeout: 10000 });
 }
 
-test.describe('SMOKE TEST — Validação Pós-Migration', () => {
+test.describe('SMOKE TEST — Validação Pós-Migration @smoke', () => {
 
   test('1. Login e verificar role no perfil', async ({ page }) => {
     await login(page);
@@ -60,7 +60,9 @@ test.describe('SMOKE TEST — Validação Pós-Migration', () => {
     // Navigate to profile
     await page.goto(ROUTES.profile);
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(2000);
+    
+    // Wait for dashboard content to be visible
+    await expect(page.locator('text=Portal de Governança')).toBeVisible({ timeout: 5000 });
 
     // Check page loaded (profile or dashboard)
     const url = page.url();
@@ -141,7 +143,7 @@ test.describe('SMOKE TEST — Validação Pós-Migration', () => {
     }
 
     await novaTarefaBtn.click();
-    await page.waitForTimeout(2000);
+
 
     // Verify card appeared in "A Fazer" (todo) column
     const todoColumn = page.locator('[data-rbd-droppable-id="todo"]');
@@ -154,7 +156,9 @@ test.describe('SMOKE TEST — Validação Pós-Migration', () => {
     await page.reload();
     await page.waitForLoadState('networkidle');
     await switchToTasks(page);
-    await page.waitForTimeout(2000);
+    
+    // Wait for task board to be visible after refresh
+    await expect(page.locator('[data-rbd-droppable-id="todo"]')).toBeVisible({ timeout: 5000 });
 
     // Card should still be in todo column
     const todoColumnAfter = page.locator('[data-rbd-droppable-id="todo"]');

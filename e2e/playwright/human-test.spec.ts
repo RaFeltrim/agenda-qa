@@ -12,7 +12,7 @@ const consoleErrors: string[] = [];
 const networkErrors: string[] = [];
 const pageErrors: string[] = [];
 
-test.describe('TESTE HUMANO — Navegação Completa', () => {
+test.describe('TESTE HUMANO — Navegação Completa @regression', () => {
 
   test.beforeEach(async ({ page }) => {
     // Capturar TODOS os logs de console
@@ -69,7 +69,7 @@ test.describe('TESTE HUMANO — Navegação Completa', () => {
     }
 
     // Esperar conteúdo carregar
-    await page.waitForTimeout(3000);
+    await page.waitForLoadState('networkidle');
 
     // Verificar o que está visível
     const bodyText = await page.locator('body').innerText();
@@ -89,7 +89,7 @@ test.describe('TESTE HUMANO — Navegação Completa', () => {
     await page.getByTestId('login-password-input').fill(PASSWORD);
     await page.getByTestId('login-submit-button').click();
     await page.waitForURL(/\/dashboard/, { timeout: 15000 });
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('networkidle');
 
     // Verificar título
     const title = await page.locator('h1, h2, h3, h4').first().innerText().catch(() => 'NÃO ENCONTRADO');
@@ -116,7 +116,7 @@ test.describe('TESTE HUMANO — Navegação Completa', () => {
     if (btnVisible) {
       await newMeetingBtn.click();
       console.log('🖱️ Clicado em "Nova Reunião"');
-      await page.waitForTimeout(1000);
+      
 
       const modalVisible = await page.locator('.ant-modal').isVisible().catch(() => false);
       console.log(`📦 Modal abriu: ${modalVisible ? '✅ SIM' : '❌ NÃO'}`);
@@ -127,7 +127,7 @@ test.describe('TESTE HUMANO — Navegação Completa', () => {
         
         // Fechar modal
         await page.locator('.ant-modal .ant-modal-close').click().catch(() => {});
-        await page.waitForTimeout(500);
+        
       }
     }
 
@@ -149,7 +149,7 @@ test.describe('TESTE HUMANO — Navegação Completa', () => {
     await page.getByTestId('login-password-input').fill(PASSWORD);
     await page.getByTestId('login-submit-button').click();
     await page.waitForURL(/\/dashboard/, { timeout: 15000 });
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('networkidle');
 
     // Encontrar e clicar o toggle
     const toggle = page.getByTestId('view-toggle-switch');
@@ -159,7 +159,7 @@ test.describe('TESTE HUMANO — Navegação Completa', () => {
     if (toggleVisible) {
       await toggle.click();
       console.log('🖱️ Toggle clicado — mudando para TaskBoard');
-      await page.waitForTimeout(2000);
+      await page.waitForLoadState('networkidle');
 
       // Verificar TaskBoard
       const taskBoard = page.getByTestId('task-board');
@@ -201,11 +201,11 @@ test.describe('TESTE HUMANO — Navegação Completa', () => {
     await page.getByTestId('login-password-input').fill(PASSWORD);
     await page.getByTestId('login-submit-button').click();
     await page.waitForURL(/\/dashboard/, { timeout: 15000 });
-    await page.waitForTimeout(1000);
+    
 
     // Navegar para profile
     await page.goto('http://localhost:5173/profile');
-    await page.waitForTimeout(3000);
+    await page.waitForLoadState('networkidle');
     console.log(`📍 URL: ${page.url()}`);
 
     const bodyText = await page.locator('body').innerText();
@@ -244,11 +244,11 @@ test.describe('TESTE HUMANO — Navegação Completa', () => {
     await page.getByTestId('login-password-input').fill(PASSWORD);
     await page.getByTestId('login-submit-button').click();
     await page.waitForURL(/\/dashboard/, { timeout: 15000 });
-    await page.waitForTimeout(1000);
+    
 
     // Navegar para settings
     await page.goto('http://localhost:5173/settings');
-    await page.waitForTimeout(3000);
+    await page.waitForLoadState('networkidle');
     console.log(`📍 URL: ${page.url()}`);
 
     const bodyText = await page.locator('body').innerText();
@@ -267,11 +267,11 @@ test.describe('TESTE HUMANO — Navegação Completa', () => {
     await page.getByTestId('login-password-input').fill(PASSWORD);
     await page.getByTestId('login-submit-button').click();
     await page.waitForURL(/\/dashboard/, { timeout: 15000 });
-    await page.waitForTimeout(1000);
+    
 
     // Navegar para admin
     await page.goto('http://localhost:5173/admin/users');
-    await page.waitForTimeout(3000);
+    await page.waitForLoadState('networkidle');
     console.log(`📍 URL: ${page.url()}`);
 
     const bodyText = await page.locator('body').innerText();
@@ -294,7 +294,7 @@ test.describe('TESTE HUMANO — Navegação Completa', () => {
     await page.getByTestId('login-password-input').fill(PASSWORD);
     await page.getByTestId('login-submit-button').click();
     await page.waitForURL(/\/dashboard/, { timeout: 15000 });
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('networkidle');
 
     // Verificar sidebar
     const sidebar = page.locator('.ant-pro-sider, .ant-layout-sider');
@@ -315,7 +315,7 @@ test.describe('TESTE HUMANO — Navegação Completa', () => {
       const text = (await menuItems.nth(i).innerText().catch(() => '')).trim();
       if (text) {
         await menuItems.nth(i).click().catch(() => {});
-        await page.waitForTimeout(1500);
+        await expect(page.locator('.ant-menu-item-selected')).toBeVisible({ timeout: 3000 });
         console.log(`🖱️ Clicou em "${text}" → URL: ${page.url()}`);
       }
     }
@@ -327,7 +327,7 @@ test.describe('TESTE HUMANO — Navegação Completa', () => {
 
     if (avatarVisible) {
       await avatarDropdown.click();
-      await page.waitForTimeout(1000);
+      
       
       const dropdownMenu = page.locator('.ant-dropdown-menu, .ant-popover');
       const dropVisible = await dropdownMenu.isVisible().catch(() => false);

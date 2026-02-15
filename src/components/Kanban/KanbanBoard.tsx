@@ -14,9 +14,9 @@ import {
   DropAnimation,
 } from '@dnd-kit/core';
 import { Plus, MoreHorizontal, GripVertical, Calendar, Flag, MessageSquare, CheckSquare } from 'lucide-react';
-import type { Card, CardStatus } from '../types';
-import { useAuth } from '../hooks/useAuth';
-import UserAvatar from './UserAvatar';
+import type { Card, CardStatus } from '../../types';
+import { useAuth } from '../../hooks/useAuth';
+import UserAvatar from '../UserAvatar';
 
 const STATUS_COLUMNS = [
   { id: 'backlog', title: 'Backlog', color: 'bg-slate-400' },

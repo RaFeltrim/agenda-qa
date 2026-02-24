@@ -67,7 +67,7 @@ export default function DashboardPage() {
               onClick={() => handleAddCard('backlog')}
               className="bg-indigo-600"
             >
-              New Card
+              Novo Card
             </Button>
           </div>
         </div>

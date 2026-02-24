@@ -19,6 +19,27 @@
     @apply font-bold tracking-tight text-slate-950;
   }
 
+  /* Universal Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+    border: 2px solid #f1f5f9;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+
   /* Enhanced Scrollbar for Dark Mode */
   .dark ::-webkit-scrollbar-track {
     background: #0f172a;
@@ -72,18 +93,48 @@
 }
 
 /* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes fadeOut {
   0% {
     opacity: 1;
     transform: translateY(0);
   }
-
   100% {
     opacity: 0;
     transform: translateY(-20px);
   }
 }
 
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Ant Design Overrides */
 .ant-layout {
   background: #f8fafc !important;
 }
@@ -102,4 +153,11 @@
 
 .ant-btn-primary {
   @apply bg-brand-500 shadow-md hover:bg-brand-600 border-none transition-all !important;
+}
+
+/* Focus ring for accessibility */
+*:focus-visible {
+  outline: 2px solid #4063ff;
+  outline-offset: 2px;
+  border-radius: 4px;
 }

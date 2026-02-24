@@ -30,10 +30,26 @@ export default {
       boxShadow: {
         'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
         'premium': '0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 4px 10px -2px rgba(0, 0, 0, 0.05)',
+        'glow': '0 0 20px rgba(64, 99, 255, 0.15)',
       },
       transitionTimingFunction: {
         'out-expo': 'cubic-bezier(0.22, 1, 0.36, 1)',
-      }
+      },
+      animation: {
+        'fadeIn': 'fadeIn 0.4s ease-out',
+        'slideUp': 'slideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
+        'pulse-soft': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
     },
   },
   plugins: [],

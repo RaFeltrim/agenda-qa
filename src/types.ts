@@ -1,4 +1,4 @@
-export type CardStatus = 'todo' | 'in-progress' | 'done' | 'backlog' | 'blocked' | 'em-progresso' | 'bloqueado' | 'concluido';
+export type CardStatus = 'todo' | 'in-progress' | 'done' | 'backlog' | 'blocked' | 'a-fazer' | 'em-progresso' | 'bloqueado' | 'concluido';
 export type Priority = 'low' | 'medium' | 'high' | 'critical' | 'baixa' | 'media' | 'alta';
 export type MeetingLocation = 'Google Meet' | 'Teams' | 'Presencial' | 'Zoom' | 'Slack';
 

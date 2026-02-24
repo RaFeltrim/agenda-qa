@@ -60,7 +60,7 @@ export default function UpcomingMeetings({ meetings }: UpcomingMeetingsProps) {
                 </div>
             }
             className="rounded-xl h-full"
-            bodyStyle={{ padding: upcoming.length === 0 ? '24px' : '8px 16px' }}
+            styles={{ body: { padding: upcoming.length === 0 ? '24px' : '8px 16px' } }}
         >
             {upcoming.length === 0 ? (
                 <Empty

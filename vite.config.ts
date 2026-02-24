@@ -4,6 +4,18 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
       plugins: [react()],
+      optimizeDeps: {
+            include: [
+                  'react',
+                  'react-dom',
+                  'react/jsx-runtime',
+                  'zustand',
+                  'use-sync-external-store/shim/with-selector',
+            ],
+      },
+      resolve: {
+            dedupe: ['react', 'react-dom'],
+      },
       build: {
             rollupOptions: {
                   output: {

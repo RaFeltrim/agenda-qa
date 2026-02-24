@@ -159,7 +159,7 @@ export default function MeetingKanban() {
                     </div>
                 }
                 className="rounded-xl"
-                bodyStyle={{ padding: '16px' }}
+                styles={{ body: { padding: '16px' } }}
             >
                 <div className="flex gap-4 overflow-x-auto pb-2">
                     {COLUMNS.map((col) => {

@@ -81,6 +81,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
+
     const getSession = async () => {
       // Cypress E2E: the Supabase SDK's fetch() hangs in Cypress headless.
       // When running under Cypress, read session from localStorage directly
@@ -112,14 +114,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      const { data: { session } } = await supabase.auth.getSession();
-      const currentUser = session?.user ?? null;
-      setUser(currentUser);
-      if (currentUser) {
-        const userRole = await ensureProfile(currentUser);
-        setRole(userRole);
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const currentUser = session?.user ?? null;
+        if (!mounted) return;
+        setUser(currentUser);
+        if (currentUser) {
+          try {
+            const userRole = await ensureProfile(currentUser);
+            if (mounted) setRole(userRole);
+          } catch (err) {
+            console.warn('[Auth] ensureProfile failed during getSession:', err);
+          }
+        }
+      } catch (err) {
+        console.error('[Auth] getSession failed:', err);
+      } finally {
+        if (mounted) setLoading(false);
       }
-      setLoading(false);
     };
     getSession();
 
@@ -127,19 +139,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       async (_event, session) => {
         // Skip in Cypress — session is managed via localStorage injection (DEV only)
         if (import.meta.env.DEV && typeof window !== 'undefined' && (window as any).Cypress) return;
+        if (!mounted) return;
 
         const currentUser = session?.user ?? null;
         setUser(currentUser);
         if (currentUser) {
-          const userRole = await ensureProfile(currentUser);
-          setRole(userRole);
+          try {
+            const userRole = await ensureProfile(currentUser);
+            if (mounted) setRole(userRole);
+          } catch (err) {
+            console.warn('[Auth] ensureProfile failed during auth change:', err);
+            // Don't block — keep existing role
+          }
         } else {
           setRole('viewer');
         }
       }
     );
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const login = async (email: string, password: string) => {

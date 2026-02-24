@@ -62,7 +62,7 @@ export default function DashboardStats({ cards, meetings }: DashboardStatsProps)
                 <Col xs={12} sm={12} md={6} key={stat.title}>
                     <Card
                         className={`${stat.bg} border-none rounded-xl`}
-                        bodyStyle={{ padding: '20px' }}
+                        styles={{ body: { padding: '20px' } }}
                     >
                         <div className="flex items-center gap-3">
                             <div

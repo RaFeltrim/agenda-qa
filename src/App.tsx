@@ -1,19 +1,17 @@
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import ProtectedRoute from './components/ProtectedRoute';
 import AppLayout from './components/AppLayout';
 import LoadingFallback from './components/LoadingFallback';
+import LoginPage from './app/login/page';
+import DashboardPage from './app/dashboard/page';
+import ProjectsPage from './app/projects/page';
+import MeetingsPage from './app/meetings/page';
+import ProfilePage from './app/profile/page';
+import SettingsPage from './app/settings/page';
 import './index.css';
-
-// Lazy-loaded pages — each becomes a separate chunk for on-demand loading
-const LoginPage = lazy(() => import('./app/login/page'));
-const DashboardPage = lazy(() => import('./app/dashboard/page'));
-const ProjectsPage = lazy(() => import('./app/projects/page'));
-const MeetingsPage = lazy(() => import('./app/meetings/page'));
-const ProfilePage = lazy(() => import('./app/profile/page'));
-const SettingsPage = lazy(() => import('./app/settings/page'));
 
 function App() {
   return (
@@ -31,9 +29,7 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ErrorBoundary>
-                      <Suspense fallback={<LoadingFallback />}>
-                        <DashboardPage />
-                      </Suspense>
+                      <DashboardPage />
                     </ErrorBoundary>
                   </ProtectedRoute>
                 }
@@ -43,9 +39,7 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={['admin', 'user']}>
                     <ErrorBoundary>
-                      <Suspense fallback={<LoadingFallback />}>
-                        <ProjectsPage />
-                      </Suspense>
+                      <ProjectsPage />
                     </ErrorBoundary>
                   </ProtectedRoute>
                 }
@@ -55,9 +49,7 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ErrorBoundary>
-                      <Suspense fallback={<LoadingFallback />}>
-                        <MeetingsPage />
-                      </Suspense>
+                      <MeetingsPage />
                     </ErrorBoundary>
                   </ProtectedRoute>
                 }
@@ -67,9 +59,7 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ErrorBoundary>
-                      <Suspense fallback={<LoadingFallback />}>
-                        <ProfilePage />
-                      </Suspense>
+                      <ProfilePage />
                     </ErrorBoundary>
                   </ProtectedRoute>
                 }
@@ -79,9 +69,7 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={['admin']}>
                     <ErrorBoundary>
-                      <Suspense fallback={<LoadingFallback />}>
-                        <SettingsPage />
-                      </Suspense>
+                      <SettingsPage />
                     </ErrorBoundary>
                   </ProtectedRoute>
                 }

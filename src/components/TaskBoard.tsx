@@ -1,11 +1,11 @@
-import { Card, Space, Button, Badge, Tag, Typography, Select, Empty, Tooltip, Modal } from 'antd';
+import { Card, Space, Button, Badge, Tag, Typography, Select, Empty, Tooltip, Modal, Input } from 'antd';
 import { PlusOutlined, InfoCircleOutlined, CalendarOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DropResult } from 'react-beautiful-dnd';
 import { useCardStore } from '../store/cardStore';
 import { useSprintStore } from '../store/sprintStore';
 import { useAuth } from '../hooks/useAuth';
-import { useEffect, useState   } from 'react';
+import { useEffect, useState } from 'react';
 import type { CardStatus, Sprint } from '../types';
 import { SprintModal, type SprintFormValues } from './Modals/SprintModal';
 import { CardDetailModal } from './Modals/CardDetailModal';
@@ -71,35 +71,51 @@ export const TaskBoard = () => {
     const onDragEnd = (result: DropResult): void => {
         if (!canEditContent) return;
         if (!result.destination) return;
-        
+
         const { draggableId, destination } = result;
         const newStatus = destination.droppableId;
-        
+
         // Type-safe status validation
         if (!isValidCardStatus(newStatus)) {
             console.error(`Invalid card status: ${newStatus}`);
             return;
         }
-        
+
         moveCard(draggableId, newStatus);
     };
 
+    // BUG-024 FIX: Replace prompt() with Ant Design modal for accessible task creation
     const handleCreateTask = () => {
-        const title = prompt('Nome da tarefa:');
-        if (title) {
-            addCard({
-                title,
-                priority: 'medium',
-                status: 'todo',
-                tags: [],
-                description: 'Nova tarefa rápida',
-                subTasks: [],
-                comments: [],
-                attachments: [],
-                history: [],
-                sprintId: activeSprintId
-            });
-        }
+        let taskTitle = '';
+        Modal.confirm({
+            title: 'Nova Tarefa',
+            content: (
+                <Input
+                    placeholder="Nome da tarefa"
+                    onChange={(e) => { taskTitle = e.target.value; }}
+                    onPressEnter={() => { /* handled by onOk */ }}
+                    autoFocus
+                />
+            ),
+            okText: 'Criar',
+            cancelText: 'Cancelar',
+            onOk: () => {
+                if (taskTitle.trim()) {
+                    addCard({
+                        title: taskTitle.trim(),
+                        priority: 'medium',
+                        status: 'todo',
+                        tags: [],
+                        description: '',
+                        subTasks: [],
+                        comments: [],
+                        attachments: [],
+                        history: [],
+                        sprintId: activeSprintId
+                    });
+                }
+            },
+        });
     };
 
     // Sprint Handlers
@@ -211,7 +227,7 @@ export const TaskBoard = () => {
                                 icon={<PlusOutlined />}
                                 onClick={handleCreateTask}
                                 className="rounded-lg h-11 px-6 font-semibold"
-                                disabled={!activeSprintId && cards.length > 0} // Can create to backlog if enabled, but let's stick to logic
+                                disabled={false} // BUG-023 FIX: Always allow creating tasks
                             >
                                 Nova Tarefa
                             </Button>

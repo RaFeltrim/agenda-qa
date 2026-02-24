@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Upload, Download, Trash2, Eye, FileText } from 'lucide-react';
+import { Upload, Download, Trash2, Eye } from 'lucide-react';
 import type { CardAttachment } from '../../hooks/useAttachments';
 import { useAuth } from '../../hooks/useAuth';
 

@@ -9,7 +9,7 @@ if (apiKey) {
     console.warn('VITE_GEMINI_API_KEY is not set. AI features will not work.');
 }
 
-const model = genAI ? genAI.getGenerativeModel({ model: 'gemini-pro' }) : null;
+const model = genAI ? genAI.getGenerativeModel({ model: 'gemini-2.0-flash' }) : null;
 
 export const geminiService = {
     async generateTaskSuggestions(context: string): Promise<string[]> {

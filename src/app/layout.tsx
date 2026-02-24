@@ -9,7 +9,7 @@ import {
   UserOutlined,
   SettingOutlined,
   TeamOutlined,
-    BarChartOutlined,
+  BarChartOutlined,
 } from '@ant-design/icons';
 import { useEffect } from 'react';
 import type { User } from '@supabase/supabase-js';
@@ -62,21 +62,21 @@ export default function RootLayout() {
     },
     ...(isAdmin
       ? [
-          {
-            path: '/admin/users',
-            name: 'Gestão de Usuários',
-            icon: <TeamOutlined />,
-          },
-              ...(user?.role === 'admin' || user?.role === 'manager'
-                          ? [
-                            {
-                                            path: '/ExecutiveDashboard',
-                                            name: 'Visão Executiva',
-                                            icon: <BarChartOutlined />,
-                            },
-                                      ]
-                          : []),
-        ]
+        {
+          path: '/admin/users',
+          name: 'Gestão de Usuários',
+          icon: <TeamOutlined />,
+        },
+        ...(role === 'admin'
+          ? [
+            {
+              path: '/ExecutiveDashboard',
+              name: 'Visão Executiva',
+              icon: <BarChartOutlined />,
+            },
+          ]
+          : []),
+      ]
       : []),
   ];
 
@@ -99,13 +99,13 @@ export default function RootLayout() {
       }}
     >
       <App>
-      <LayoutInner
-        user={user}
-        role={role}
-        logout={logout}
-        menuItems={menuItems}
-        isAdmin={isAdmin}
-      />
+        <LayoutInner
+          user={user}
+          role={role}
+          logout={logout}
+          menuItems={menuItems}
+          isAdmin={isAdmin}
+        />
       </App>
     </ConfigProvider>
   );
@@ -135,78 +135,78 @@ function LayoutInner({
   }, [messageApi]);
 
   return (
-      <ProLayout
-        title="Agenda QA"
-        logo={
-          <div className="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center text-white font-bold">
-            QA
-          </div>
-        }
-        layout="mix"
-        contentWidth="Fixed"
-        fixedHeader
-        fixSiderbar
-        route={{ routes: menuItems }}
-        location={{ pathname: location.pathname }}
-        menuItemRender={(item, dom) => (
-          <div
-            onClick={() => navigate(item.path || '/dashboard')}
-            className="flex items-center gap-2"
-          >
-            {dom}
-          </div>
-        )}
-        avatarProps={{
-          icon: <UserOutlined />,
-          size: 'small',
-          title: user?.email?.split('@')[0],
-          render: (_props, dom) => {
-            const dropdownItems = [
-              {
-                key: 'profile',
-                icon: <UserOutlined />,
-                label: 'Meu Perfil',
-                onClick: () => navigate('/profile'),
-              },
-              ...(isAdmin
-                ? [
-                    { type: 'divider' as const },
-                    {
-                      key: 'settings',
-                      icon: <SettingOutlined />,
-                      label: 'Configurações',
-                      onClick: () => navigate('/settings'),
-                    },
-                    {
-                      key: 'users',
-                      icon: <TeamOutlined />,
-                      label: 'Gestão de Usuários',
-                      onClick: () => navigate('/admin/users'),
-                    },
-                  ]
-                : []),
-              { type: 'divider' as const },
-              {
-                key: 'logout',
-                icon: <LogoutOutlined />,
-                label: 'Sair',
-                danger: true,
-                onClick: logout,
-              },
-            ];
-            return (
-              <Dropdown menu={{ items: dropdownItems }}>
-                <div className="flex items-center gap-2 px-2 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg p-1 transition-all">
-                  {dom}
-                </div>
-              </Dropdown>
-            );
-          },
-        }}
-      >
-        <div className="max-w-7xl mx-auto">
-          <Outlet />
+    <ProLayout
+      title="Agenda QA"
+      logo={
+        <div className="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center text-white font-bold">
+          QA
         </div>
-      </ProLayout>
+      }
+      layout="mix"
+      contentWidth="Fixed"
+      fixedHeader
+      fixSiderbar
+      route={{ routes: menuItems }}
+      location={{ pathname: location.pathname }}
+      menuItemRender={(item, dom) => (
+        <div
+          onClick={() => navigate(item.path || '/dashboard')}
+          className="flex items-center gap-2"
+        >
+          {dom}
+        </div>
+      )}
+      avatarProps={{
+        icon: <UserOutlined />,
+        size: 'small',
+        title: user?.email?.split('@')[0],
+        render: (_props, dom) => {
+          const dropdownItems = [
+            {
+              key: 'profile',
+              icon: <UserOutlined />,
+              label: 'Meu Perfil',
+              onClick: () => navigate('/profile'),
+            },
+            ...(isAdmin
+              ? [
+                { type: 'divider' as const },
+                {
+                  key: 'settings',
+                  icon: <SettingOutlined />,
+                  label: 'Configurações',
+                  onClick: () => navigate('/settings'),
+                },
+                {
+                  key: 'users',
+                  icon: <TeamOutlined />,
+                  label: 'Gestão de Usuários',
+                  onClick: () => navigate('/admin/users'),
+                },
+              ]
+              : []),
+            { type: 'divider' as const },
+            {
+              key: 'logout',
+              icon: <LogoutOutlined />,
+              label: 'Sair',
+              danger: true,
+              onClick: logout,
+            },
+          ];
+          return (
+            <Dropdown menu={{ items: dropdownItems }}>
+              <div className="flex items-center gap-2 px-2 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg p-1 transition-all">
+                {dom}
+              </div>
+            </Dropdown>
+          );
+        },
+      }}
+    >
+      <div className="max-w-7xl mx-auto">
+        <Outlet />
+      </div>
+    </ProLayout>
   );
 }

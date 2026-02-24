@@ -85,16 +85,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // Cypress E2E: the Supabase SDK's fetch() hangs in Cypress headless.
       // When running under Cypress, read session from localStorage directly
       // to bypass all network calls.
-      if (typeof window !== 'undefined' && (window as any).Cypress) {
+      // BUG-009 FIX: Only allow bypass in development mode to prevent production auth bypass
+      if (import.meta.env.DEV && typeof window !== 'undefined' && (window as any).Cypress) {
         try {
-          // FIXED: Use string variable to avoid parsing issues
-          const storageKey = 'sb-njbtlnhhsspxjscyzoxp-auth-token';
-          const raw = localStorage.getItem(storageKey);
+          // BUG-010 FIX: Derive storage key from Supabase URL instead of hardcoding
+          const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+          const projectRef = supabaseUrl.match(/\/\/([^.]+)\./)?.[1] || '';
+          const storageKey = projectRef ? `sb-${projectRef}-auth-token` : '';
+          const raw = storageKey ? localStorage.getItem(storageKey) : null;
           if (raw) {
             const sessionData = JSON.parse(raw);
             if (sessionData?.user) {
               setUser(sessionData.user as User);
-              setRole('viewer');
+              // BUG-011 FIX: Read role from session data or ensureProfile instead of hardcoding 'viewer'
+              const userRole = sessionData.user?.user_metadata?.role || sessionData.role || 'viewer';
+              setRole(userRole as UserRole);
               setLoading(false);
               return;
             }
@@ -120,8 +125,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
-        // Skip in Cypress — session is managed via localStorage injection
-        if (typeof window !== 'undefined' && (window as any).Cypress) return;
+        // Skip in Cypress — session is managed via localStorage injection (DEV only)
+        if (import.meta.env.DEV && typeof window !== 'undefined' && (window as any).Cypress) return;
 
         const currentUser = session?.user ?? null;
         setUser(currentUser);

@@ -52,5 +52,5 @@ export default defineConfig({
     timeout: 60000,
   },
 
-  globalTeardown: require.resolve('./global-teardown'),
+  globalTeardown: './global-teardown',
 });

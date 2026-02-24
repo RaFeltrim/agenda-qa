@@ -36,6 +36,7 @@ interface MeetingStore {
     currentUserId: string | null;
     createMeeting: () => void;
     saveMeeting: (data: Partial<Meeting>) => Promise<void>;
+    saving: boolean;
     moveMeeting: (id: string, fromIndex: number, toIndex: number, newStatus: string) => Promise<void>;
     deleteMeeting: (id: string) => Promise<void>;
     fetchMeetings: () => Promise<void>;
@@ -79,6 +80,7 @@ export const useMeetingStore = create<MeetingStore>((set, get) => ({
     currentUserId: null,
     isModalOpen: false,
     selectedMeeting: null,
+    saving: false,
 
     setModalOpen: (isOpen) => set({ isModalOpen: isOpen }),
     setSelectedMeeting: (meeting) => set({ selectedMeeting: meeting }),
@@ -136,9 +138,13 @@ export const useMeetingStore = create<MeetingStore>((set, get) => ({
 
     saveMeeting: async (data) => {
         const state = get();
+        // BUG-021 FIX: Prevent double-submit on rapid clicks
+        if (state.saving) return;
+        set({ saving: true });
+
         const isEdit = !!state.selectedMeeting;
         const previousMeetings = [...state.meetings]; // Store for rollback
-        
+
         // Validate session
         const session = await validateSession();
         if (!session.isValid || !session.userId) {
@@ -167,7 +173,7 @@ export const useMeetingStore = create<MeetingStore>((set, get) => ({
 
         if (isEdit && state.selectedMeeting) {
             finalMeeting = { ...state.selectedMeeting, ...data } as Meeting;
-            
+
             // Optimistic update
             set({
                 meetings: state.meetings.map(m => m.id === finalMeeting.id ? finalMeeting : m),
@@ -236,7 +242,7 @@ export const useMeetingStore = create<MeetingStore>((set, get) => ({
             };
 
             const { error } = await supabase.from('meetings').insert(dbPayload);
-            
+
             if (error) {
                 console.error('Supabase insert failed:', error);
                 // Rollback to previous state
@@ -253,12 +259,14 @@ export const useMeetingStore = create<MeetingStore>((set, get) => ({
                 toastSuccess('Reunião criada com sucesso!');
             }
         }
+        // BUG-021 FIX: Reset saving flag
+        set({ saving: false });
     },
 
     deleteMeeting: async (id) => {
         const state = get();
         const previousMeetings = [...state.meetings]; // Store for rollback
-        
+
         // Validate session
         const session = await validateSession();
         if (!session.isValid || !session.userId) {
@@ -306,7 +314,7 @@ export const useMeetingStore = create<MeetingStore>((set, get) => ({
         if (!meeting) return;
 
         const oldStatus = meeting.status;
-        
+
         // Validate session
         const session = await validateSession();
         if (!session.isValid || !session.userId) {

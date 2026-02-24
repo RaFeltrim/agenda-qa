@@ -10,7 +10,7 @@ interface HeaderProps {
   onMenuToggle?: () => void;
 }
 
-export default function Header({ onMenuToggle }: HeaderProps) {
+export default function Header({}: HeaderProps) {
   const { user, role } = useAuth();
   const [isDark, toggleDarkMode] = useDarkMode();
   const [showProfileMenu, setShowProfileMenu] = useState(false);

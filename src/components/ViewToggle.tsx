@@ -1,6 +1,6 @@
 import { Switch, Space, Typography } from 'antd';
 import { CalendarOutlined, CheckCircleOutlined } from '@ant-design/icons';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 type ViewMode = 'reunioes' | 'tasks';
 
@@ -10,14 +10,17 @@ interface ViewToggleProps {
 
 export const ViewToggle: React.FC<ViewToggleProps> = ({ onChange }) => {
     const [mode, setMode] = useState<ViewMode>('reunioes');
+    // BUG-038 FIX: Stabilize onChange ref to avoid infinite re-render loops
+    const onChangeRef = useRef(onChange);
+    onChangeRef.current = onChange;
 
     useEffect(() => {
         const saved = localStorage.getItem('viewMode') as ViewMode;
         if (saved) {
             setMode(saved);
-            onChange?.(saved);
+            onChangeRef.current?.(saved);
         }
-    }, [onChange]);
+    }, []); // Only run on mount
 
     const handleChange = (checked: boolean) => {
         const newMode: ViewMode = checked ? 'tasks' : 'reunioes';

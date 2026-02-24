@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { supabase } from '../services/supabase';
-import type { Comment } from '../types';
+
 import { useAuth } from './useAuth';
 
 export interface CardComment {

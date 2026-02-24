@@ -6,14 +6,14 @@ import {
   useSensors,
   PointerSensor,
   TouchSensor,
-  DragEndEvent,
-  DragStartEvent,
+  type DragEndEvent,
+  type DragStartEvent,
   useDraggable,
   useDroppable,
   defaultDropAnimationSideEffects,
-  DropAnimation,
+  type DropAnimation,
 } from '@dnd-kit/core';
-import { Plus, MoreHorizontal, GripVertical, Calendar, Flag, MessageSquare, CheckSquare } from 'lucide-react';
+import { Plus, Calendar, MessageSquare } from 'lucide-react';
 import type { Card, CardStatus } from '../../types';
 import { useAuth } from '../../hooks/useAuth';
 import UserAvatar from '../UserAvatar';
@@ -88,10 +88,10 @@ function CardItem({ card, onClick }: CardItemProps) {
             </span>
           )}
           {/* Comments */}
-          {card.comentarios && card.comentarios.length > 0 && (
+          {card.comentariosOld && card.comentariosOld.length > 0 && (
             <span className="flex items-center gap-1">
               <MessageSquare className="w-3 h-3" />
-              {card.comentarios.length}
+              {card.comentariosOld.length}
             </span>
           )}
         </div>

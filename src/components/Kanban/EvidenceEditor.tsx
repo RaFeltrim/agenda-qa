@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, Edit3, Trash2, Save, ExternalLink, FileText, Image, Download } from 'lucide-react';
+import { X, Edit3, Trash2, Save, ExternalLink, FileText, Download } from 'lucide-react';
 import type { CardAttachment } from '../../hooks/useAttachments';
 
 interface EvidenceEditorProps {

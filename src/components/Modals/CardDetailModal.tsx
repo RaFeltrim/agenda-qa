@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
-import { Modal, Input, Select, DatePicker, Tabs, List, Checkbox, Button, Avatar, Upload, Tag, Typography, Timeline } from 'antd';
+import React, { useState, useRef, useCallback } from 'react';
+import { Modal, Input, Select, DatePicker, Tabs, List, Checkbox, Button, Avatar, Upload, Tag, Typography, Timeline, Tooltip } from 'antd';
 import { UserOutlined, PaperClipOutlined, SendOutlined, DeleteOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useCardStore } from '../../store/cardStore';
+import { useAuth } from '../../hooks/useAuth';
 import type { Card, CardStatus, Priority } from '../../types';
 
 dayjs.extend(relativeTime);
+
+// BUG-028: Check if Gemini API key is configured
+const isAIEnabled = !!import.meta.env.VITE_GEMINI_API_KEY;
 
 interface CardDetailModalProps {
     cardId: string | null;
@@ -20,16 +24,30 @@ const { Option } = Select;
 
 export const CardDetailModal: React.FC<CardDetailModalProps> = ({ cardId, open, onClose }) => {
     const { cards, updateCard, addSubTask, toggleSubTask, addComment, deleteComment, addAttachment, deleteAttachment } = useCardStore();
+    const { user } = useAuth(); // BUG-012 FIX: Use real user ID
     const card = cards.find(c => c.id === cardId);
 
     const [commentText, setCommentText] = useState('');
     const [subTaskText, setSubTaskText] = useState('');
+
+    // BUG-013 FIX: Debounce updates to prevent excessive DB writes on every keystroke
+    const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+    const debouncedUpdate = useCallback((updates: Partial<Card>) => {
+        if (!cardId) return;
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+        debounceRef.current = setTimeout(() => {
+            updateCard(cardId, updates);
+        }, 500);
+    }, [cardId, updateCard]);
 
     if (!card) return null;
 
     const handleUpdate = (updates: Partial<Card>) => {
         if (cardId) updateCard(cardId, updates);
     };
+
+    // BUG-012 FIX: Get real user ID for comments and attachments
+    const currentUserId = user?.id || 'anonymous';
 
     const handleAddSubTask = () => {
         if (subTaskText.trim() && cardId) {
@@ -40,7 +58,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({ cardId, open, 
 
     const handleAddComment = () => {
         if (commentText.trim() && cardId) {
-            addComment(cardId, commentText, 'current-user'); // Mock user ID
+            addComment(cardId, commentText, currentUserId); // BUG-012 FIX: Real user ID
             setCommentText('');
         }
     };
@@ -59,27 +77,32 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({ cardId, open, 
                             onPressEnter={handleAddSubTask}
                         />
                         <Button type="primary" onClick={handleAddSubTask}>ADD</Button>
-                        <Button
-                            icon={<span role="img" aria-label="magic">✨</span>}
-                            onClick={async () => {
-                                if (!card.description && !card.title) return;
-                                try {
-                                    const { geminiService } = await import('../../services/gemini');
-                                    const context = `Title: ${card.title}. Description: ${card.description}`;
-                                    const suggestions = await geminiService.generateTaskSuggestions(context);
+                        {/* BUG-028 FIX: Only show AI button when Gemini API key is configured */}
+                        {isAIEnabled && (
+                            <Tooltip title="Gerar subtarefas com IA">
+                                <Button
+                                    icon={<span role="img" aria-label="magic">✨</span>}
+                                    onClick={async () => {
+                                        if (!card.description && !card.title) return;
+                                        try {
+                                            const { geminiService } = await import('../../services/gemini');
+                                            const context = `Title: ${card.title}. Description: ${card.description}`;
+                                            const suggestions = await geminiService.generateTaskSuggestions(context);
 
-                                    if (Array.isArray(suggestions)) {
-                                        suggestions.forEach(text => {
-                                            if (cardId) addSubTask(cardId, text);
-                                        });
-                                    }
-                                } catch (e) {
-                                    console.error(e);
-                                }
-                            }}
-                        >
-                            IA
-                        </Button>
+                                            if (Array.isArray(suggestions)) {
+                                                suggestions.forEach(text => {
+                                                    if (cardId) addSubTask(cardId, text);
+                                                });
+                                            }
+                                        } catch (e) {
+                                            console.error(e);
+                                        }
+                                    }}
+                                >
+                                    IA
+                                </Button>
+                            </Tooltip>
+                        )}
                     </div>
                     <List
                         dataSource={card.subTasks}
@@ -151,23 +174,25 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({ cardId, open, 
             label: `Anexos (${card.attachments.length})`,
             children: (
                 <div className="space-y-4">
-                    <Upload
-                        beforeUpload={(file) => {
-                            if (cardId) {
-                                // Mock upload
-                                addAttachment(cardId, {
-                                    name: file.name,
-                                    type: 'file',
-                                    url: '#', // Mock URL
-                                    uploadedBy: 'current-user'
-                                });
-                            }
-                            return false; // Prevent auto upload
-                        }}
-                        showUploadList={false}
-                    >
-                        <Button icon={<PaperClipOutlined />}>Anexar Arquivo</Button>
-                    </Upload>
+                    {/* BUG-014 FIX: Disable mock upload — show tooltip explaining it's not available */}
+                    <Tooltip title="Upload de arquivos requer configuração do Supabase Storage">
+                        <Upload
+                            beforeUpload={(file) => {
+                                if (cardId) {
+                                    addAttachment(cardId, {
+                                        name: file.name,
+                                        type: 'file',
+                                        url: '#',
+                                        uploadedBy: currentUserId
+                                    });
+                                }
+                                return false;
+                            }}
+                            showUploadList={false}
+                        >
+                            <Button icon={<PaperClipOutlined />}>Anexar Arquivo</Button>
+                        </Upload>
+                    </Tooltip>
                     <List
                         dataSource={card.attachments}
                         renderItem={item => (
@@ -220,7 +245,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({ cardId, open, 
             title={
                 <Input
                     value={card.title}
-                    onChange={e => handleUpdate({ title: e.target.value })}
+                    onChange={e => debouncedUpdate({ title: e.target.value })}
                     className="text-lg font-bold border-none bg-transparent focus:bg-white px-0 w-full sm:w-3/4"
                     maxLength={100}
                 />
@@ -232,7 +257,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({ cardId, open, 
                         <Text type="secondary" className="text-xs uppercase font-bold mb-2 block">Descrição</Text>
                         <TextArea
                             value={card.description}
-                            onChange={e => handleUpdate({ description: e.target.value })}
+                            onChange={e => debouncedUpdate({ description: e.target.value })}
                             placeholder="Adicione uma descrição detalhada..."
                             autoSize={{ minRows: 3, maxRows: 10 }}
                             className="bg-slate-50 border-slate-200"

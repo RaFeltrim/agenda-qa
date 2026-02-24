@@ -98,6 +98,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -109,6 +110,7 @@
     opacity: 1;
     transform: translateY(0);
   }
+
   100% {
     opacity: 0;
     transform: translateY(-20px);
@@ -120,6 +122,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -139,20 +142,107 @@
   background: #f8fafc !important;
 }
 
+.dark .ant-layout {
+  background: #0f172a !important;
+}
+
 .ant-pro-layout-content {
   padding: 24px !important;
 }
 
 .ant-card {
-  @apply shadow-soft border-slate-200 transition-all duration-300;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  border-color: #e2e8f0;
+  transition: all 0.3s;
+}
+
+.dark .ant-card {
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
+  border-color: #334155;
+  background: #1e293b;
 }
 
 .ant-card:hover {
-  @apply shadow-premium;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 4px 10px -2px rgba(0, 0, 0, 0.05);
+}
+
+.dark .ant-card:hover {
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4), 0 4px 10px -2px rgba(0, 0, 0, 0.2);
 }
 
 .ant-btn-primary {
-  @apply bg-brand-500 shadow-md hover:bg-brand-600 border-none transition-all !important;
+  background: #4063ff !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: none !important;
+  transition: all 0.3s !important;
+}
+
+.ant-btn-primary:hover {
+  background: #2940ff !important;
+}
+
+.dark .ant-btn-primary {
+  background: #668eff !important;
+}
+
+.dark .ant-btn-primary:hover {
+  background: #4063ff !important;
+}
+
+/* Dark mode text visibility for antd components */
+.dark .ant-typography {
+  color: #f1f5f9;
+}
+
+.dark .ant-typography.ant-typography-secondary {
+  color: #94a3b8 !important;
+}
+
+/* Dark mode modal */
+.dark .ant-modal-content {
+  background: #1e293b;
+}
+
+.dark .ant-modal-header {
+  background: #1e293b;
+}
+
+/* Dark mode input/select */
+.dark .ant-input,
+.dark .ant-select-selector,
+.dark .ant-picker {
+  background: #0f172a !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+.dark .ant-input::placeholder,
+.dark .ant-select-selection-placeholder {
+  color: #64748b !important;
+}
+
+/* Dark mode table */
+.dark .ant-table {
+  background: #1e293b;
+}
+
+.dark .ant-table-thead>tr>th {
+  background: #0f172a !important;
+  color: #94a3b8 !important;
+  border-color: #334155 !important;
+}
+
+.dark .ant-table-tbody>tr>td {
+  border-color: #334155 !important;
+}
+
+/* Dark mode tabs */
+.dark .ant-tabs-tab {
+  color: #94a3b8 !important;
+}
+
+.dark .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #668eff !important;
 }
 
 /* Focus ring for accessibility */

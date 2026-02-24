@@ -2,6 +2,7 @@ import { ConfigProvider, theme, Dropdown, App } from 'antd';
 import ptBR from 'antd/locale/pt_BR';
 import { ProLayout } from '@ant-design/pro-components';
 import { useAuth } from '../hooks/useAuth';
+import { useDarkMode } from '../hooks/useDarkMode';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
   DashboardOutlined,
@@ -17,6 +18,7 @@ import { initializeToast } from '../lib/toast';
 
 export default function RootLayout() {
   const { user, role, logout, loading } = useAuth();
+  const [isDark] = useDarkMode();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,10 +32,10 @@ export default function RootLayout() {
   }, [user, loading, navigate, location]);
 
   if (loading) return (
-    <div className="flex items-center justify-center h-screen bg-slate-50">
+    <div className={`flex items-center justify-center h-screen ${isDark ? 'bg-slate-900' : 'bg-slate-50'}`}>
       <div className="animate-pulse flex flex-col items-center">
         <div className="w-12 h-12 bg-brand-500 rounded-xl mb-4"></div>
-        <div className="h-4 w-32 bg-slate-200 rounded"></div>
+        <div className={`h-4 w-32 ${isDark ? 'bg-slate-700' : 'bg-slate-200'} rounded`}></div>
       </div>
     </div>
   );
@@ -80,23 +82,56 @@ export default function RootLayout() {
       : []),
   ];
 
+  // Ant Design theme configuration based on dark mode
+  const themeConfig = isDark
+    ? {
+      algorithm: theme.darkAlgorithm,
+      token: {
+        colorPrimary: '#668eff',
+        borderRadius: 8,
+        fontFamily: "'Inter', sans-serif",
+        colorBgLayout: '#0f172a',
+        colorBgContainer: '#1e293b',
+        colorBgElevated: '#1e293b',
+        colorText: '#f1f5f9',
+        colorTextSecondary: '#94a3b8',
+        colorBorder: '#334155',
+        colorBorderSecondary: '#1e293b',
+      },
+      components: {
+        Card: {
+          boxShadowTertiary: '0 4px 20px -2px rgba(0, 0, 0, 0.3)',
+        },
+        Layout: {
+          bodyBg: '#0f172a',
+          headerBg: '#0f172a',
+          siderBg: '#0f172a',
+        },
+        Menu: {
+          darkItemBg: '#0f172a',
+          darkSubMenuItemBg: '#0f172a',
+        },
+      },
+    }
+    : {
+      algorithm: theme.defaultAlgorithm,
+      token: {
+        colorPrimary: '#4063ff',
+        borderRadius: 8,
+        fontFamily: "'Inter', sans-serif",
+        colorBgLayout: '#f8fafc',
+      },
+      components: {
+        Card: {
+          boxShadowTertiary: '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+        },
+      },
+    };
+
   return (
     <ConfigProvider
       locale={ptBR}
-      theme={{
-        algorithm: theme.defaultAlgorithm,
-        token: {
-          colorPrimary: '#4063ff',
-          borderRadius: 8,
-          fontFamily: "'Inter', sans-serif",
-          colorBgLayout: '#f8fafc',
-        },
-        components: {
-          Card: {
-            boxShadowTertiary: '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
-          },
-        },
-      }}
+      theme={themeConfig}
     >
       <App>
         <LayoutInner
@@ -105,6 +140,7 @@ export default function RootLayout() {
           logout={logout}
           menuItems={menuItems}
           isAdmin={isAdmin}
+          isDark={isDark}
         />
       </App>
     </ConfigProvider>
@@ -118,12 +154,14 @@ function LayoutInner({
   logout,
   menuItems,
   isAdmin,
+  isDark,
 }: {
   user: User;
   role: string;
   logout: () => Promise<void>;
   menuItems: { path: string; name: string; icon: React.ReactNode }[];
   isAdmin: boolean;
+  isDark: boolean;
 }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -143,6 +181,7 @@ function LayoutInner({
         </div>
       }
       layout="mix"
+      navTheme={isDark ? 'realDark' : 'light'}
       contentWidth="Fixed"
       fixedHeader
       fixSiderbar

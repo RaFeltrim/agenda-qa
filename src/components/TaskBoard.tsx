@@ -1,12 +1,13 @@
 import { Card, Space, Button, Badge, Tag, Typography, Select, Empty, Tooltip, Modal, Input } from 'antd';
 import { PlusOutlined, InfoCircleOutlined, CalendarOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import type { DropResult } from 'react-beautiful-dnd';
+import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 import { useCardStore } from '../store/cardStore';
 import { useSprintStore } from '../store/sprintStore';
 import { useAuth } from '../hooks/useAuth';
 import { useEffect, useState } from 'react';
-import type { CardStatus, Sprint } from '../types';
+import type { Card as CardType, CardStatus, Sprint } from '../types';
 import { SprintModal, type SprintFormValues } from './Modals/SprintModal';
 import { CardDetailModal } from './Modals/CardDetailModal';
 
@@ -34,6 +35,93 @@ const priorityColors: Record<string, string> = {
 function isValidCardStatus(status: string): status is CardStatus {
     return VALID_STATUSES.includes(status as CardStatus);
 }
+
+interface DroppableColumnProps {
+    col: typeof columns[0];
+    children: React.ReactNode;
+    cardCount: number;
+}
+
+const DroppableColumn: React.FC<DroppableColumnProps> = ({ col, children, cardCount }) => {
+    const { setNodeRef, isOver } = useDroppable({ id: col.id });
+    return (
+        <div className="flex-shrink-0 w-80">
+            <div className="flex items-center justify-between mb-4 px-2">
+                <Space size="small">
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: col.color }}></div>
+                    <Title level={5} style={{ margin: 0, fontSize: '14px' }}>
+                        {col.title}
+                    </Title>
+                    <Badge
+                        count={cardCount}
+                        style={{ backgroundColor: '#e2e8f0', color: '#475569', boxShadow: 'none' }}
+                    />
+                </Space>
+            </div>
+            <div
+                ref={setNodeRef}
+                className={`bg-slate-100/50 p-3 rounded-xl min-h-[600px] border border-dashed ${isOver ? 'border-blue-400 bg-blue-50/30' : 'border-slate-200'}`}
+            >
+                {children}
+            </div>
+        </div>
+    );
+};
+
+interface DraggableCardProps {
+    card: CardType;
+    onClick: () => void;
+}
+
+const DraggableCard: React.FC<DraggableCardProps> = ({ card, onClick }) => {
+    const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+        id: card.id,
+    });
+    const style = transform
+        ? { transform: CSS.Translate.toString(transform), zIndex: isDragging ? 999 : undefined }
+        : undefined;
+
+    return (
+        <div
+            ref={setNodeRef}
+            style={style}
+            {...listeners}
+            {...attributes}
+            className="mb-4"
+        >
+            <Card
+                hoverable
+                size="small"
+                onClick={onClick}
+                className={`border-none rounded-xl bg-white dark:bg-slate-800 ${isDragging ? 'shadow-premium rotate-1' : ''}`}
+                bodyStyle={{ padding: '16px' }}
+            >
+                <Space direction="vertical" size="small" style={{ width: '100%' }}>
+                    <div className="flex justify-between items-start">
+                        <Text className="font-semibold text-base leading-tight w-3/4">
+                            {card.title}
+                        </Text>
+                        <Tag
+                            color={priorityColors[card.priority]}
+                            className="m-0 rounded border-none text-[10px] font-bold uppercase"
+                        >
+                            {card.priority}
+                        </Tag>
+                    </div>
+                    {card.description && (
+                        <div className="text-slate-500 text-xs mt-1">
+                            {card.description}
+                        </div>
+                    )}
+                    <div className="flex items-center gap-2 mt-2 text-slate-400 text-[10px]">
+                        <InfoCircleOutlined />
+                        <span>ID: {card.id.substring(0, 8)}</span>
+                    </div>
+                </Space>
+            </Card>
+        </div>
+    );
+};
 
 export const TaskBoard = () => {
     const { cards, fetchCards, moveCard, addCard, setCurrentUserId } = useCardStore();
@@ -68,12 +156,12 @@ export const TaskBoard = () => {
         ? cards.filter(c => c.sprintId === activeSprintId)
         : cards;
 
-    const onDragEnd = (result: DropResult): void => {
+    const onDragEnd = (event: DragEndEvent): void => {
         if (!canEditContent) return;
-        if (!result.destination) return;
+        if (!event.over) return;
 
-        const { draggableId, destination } = result;
-        const newStatus = destination.droppableId;
+        const draggableId = String(event.active.id);
+        const newStatus = String(event.over.id);
 
         // Type-safe status validation
         if (!isValidCardStatus(newStatus)) {
@@ -267,85 +355,24 @@ export const TaskBoard = () => {
                     }
                 />
             ) : (
-                <DragDropContext onDragEnd={onDragEnd}>
+                <DndContext onDragEnd={onDragEnd}>
                     <div className="flex gap-6 overflow-x-auto pb-4">
                         {columns.map((col) => {
                             const colCards = filteredCards.filter(t => t.status === col.id || col.aliases?.includes(t.status));
                             return (
-                                <div key={col.id} className="flex-shrink-0 w-80">
-                                    <div className="flex items-center justify-between mb-4 px-2">
-                                        <Space size="small">
-                                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: col.color }}></div>
-                                            <Title level={5} style={{ margin: 0, fontSize: '14px' }}>
-                                                {col.title}
-                                            </Title>
-                                            <Badge
-                                                count={colCards.length}
-                                                style={{ backgroundColor: '#e2e8f0', color: '#475569', boxShadow: 'none' }}
-                                            />
-                                        </Space>
-                                    </div>
-
-                                    <Droppable droppableId={col.id}>
-                                        {(provided) => (
-                                            <div
-                                                {...provided.droppableProps}
-                                                ref={provided.innerRef}
-                                                className="bg-slate-100/50 p-3 rounded-xl min-h-[600px] border border-dashed border-slate-200"
-                                            >
-                                                {colCards.map((card, index) => (
-                                                    <Draggable key={card.id} draggableId={card.id} index={index}>
-                                                        {(provided, snapshot) => (
-                                                            <div
-                                                                ref={provided.innerRef}
-                                                                {...provided.draggableProps}
-                                                                {...provided.dragHandleProps}
-                                                                className="mb-4"
-                                                                style={{ ...provided.draggableProps.style }}
-                                                            >
-                                                                <Card
-                                                                    hoverable
-                                                                    size="small"
-                                                                    onClick={() => handleCardClick(card.id)}
-                                                                    className={`border-none rounded-xl bg-white dark:bg-slate-800 ${snapshot.isDragging ? 'shadow-premium rotate-1' : ''}`}
-                                                                    bodyStyle={{ padding: '16px' }}
-                                                                >
-                                                                    <Space direction="vertical" size="small" style={{ width: '100%' }}>
-                                                                        <div className="flex justify-between items-start">
-                                                                            <Text className="font-semibold text-base leading-tight w-3/4">
-                                                                                {card.title}
-                                                                            </Text>
-                                                                            <Tag
-                                                                                color={priorityColors[card.priority]}
-                                                                                className="m-0 rounded border-none text-[10px] font-bold uppercase"
-                                                                            >
-                                                                                {card.priority}
-                                                                            </Tag>
-                                                                        </div>
-                                                                        {card.description && (
-                                                                            <div className="text-slate-500 text-xs mt-1">
-                                                                                {card.description}
-                                                                            </div>
-                                                                        )}
-                                                                        <div className="flex items-center gap-2 mt-2 text-slate-400 text-[10px]">
-                                                                            <InfoCircleOutlined />
-                                                                            <span>ID: {card.id.substring(0, 8)}</span>
-                                                                        </div>
-                                                                    </Space>
-                                                                </Card>
-                                                            </div>
-                                                        )}
-                                                    </Draggable>
-                                                ))}
-                                                {provided.placeholder}
-                                            </div>
-                                        )}
-                                    </Droppable>
-                                </div>
+                                <DroppableColumn key={col.id} col={col} cardCount={colCards.length}>
+                                    {colCards.map((card) => (
+                                        <DraggableCard
+                                            key={card.id}
+                                            card={card}
+                                            onClick={() => handleCardClick(card.id)}
+                                        />
+                                    ))}
+                                </DroppableColumn>
                             );
                         })}
                     </div>
-                </DragDropContext>
+                </DndContext>
             )}
 
             <SprintModal

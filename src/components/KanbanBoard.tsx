@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Card, Space, Button, Input, Badge, Tag, Typography, Dropdown, Tabs, Modal } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, CalendarOutlined, ClockCircleOutlined, LinkOutlined, SwapOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import type { DropResult } from 'react-beautiful-dnd';
+import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 import { useMeetingStore, type Meeting } from '../store/meetingStore';
 import { useAuth } from '../hooks/useAuth';
 import { MeetingModal } from './MeetingModal';
@@ -61,7 +62,7 @@ const MeetingCard: React.FC<MeetingCardProps> = ({
                                             ),
                             onClick: () => onMove(col.id)
             }));
-    
+
         return (
                     <Card
                                     hoverable size="small"
@@ -117,6 +118,53 @@ const MeetingCard: React.FC<MeetingCardProps> = ({
                 );
 };
 
+interface DraggableMeetingItemProps {
+        meeting: Meeting;
+        canEditContent: boolean;
+        canManageMeetings: boolean;
+        isMobile: boolean;
+        onEdit: (meeting: Meeting) => void;
+        onDelete: (id: string) => void;
+        onMove: (id: string, newStatus: string) => void;
+}
+
+const DraggableMeetingItem: React.FC<DraggableMeetingItemProps> = ({
+        meeting, canEditContent, canManageMeetings, isMobile, onEdit, onDelete, onMove
+}) => {
+        const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+                id: meeting.id,
+                disabled: isMobile || !canEditContent,
+        });
+        const style = transform
+                ? { transform: CSS.Translate.toString(transform), zIndex: isDragging ? 999 : undefined }
+                : undefined;
+
+        return (
+                <div ref={setNodeRef} style={style} {...listeners} {...attributes} className="mb-4">
+                        <MeetingCard
+                                meeting={meeting}
+                                canEditContent={canEditContent}
+                                canManageMeetings={canManageMeetings}
+                                isMobile={isMobile}
+                                isDragging={isDragging}
+                                onEdit={() => onEdit(meeting)}
+                                onDelete={() => {
+                                        Modal.confirm({
+                                                title: 'Excluir reunião?',
+                                                icon: <ExclamationCircleOutlined />,
+                                                content: `Tem certeza que deseja excluir "${meeting.title}"?`,
+                                                okText: 'Excluir',
+                                                okType: 'danger',
+                                                cancelText: 'Cancelar',
+                                                onOk: () => onDelete(meeting.id),
+                                        });
+                                }}
+                                onMove={(newStatus) => onMove(meeting.id, newStatus)}
+                        />
+                </div>
+        );
+};
+
 interface KanbanColumnProps {
         column: typeof columns[0];
         meetings: Meeting[];
@@ -132,6 +180,8 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
         column, meetings, canEditContent, canManageMeetings, isMobile,
         onEdit, onDelete, onMove
 }) => {
+        const { setNodeRef, isOver } = useDroppable({ id: column.id });
+
         return (
                     <div className="flex-shrink-0 w-full md:w-80 snap-center">
                                 <div className="flex items-center justify-between mb-4 px-2">
@@ -142,43 +192,23 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
                                                                                                 style={{ backgroundColor: '#e2e8f0', color: '#475569', boxShadow: 'none' }} />
                                                 </Space>
                                 </div>
-                                <Droppable droppableId={column.id}>
-                                    {(provided) => (
-                                            <div {...provided.droppableProps} ref={provided.innerRef}
-                                                                        className="bg-slate-100/50 p-3 rounded-xl min-h-[400px] md:min-h-[600px] border border-dashed border-slate-200">
-                                                {meetings.map((meeting, index) => (
-                                                                                                        <Draggable key={meeting.id} draggableId={meeting.id} index={index} isDragDisabled={isMobile}>
-                                                                                                            {(provided, snapshot) => (
-                                                                                                                                                <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
-                                                                                                                                                                                            className="mb-4" style={{ ...provided.draggableProps.style }}>
-                                                                                                                                                                                        <MeetingCard
-                                                                                                                                                                                                                                        meeting={meeting}
-                                                                                                                                                                                                                                        canEditContent={canEditContent}
-                                                                                                                                                                                                                                        canManageMeetings={canManageMeetings}
-                                                                                                                                                                                                                                        isMobile={isMobile}
-                                                                                                                                                                                                                                        isDragging={snapshot.isDragging}
-                                                                                                                                                                                                                                        onEdit={() => onEdit(meeting)}
-                                                                                                                                                                                                                                        onDelete={() => {
-                                                                                                                                                                                                                                                                                            Modal.confirm({
-                                                                                                                                                                                                                                                                                                                                                    title: 'Excluir reunião?',
-                                                                                                                                                                                                                                                                                                                                                    icon: <ExclamationCircleOutlined />,
-                                                                                                                                                                                                                                                                                                                                                    content: `Tem certeza que deseja excluir "${meeting.title}"?`,
-                                                                                                                                                                                                                                                                                                                                                    okText: 'Excluir',
-                                                                                                                                                                                                                                                                                                                                                    okType: 'danger',
-                                                                                                                                                                                                                                                                                                                                                    cancelText: 'Cancelar',
-                                                                                                                                                                                                                                                                                                                                                    onOk: () => onDelete(meeting.id),
-                                                                                                                                                                                                                                                                                                                                                });
-                                                                                                                                                                                                                                                                                        }}
-                                                                                                                                                                                                                                        onMove={(newStatus) => onMove(meeting.id, newStatus)}
-                                                                                                                                                                                                                                    />
-                                                                                                                                                    </div>
-                                                                                                                                        )}
-                                                                                                            </Draggable>
-                                                                                                    ))}
-                                                {provided.placeholder}
-                                            </div>
-                                                )}
-                                </Droppable>
+                                <div
+                                        ref={setNodeRef}
+                                        className={`bg-slate-100/50 p-3 rounded-xl min-h-[400px] md:min-h-[600px] border border-dashed ${isOver ? 'border-blue-400 bg-blue-50/30' : 'border-slate-200'}`}
+                                >
+                                        {meetings.map((meeting) => (
+                                                <DraggableMeetingItem
+                                                        key={meeting.id}
+                                                        meeting={meeting}
+                                                        canEditContent={canEditContent}
+                                                        canManageMeetings={canManageMeetings}
+                                                        isMobile={isMobile}
+                                                        onEdit={onEdit}
+                                                        onDelete={onDelete}
+                                                        onMove={onMove}
+                                                />
+                                        ))}
+                                </div>
                     </div>
                 );
 };
@@ -197,22 +227,23 @@ export const KanbanBoard = () => {
                                     fetchMeetings();
                     }
         }, [user, fetchMeetings]);
-    
+
         const canEditContent = role === 'admin' || role === 'user';
         const canManageMeetings = role === 'admin';
-    
+
         const filteredMeetings = meetings.filter(m =>
                     m.title.toLowerCase().includes(search.toLowerCase())
                 );
-    
-        const onDragEnd = (result: DropResult) => {
-                    if (!canEditContent) return;
-                    if (!result.destination) return;
-                    const { draggableId, source, destination } = result;
-                    const newStatus = destination.droppableId;
-                    moveMeeting(draggableId, source.index, destination.index, newStatus);
+
+        const handleDragEnd = (event: DragEndEvent) => {
+                if (!canEditContent) return;
+                if (!event.over) return;
+                const draggableId = String(event.active.id);
+                const newStatus = String(event.over.id);
+                // fromIndex/toIndex args are unused in moveMeeting implementation
+                moveMeeting(draggableId, 0, 0, newStatus);
         };
-    
+
         const handleMoveCard = (meetingId: string, newStatus: string) => {
                     const meeting = meetings.find(m => m.id === meetingId);
                     if (meeting) {
@@ -221,12 +252,12 @@ export const KanbanBoard = () => {
                                     moveMeeting(meetingId, sourceIndex, destIndex, newStatus);
                     }
         };
-    
+
         const handleEdit = (meeting: Meeting) => {
                     setSelectedMeeting(meeting);
                     setModalOpen(true);
         };
-    
+
         const tabItems = columns.map(col => {
                     const colMeetings = filteredMeetings.filter(m => m.status === col.id);
                     return {
@@ -246,7 +277,7 @@ export const KanbanBoard = () => {
                                                     )
                     };
         });
-    
+
         return (
                     <div data-testid="kanban-board" className="mt-4">
                                 <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 mb-6 bg-white p-4 rounded-xl shadow-soft">
@@ -266,8 +297,8 @@ export const KanbanBoard = () => {
                                                     {filteredMeetings.length} reuniões
                                                 </Text>
                                 </div>
-                    
-                                <DragDropContext onDragEnd={onDragEnd}>
+
+                                <DndContext onDragEnd={handleDragEnd}>
                                     {isMobile ? (
                                             <Tabs activeKey={activeTab} onChange={setActiveTab} items={tabItems}
                                                                         className="kanban-mobile-tabs"
@@ -284,8 +315,8 @@ export const KanbanBoard = () => {
                                             })}
                                             </div>
                                                 )}
-                                </DragDropContext>
-                    
+                                </DndContext>
+
                                 <MeetingModal open={isModalOpen} onOpenChange={setModalOpen}
                                                     initialValues={selectedMeeting || undefined} />
                     </div>

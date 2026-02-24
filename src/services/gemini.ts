@@ -1,25 +1,48 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+/**
+ * Gemini AI Service — V3 Secure Proxy Implementation
+ *
+ * Routes all AI calls through /api/gemini-proxy (Vercel serverless function)
+ * instead of calling the Google Generative AI SDK directly from the client.
+ *
+ * // TODO(v3): Remove VITE_GEMINI_API_KEY from Vercel env after deploy
+ */
 
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+import { supabase } from './supabase';
 
-let genAI: GoogleGenerativeAI | null = null;
-if (apiKey) {
-    genAI = new GoogleGenerativeAI(apiKey);
-} else {
-    console.warn('VITE_GEMINI_API_KEY is not set. AI features will not work.');
+// =============================================================================
+// Proxy Helper
+// =============================================================================
+
+async function callGeminiProxy(prompt: string, model = 'gemini-2.0-flash'): Promise<string> {
+    const { data: { session } } = await supabase.auth.getSession();
+    const token = session?.access_token ?? '';
+
+    const res = await fetch('/api/gemini-proxy', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ prompt, model }),
+    });
+
+    if (!res.ok) {
+        throw new Error(`AI proxy error: ${res.status}`);
+    }
+
+    const data = await res.json();
+    return data.text as string;
 }
 
-const model = genAI ? genAI.getGenerativeModel({ model: 'gemini-2.0-flash' }) : null;
+// =============================================================================
+// Public Service API (interface unchanged from previous version)
+// =============================================================================
 
 export const geminiService = {
     async generateTaskSuggestions(context: string): Promise<string[]> {
-        if (!model) return [];
-
         try {
             const prompt = `Based on the following context, suggest 3-5 specific tasks for a software development team. Return ONLY a JSON array of strings. Context: ${context}`;
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-            const text = response.text();
+            const text = await callGeminiProxy(prompt);
 
             // Extract JSON array from text (handling potential markdown formatting)
             const jsonMatch = text.match(/\[.*\]/s);
@@ -34,12 +57,9 @@ export const geminiService = {
     },
 
     async summarizeMeeting(minutes: string): Promise<string> {
-        if (!model) return '';
-
         try {
             const prompt = `Summarize the following meeting minutes into a concise paragraph highlighting key decisions and action items: ${minutes}`;
-            const result = await model.generateContent(prompt);
-            return result.response.text();
+            return await callGeminiProxy(prompt);
         } catch (error) {
             console.error('Error summarizing meeting:', error);
             return '';
@@ -47,12 +67,9 @@ export const geminiService = {
     },
 
     async generateTestCases(requirements: string): Promise<string> {
-        if (!model) return '';
-
         try {
             const prompt = `Generate a list of QA test cases (Gherkin syntax preferred) for the following requirements: ${requirements}`;
-            const result = await model.generateContent(prompt);
-            return result.response.text();
+            return await callGeminiProxy(prompt);
         } catch (error) {
             console.error('Error generating test cases:', error);
             return '';

@@ -48,6 +48,15 @@ export const useSprintStore = create<SprintStore>((set) => ({
 
     fetchSprints: async () => {
         set({ loading: true });
+
+        // BUG-020 FIX: Validate session before fetching
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user) {
+            console.warn('[SprintStore] No active session — skipping fetch');
+            set({ loading: false, sprints: [] });
+            return;
+        }
+
         try {
             const { data, error } = await supabase
                 .from('sprints')

@@ -89,26 +89,26 @@ export const useCardStore = create<CardStore>((set, get) => ({
     fetchCards: async () => {
         set({ loading: true, error: null });
         try {
-            const { data, error } = await supabase
-                .from('cards')
-                .select('*')
-                .is('deleted_at', null)
-                .order('updated_at', { ascending: false });
+            // BUG-022 FIX: Use cardsService instead of duplicated Supabase query
+            const result = await cardsService.fetchCards();
 
-            if (error) throw error;
+            if (!result.success) {
+                const errorMessage = result.error?.message || 'Failed to fetch cards';
+                // Gracefully handle missing table
+                if (result.error?.message?.includes('PGRST205') || String(result.error?.code) === 'PGRST205') {
+                    console.warn('[CardStore] Table "cards" not found — run migration SQL');
+                } else {
+                    console.error('Error fetching cards:', result.error);
+                }
+                set({ error: errorMessage, cards: [] });
+                return;
+            }
 
-            const mappedCards: Card[] = (data || []).map((row: DBCardRow) => mapDbRowToCard(row));
-
+            const mappedCards: Card[] = (result.data || []).map((row: any) => mapDbRowToCard(row as DBCardRow));
             set({ cards: mappedCards });
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Failed to fetch cards';
-            // Gracefully handle missing table (PGRST205)
-            const isTableMissing = typeof error === 'object' && error !== null && 'code' in error && (error as any).code === 'PGRST205';
-            if (isTableMissing) {
-                console.warn('[CardStore] Table "cards" not found — run migration SQL');
-            } else {
-                console.error('Error fetching cards:', error);
-            }
+            console.error('Error fetching cards:', error);
             set({ error: errorMessage, cards: [] });
         } finally {
             set({ loading: false });
@@ -120,20 +120,20 @@ export const useCardStore = create<CardStore>((set, get) => ({
         const userId = state.currentUserId;
 
 
-                // BUG-013 fix: require authentication before creating cards
-                if (!userId) {
-                                toastError('Login necessário para criar cards');
-                                return;
-                }
+        // BUG-013 fix: require authentication before creating cards
+        if (!userId) {
+            toastError('Login necessário para criar cards');
+            return;
+        }
 
-        
+
         // Validate required fields
         const title = sanitizeString(cardData.title);
         if (!title) {
             toastError('Título é obrigatório');
             return;
         }
-        
+
         // Use cardsService for proper DB integration with audit logging
         const result = await cardsService.create(
             {
@@ -168,7 +168,7 @@ export const useCardStore = create<CardStore>((set, get) => ({
 
         // Build sanitized updates object - only include fields that are being updated
         const sanitizedUpdates: Partial<Card> = { updatedAt };
-        
+
         if (updates.title !== undefined) {
             const sanitized = sanitizeString(updates.title);
             if (sanitized) sanitizedUpdates.title = sanitized;
@@ -261,10 +261,10 @@ export const useCardStore = create<CardStore>((set, get) => ({
         const state = get();
         const previousCards = [...state.cards]; // Store for rollback
         const userId = state.currentUserId;
-        
+
         // Optimistic update
         set((state) => ({ cards: state.cards.filter((c) => c.id !== id) }));
-        
+
         // Soft delete with audit logging
         const result = await cardsService.delete(id, userId);
         if (!result.success) {
@@ -281,15 +281,15 @@ export const useCardStore = create<CardStore>((set, get) => ({
         const state = get();
         const previousCards = [...state.cards]; // Store for rollback
         const userId = state.currentUserId;
-        
+
         // Optimistic update
         set((state) => ({
             cards: state.cards.map((c) => (c.id === id ? { ...c, status: newStatus, updatedAt: new Date().toISOString() } : c))
         }));
-        
+
         // Use cardsService for proper status change with audit logging
         const result = await cardsService.moveStatus(id, newStatus as FrontendCardStatus, userId);
-        
+
         if (!result.success) {
             console.error('Error moving card:', result.error);
             // Rollback to previous state

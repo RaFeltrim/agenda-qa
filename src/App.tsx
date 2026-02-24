@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import LoginPage from './app/login/page';
 import DashboardPage from './app/dashboard/page';
 import ProjectsPage from './app/projects/page';
@@ -17,51 +18,61 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<LoginPage />} />
-          
-          {/* Protected Routes with Layout */}
+
+          {/* Protected Routes with Layout + per-route ErrorBoundary (BUG-039) */}
           <Route element={<AppLayout />}>
-            <Route 
-              path="/dashboard" 
+            <Route
+              path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <DashboardPage />
+                  <ErrorBoundary>
+                    <DashboardPage />
+                  </ErrorBoundary>
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/projects" 
+            <Route
+              path="/projects"
               element={
                 <ProtectedRoute allowedRoles={['admin', 'user']}>
-                  <ProjectsPage />
+                  <ErrorBoundary>
+                    <ProjectsPage />
+                  </ErrorBoundary>
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/meetings" 
+            <Route
+              path="/meetings"
               element={
                 <ProtectedRoute>
-                  <MeetingsPage />
+                  <ErrorBoundary>
+                    <MeetingsPage />
+                  </ErrorBoundary>
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/profile" 
+            <Route
+              path="/profile"
               element={
                 <ProtectedRoute>
-                  <ProfilePage />
+                  <ErrorBoundary>
+                    <ProfilePage />
+                  </ErrorBoundary>
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/settings" 
+            <Route
+              path="/settings"
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
-                  <SettingsPage />
+                  <ErrorBoundary>
+                    <SettingsPage />
+                  </ErrorBoundary>
                 </ProtectedRoute>
-              } 
+              }
             />
           </Route>
-          
+
           {/* Default redirects */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
@@ -72,3 +83,4 @@ function App() {
 }
 
 export default App;
+

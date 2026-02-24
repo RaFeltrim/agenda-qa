@@ -13,14 +13,14 @@ import { CardDetailModal } from './Modals/CardDetailModal';
 const { Text, Title } = Typography;
 
 /** Valid column statuses for the TaskBoard - typed explicitly */
-const VALID_STATUSES: CardStatus[] = ['backlog', 'todo', 'in-progress', 'blocked', 'done'];
+const VALID_STATUSES: CardStatus[] = ['backlog', 'todo', 'in-progress', 'blocked', 'done', 'a-fazer', 'em-progresso', 'bloqueado', 'concluido'];
 
-const columns: { id: CardStatus; title: string; color: string }[] = [
+const columns: { id: CardStatus; title: string; color: string; aliases?: string[] }[] = [
     { id: 'backlog', title: 'Backlog', color: '#94a3b8' },
-    { id: 'todo', title: 'A Fazer', color: '#64748b' },
-    { id: 'in-progress', title: 'Em Progresso', color: '#3b82f6' },
-    { id: 'blocked', title: 'Bloqueado', color: '#ef4444' },
-    { id: 'done', title: 'Concluído', color: '#10b981' }
+    { id: 'todo', title: 'A Fazer', color: '#64748b', aliases: ['a-fazer'] },
+    { id: 'in-progress', title: 'Em Progresso', color: '#3b82f6', aliases: ['em-progresso'] },
+    { id: 'blocked', title: 'Bloqueado', color: '#ef4444', aliases: ['bloqueado'] },
+    { id: 'done', title: 'Concluído', color: '#10b981', aliases: ['concluido'] }
 ];
 
 const priorityColors: Record<string, string> = {
@@ -270,7 +270,7 @@ export const TaskBoard = () => {
                 <DragDropContext onDragEnd={onDragEnd}>
                     <div className="flex gap-6 overflow-x-auto pb-4">
                         {columns.map((col) => {
-                            const colCards = filteredCards.filter(t => t.status === col.id);
+                            const colCards = filteredCards.filter(t => t.status === col.id || col.aliases?.includes(t.status));
                             return (
                                 <div key={col.id} className="flex-shrink-0 w-80">
                                     <div className="flex items-center justify-between mb-4 px-2">
@@ -307,7 +307,7 @@ export const TaskBoard = () => {
                                                                     hoverable
                                                                     size="small"
                                                                     onClick={() => handleCardClick(card.id)}
-                                                                    className={`border-none rounded-xl ${snapshot.isDragging ? 'shadow-premium rotate-1' : ''}`}
+                                                                    className={`border-none rounded-xl bg-white dark:bg-slate-800 ${snapshot.isDragging ? 'shadow-premium rotate-1' : ''}`}
                                                                     bodyStyle={{ padding: '16px' }}
                                                                 >
                                                                     <Space direction="vertical" size="small" style={{ width: '100%' }}>

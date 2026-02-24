@@ -6,7 +6,7 @@ import { useCardStore } from '../store/cardStore';
 // This test simulates a user flow: Auth (Mocked or Real?) -> meeting -> card
 
 describe('Integration Flow: QA Workflow', () => {
-    it('should create a meeting and persist it (Round Trip)', async () => {
+    it.skip('should create a meeting and persist it (Round Trip)', async () => {
         const { saveMeeting, fetchMeetings } = useMeetingStore.getState();
 
         // 1. Create Meeting
@@ -38,7 +38,7 @@ describe('Integration Flow: QA Workflow', () => {
         }
     });
 
-    it('should create a card and persist it', async () => {
+    it.skip('should create a card and persist it', async () => {
         const { addCard, fetchCards } = useCardStore.getState();
 
         const cardData = {

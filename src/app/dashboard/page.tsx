@@ -54,10 +54,7 @@ export default function DashboardPage() {
       status: cardData.status,
       tags: cardData.tags,
       priority: 'medium',
-      subTasks: [],
-      comments: [],
-      attachments: [],
-      history: [],
+      urgente: false,
     });
   };
 

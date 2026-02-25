@@ -98,6 +98,9 @@ export const MeetingModal: React.FC<MeetingModalProps> = ({ open, onOpenChange, 
                                 className: 'rounded-lg w-full',
                                 placeholder: 'Selecione o horário',
                                 style: { width: '100%' },
+                                format: 'HH:mm',
+                                showSecond: false,
+                                minuteStep: 5,
                                 'data-testid': 'meeting-time-input'
                                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             } as any}
@@ -112,10 +115,10 @@ export const MeetingModal: React.FC<MeetingModalProps> = ({ open, onOpenChange, 
                             { label: 'Confirmada', value: 'confirmada' },
                             { label: 'Realizada', value: 'realizada' },
                         ]}
-                        initialValue="a-agendar"
                         fieldProps={{
                             size: 'large',
                             className: 'rounded-lg',
+                            defaultValue: 'a-agendar',
                             'data-testid': 'meeting-status-select'
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         } as any}

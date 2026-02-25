@@ -31,28 +31,28 @@ export default function DashboardStats({ cards, meetings }: DashboardStatsProps)
             value: totalCards,
             icon: <CheckCircleOutlined />,
             color: '#4063ff',
-            bg: 'bg-brand-50 dark:bg-brand-900/20',
+            bg: '!bg-brand-50 dark:!bg-brand-900/20',
         },
         {
             title: 'Em Progresso',
             value: inProgress,
             icon: <ClockCircleOutlined />,
             color: '#f59e0b',
-            bg: 'bg-amber-50 dark:bg-amber-900/20',
+            bg: '!bg-amber-50 dark:!bg-amber-900/20',
         },
         {
             title: 'Reuniões Hoje',
             value: meetingsToday,
             icon: <CalendarOutlined />,
             color: '#10b981',
-            bg: 'bg-emerald-50 dark:bg-emerald-900/20',
+            bg: '!bg-emerald-50 dark:!bg-emerald-900/20',
         },
         {
             title: 'Bloqueados',
             value: blocked,
             icon: <ThunderboltOutlined />,
             color: '#ef4444',
-            bg: 'bg-red-50 dark:bg-red-900/20',
+            bg: '!bg-red-50 dark:!bg-red-900/20',
         },
     ];
 

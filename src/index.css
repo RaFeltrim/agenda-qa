@@ -4,250 +4,183 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ══════════════════════════════════════════════════════════════
+   BASE — body & html fundamentals
+   ConfigProvider cuida das cores dos componentes Ant Design.
+   Aqui apenas definimos o fundo e fonte base.
+   ══════════════════════════════════════════════════════════════ */
 @layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
   body {
-    @apply antialiased text-slate-900 bg-[#f8fafc];
+    margin: 0;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* light default */
+    background-color: #f8fafc;
+    color: #0f172a;
+    color-scheme: light;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-bold tracking-tight text-slate-950;
+  /* Dark mode: fundo e cor base */
+  html.dark body {
+    background-color: #0f172a;
+    color: #f1f5f9;
+    color-scheme: dark;
   }
 
-  /* Universal Scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  /* Headings — herdados pelo Tailwind e pelos componentes customizados */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: -0.025em;
   }
 
-  ::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 4px;
-  }
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-  ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
-    border: 2px solid #f1f5f9;
-  }
+  html.dark ::-webkit-scrollbar-track { background: #1e293b; }
+  html.dark ::-webkit-scrollbar-thumb { background: #334155; }
+  html.dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
-  ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-  }
-
-  /* Enhanced Scrollbar for Dark Mode */
-  .dark ::-webkit-scrollbar-track {
-    background: #0f172a;
-  }
-
-  .dark ::-webkit-scrollbar-thumb {
-    background: #334155;
-    border: 2px solid #0f172a;
-  }
-
-  .dark ::-webkit-scrollbar-thumb:hover {
-    background: #475569;
-  }
-
-  /* Prevent transitions on initial load */
-  .theme-loading * {
-    transition: none !important;
-  }
+  /* Disable transitions during theme switch to avoid flicker */
+  .theme-transition * { transition: none !important; }
 }
 
+/* ══════════════════════════════════════════════════════════════
+   UTILITIES
+   ══════════════════════════════════════════════════════════════ */
 @layer utilities {
   .glass {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
   }
-
-  .dark .glass {
+  html.dark .glass {
     background: rgba(15, 23, 42, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
   }
 
-  .transition-smooth {
-    transition-property: all;
-    transition-duration: 300ms;
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .hover-scale {
-    transition: transform 0.2s ease;
-  }
-
-  .hover-scale:hover {
-    transform: scale(1.02);
-  }
-
-  .animate-fade-out {
-    animation: fadeOut 0.3s ease-out forwards;
-  }
+  .animate-fadeIn  { animation: fadeIn  0.4s ease-out both; }
+  .animate-slideUp { animation: slideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
 }
 
-/* Animations */
+/* ══════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ══════════════════════════════════════════════════════════════ */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-}
-
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.4s ease-out;
-}
+/* ══════════════════════════════════════════════════════════════
+   ANT DESIGN OVERRIDES
+   Mínimos e cirúrgicos — deixe o ConfigProvider fazer o pesado.
+   ══════════════════════════════════════════════════════════════ */
 
-.animate-slideUp {
-  animation: slideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Ant Design Overrides */
-.ant-layout {
+/* Layout background */
+.ant-layout,
+.ant-pro-basicLayout,
+.ant-pro-layout {
   background: #f8fafc !important;
 }
-
-.dark .ant-layout {
+html.dark .ant-layout,
+html.dark .ant-pro-basicLayout,
+html.dark .ant-pro-layout {
   background: #0f172a !important;
 }
 
-.ant-pro-layout-content {
-  padding: 24px !important;
-}
+/* Content padding */
+.ant-pro-layout-content { padding: 24px !important; }
 
+/* Cards */
 .ant-card {
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.08), 0 1px 2px -1px rgba(0,0,0,0.06);
   border-color: #e2e8f0;
-  transition: all 0.3s;
+  transition: box-shadow 0.2s ease;
 }
-
-.dark .ant-card {
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
+html.dark .ant-card {
   border-color: #334155;
-  background: #1e293b;
+  box-shadow: 0 4px 20px -2px rgba(0,0,0,0.35);
 }
+.ant-card:hover { box-shadow: 0 4px 16px -2px rgba(0,0,0,0.12); }
+html.dark .ant-card:hover { box-shadow: 0 8px 24px -4px rgba(0,0,0,0.45); }
 
-.ant-card:hover {
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 4px 10px -2px rgba(0, 0, 0, 0.05);
-}
-
-.dark .ant-card:hover {
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4), 0 4px 10px -2px rgba(0, 0, 0, 0.2);
-}
-
+/* Primary button */
 .ant-btn-primary {
   background: #4063ff !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   border: none !important;
-  transition: all 0.3s !important;
+  transition: background 0.2s ease, box-shadow 0.2s ease !important;
 }
+.ant-btn-primary:hover { background: #2940ff !important; }
+html.dark .ant-btn-primary { background: #668eff !important; }
+html.dark .ant-btn-primary:hover { background: #4063ff !important; }
 
-.ant-btn-primary:hover {
-  background: #2940ff !important;
+/* Modal */
+html.dark .ant-modal-content,
+html.dark .ant-modal-header {
+  background: #1e293b !important;
 }
+html.dark .ant-modal-title { color: #f1f5f9 !important; }
 
-.dark .ant-btn-primary {
-  background: #668eff !important;
-}
-
-.dark .ant-btn-primary:hover {
-  background: #4063ff !important;
-}
-
-/* Dark mode text visibility for antd components */
-.dark .ant-typography {
-  color: #f1f5f9;
-}
-
-.dark .ant-typography.ant-typography-secondary {
-  color: #94a3b8 !important;
-}
-
-/* Dark mode modal */
-.dark .ant-modal-content {
-  background: #1e293b;
-}
-
-.dark .ant-modal-header {
-  background: #1e293b;
-}
-
-/* Dark mode input/select */
-.dark .ant-input,
-.dark .ant-select-selector,
-.dark .ant-picker {
-  background: #0f172a !important;
-  border-color: #334155 !important;
-  color: #f1f5f9 !important;
-}
-
-.dark .ant-input::placeholder,
-.dark .ant-select-selection-placeholder {
+/* Inputs — ConfigProvider já cuida das cores, mas forçamos placeholder */
+html.dark .ant-input::placeholder,
+html.dark .ant-select-selection-placeholder,
+html.dark .ant-picker-input > input::placeholder {
   color: #64748b !important;
 }
 
-/* Dark mode table */
-.dark .ant-table {
-  background: #1e293b;
-}
-
-.dark .ant-table-thead>tr>th {
+/* Table */
+html.dark .ant-table-thead > tr > th {
   background: #0f172a !important;
-  color: #94a3b8 !important;
   border-color: #334155 !important;
 }
+html.dark .ant-table-tbody > tr > td { border-color: #334155 !important; }
+html.dark .ant-table-tbody > tr:hover > td { background: #1e293b !important; }
 
-.dark .ant-table-tbody>tr>td {
-  border-color: #334155 !important;
+/* Tabs */
+html.dark .ant-tabs-tab { color: #94a3b8; }
+html.dark .ant-tabs-tab-active .ant-tabs-tab-btn { color: #668eff !important; }
+html.dark .ant-tabs-ink-bar { background: #668eff; }
+
+/* Divider */
+html.dark .ant-divider { border-color: #334155; }
+
+/* Dropdown / Select popup */
+html.dark .ant-dropdown-menu,
+html.dark .ant-select-dropdown {
+  background: #1e293b !important;
+  border: 1px solid #334155;
+}
+html.dark .ant-dropdown-menu-item:hover,
+html.dark .ant-select-item-option-active {
+  background: #334155 !important;
 }
 
-/* Dark mode tabs */
-.dark .ant-tabs-tab {
-  color: #94a3b8 !important;
-}
+/* Pro-layout sider title */
+html.dark .ant-pro-sider-logo h1 { color: #f1f5f9 !important; }
+html.dark .ant-menu-item-selected { background: #334155 !important; }
 
-.dark .ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: #668eff !important;
-}
+/* Form label text */
+html.dark .ant-form-item-label > label { color: #94a3b8 !important; }
 
-/* Focus ring for accessibility */
+/* ══════════════════════════════════════════════════════════════
+   FOCUS RING — ACCESSIBILITY
+   ══════════════════════════════════════════════════════════════ */
 *:focus-visible {
   outline: 2px solid #4063ff;
   outline-offset: 2px;
   border-radius: 4px;
 }
+html.dark *:focus-visible { outline-color: #668eff; }

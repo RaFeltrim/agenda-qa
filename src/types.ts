@@ -46,11 +46,11 @@ export interface Card {
     sprintId?: string | null;
     projectId?: string | null;
 
-    // Detailed fields
-    subTasks: SubTask[];
-    comments: Comment[];
-    attachments: Attachment[];
-    history: HistoryItem[];
+    // Detailed fields (optional - DB uses JSONB defaults)
+    subTasks?: SubTask[];
+    comments?: Comment[];
+    attachments?: Attachment[];
+    history?: HistoryItem[];
 
     // Legacy Portuguese fields (for compatibility)
     titulo?: string;

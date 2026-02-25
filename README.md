@@ -28,45 +28,33 @@ O projeto passou por uma restauração completa de infraestrutura em fevereiro d
 
 | Critério | Status | Detalhes |
 |----------|--------|----------|
-| **Tipagem** | ✅ Passou | `npm run build` com 0 erros TypeScript |
-| **Feedback UI** | ✅ Passou | Toast notifications via `App.useApp()` (Ant Design v5) |
+| **Tipagem** | ✅ Passou | Projeto validado no Typescript |
+| **Feedback UI** | ✅ Passou | Toast notifications via `App.useApp()` |
 | **Segurança (RLS)** | ✅ Implementado | Políticas Row Level Security no Supabase |
-| **Mobile Friendly** | ✅ Corrigido | KanbanBoard com Tabs em mobile + botões "Mover" |
-| **Persistência** | ✅ Passou | Todas as operações salvam no Supabase |
-| **Auth + Perfil** | ✅ Corrigido | Auto-criação de perfil no login (primeiro user = admin) |
-| **Sidebar dinâmica** | ✅ Corrigido | 4 itens + Gestão de Usuários para admins |
-| **Stores resilientes** | ✅ Corrigido | Tratamento gracioso de tabelas inexistentes (PGRST205) |
+| **Temas (UI)** | ✅ Corrigido | Dark Mode e Light Mode 100% integrados sem perdas de contraste e utilizando o padrão Ant Design ConfigProvider |
+| **Persistência** | ✅ Passou | Todas as operações salvam no Supabase via API |
+| **Dashboard e Kanban** | ✅ Passou | Fluxo de salvar card no BD 100% e sincronia de métricas de tarefas em Backlog/Progress/Done |
+| **Sidebar dinâmica** | ✅ Corrigido | Links dinâmicos no Header (`Gestão de Usuários` para admins habilitada) |
+| **Admin Route Protection**| ✅ Corrigido | Loop de renderização no ProTable na listagem de usuários (/admin/users) resolvido |
 
-### 🔧 Correções da Restauração de Infraestrutura (v2.0)
+### 🔧 Correções de UI e QA Validation (v2.1)
 
-1. **SQL Migration criada** (`database/migration_001_create_tables.sql`)
-   - 5 tabelas: `profiles`, `sprints`, `meetings`, `cards`, `audit_logs`
-   - RLS policies, indexes, triggers, seed data
-   - Auto-criação de perfil via trigger `on_auth_user_created`
+1. **Dark Mode & Acessibilidade Visual:**
+   - Override agressivo removido do `index.css` que aplicava textos invisíveis em inputs de light mode, delegando o controle para o `ConfigProvider` nativo.
+   - Contrastes de Cards e Scrollbars universalmente resolvidos.
 
-2. **Auth refatorada** (`src/hooks/useAuth.tsx`)
-   - `fetchUserRole()` → `ensureProfile()` com upsert automático
-   - Primeiro usuário recebe role `admin`, demais `viewer`
+2. **Loop de Renderização (Admin Users):**
+   - Corrigido `Maximum update depth exceeded` no `ProTable` (/admin/users), substituindo `useState` por `useRef` para inicializar a propriedade `actionRef`.
+   - Remoção de Race Condition de redirect verificando explicitamente `loading`. Acesso de `Admin` restabelecido.
 
-3. **Sidebar expandida** (`src/app/layout.tsx`)
-   - De 1 item (Dashboard) para 4+ itens dinâmicos
-   - Wrapping com `<App>` para contexto Ant Design v5
-   - `initializeToast()` invocado no mount
+3. **Validação de Payload de Cards (PGRST204):**
+   - Criação de novos tickets no Kanban corrigida com remoção dos campos computados localmente (`attachments`, `subTasks`, etc.) antes do POST pro Supabase.
 
-4. **Páginas corrigidas**
-   - Profile: `App.useApp()`, Skeleton loader, Tag para role
-   - Settings: `App.useApp()` em vez de `message` estático
-   - Login: Wrapped com `<App>` para contexto de mensagens
+4. **Time Picker da Reunião:**
+   - Modificado para registrar apenas Horas e Minutos (saltos de 5 minutos), desabilitando a contagem randômica de segundos.
 
-5. **Stores resilientes** (cardStore, sprintStore, meetingStore)
-   - Tratamento PGRST205 (tabela inexistente) com `console.warn`
-   - Sem crash/spam de erros no console
-
-6. **Correção de dados**: `todo` → `a-fazer` no DB (evita perda de dados)
-
-7. **Ant Design v5**: `dropdownRender` → `popupRender`, `destroyOnClose` → `destroyOnHidden`
-
-8. **KanbanBoard**: `fetchMeetings()` agora é chamado no mount
+5. **Navegação (Router):**
+   - Rota `/admin/users` restaurada e configurada globalmente no `App.tsx` para não causar fallback de página 404 (redirecionamento do wildcard).
 
 ---
 

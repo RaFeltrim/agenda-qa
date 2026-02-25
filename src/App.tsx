@@ -12,6 +12,7 @@ import ProjectsPage from './app/projects/page';
 import MeetingsPage from './app/meetings/page';
 import ProfilePage from './app/profile/page';
 import SettingsPage from './app/settings/page';
+import UsersPage from './app/admin/users/page';
 import './index.css';
 
 function App() {
@@ -72,6 +73,16 @@ function App() {
                     <ProtectedRoute allowedRoles={['admin']}>
                       <RouteErrorBoundary routeName="Settings">
                         <SettingsPage />
+                      </RouteErrorBoundary>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/users"
+                  element={
+                    <ProtectedRoute allowedRoles={['admin']}>
+                      <RouteErrorBoundary routeName="Admin Users">
+                        <UsersPage />
                       </RouteErrorBoundary>
                     </ProtectedRoute>
                   }

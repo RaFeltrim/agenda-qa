@@ -1,9 +1,9 @@
-import { ProTable, type ProColumns } from '@ant-design/pro-components';
+import { ProTable, type ActionType, type ProColumns } from '@ant-design/pro-components';
 import { Button, Tag, Space, Typography, message, Popconfirm } from 'antd';
 import { PlusOutlined, DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
 import { useAuth } from '../../../hooks/useAuth';
 import { supabase } from '../../../services/supabase';
-import { useState } from 'react';
+import { useRef } from 'react';
 
 const { Title, Text } = Typography;
 
@@ -17,9 +17,18 @@ interface UserProfile {
 }
 
 export default function UsersPage() {
-    const { role } = useAuth();
+    const { role, loading } = useAuth();
     const [messageApi, contextHolder] = message.useMessage();
-    const [actionRef, setActionRef] = useState<{ reload: () => void } | null>(null);
+    const actionRef = useRef<ActionType>();
+
+    // Wait for auth to resolve before checking role (prevents race condition)
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center p-12">
+                <div className="animate-spin w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full" />
+            </div>
+        );
+    }
 
     // Guardrail: Only admin can access this page
     if (role !== 'admin') {
@@ -106,7 +115,7 @@ export default function UsersPage() {
                             messageApi.error('Erro ao desativar usuário');
                         } else {
                             messageApi.success('Usuário desativado');
-                            actionRef?.reload();
+                            actionRef.current?.reload();
                         }
                     }}
                 >
@@ -129,7 +138,7 @@ export default function UsersPage() {
             <ProTable<UserProfile>
                 columns={columns}
                 cardBordered
-                actionRef={(ref) => setActionRef(ref as { reload: () => void })}
+                actionRef={actionRef}
                 request={async (params) => {
                     const { data, error } = await supabase
                         .from('profiles')

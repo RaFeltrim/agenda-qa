@@ -73,17 +73,6 @@ export function useDarkMode() {
     _setDark(newValue);
   }, [isDark]);
 
-  // Keyboard shortcut: Ctrl+L
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
-        e.preventDefault();
-        _setDark(!_isDark);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
 
   // System preference change listener
   useEffect(() => {

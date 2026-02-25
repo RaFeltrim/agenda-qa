@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Moon, Sun, Search, LogOut, User, Settings, Menu, X } from 'lucide-react';
+import { Moon, Sun, Search, LogOut, User, Settings, Menu, X, Users } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { logout } from '../services/authService';
 import { useDarkMode } from '../hooks/useDarkMode';
@@ -12,6 +12,7 @@ interface HeaderProps {
 
 export default function Header({}: HeaderProps) {
   const { user, role } = useAuth();
+  const isAdmin = role === 'admin';
   const [isDark, toggleDarkMode] = useDarkMode();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -96,7 +97,7 @@ export default function Header({}: HeaderProps) {
             </button>
 
             {/* Dropdown Menu */}
-            {showProfileMenu && (
+              {showProfileMenu && (
               <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 py-2 z-50">
                 <div className="px-4 py-2 border-b border-slate-200 dark:border-slate-700">
                   <p className="text-sm font-medium text-slate-900 dark:text-white">
@@ -113,17 +114,29 @@ export default function Header({}: HeaderProps) {
                   className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
                 >
                   <User className="w-4 h-4" />
-                  Profile
+                  Meu Perfil
                 </Link>
-                
-                <Link
-                  to="/settings"
-                  onClick={() => setShowProfileMenu(false)}
-                  className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
-                >
-                  <Settings className="w-4 h-4" />
-                  Settings
-                </Link>
+
+                {isAdmin && (
+                  <>
+                    <Link
+                      to="/settings"
+                      onClick={() => setShowProfileMenu(false)}
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+                    >
+                      <Settings className="w-4 h-4" />
+                      Configurações
+                    </Link>
+                    <Link
+                      to="/admin/users"
+                      onClick={() => setShowProfileMenu(false)}
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+                    >
+                      <Users className="w-4 h-4" />
+                      Gestão de Usuários
+                    </Link>
+                  </>
+                )}
                 
                 <div className="border-t border-slate-200 dark:border-slate-700 mt-2 pt-2">
                   <button
@@ -131,7 +144,7 @@ export default function Header({}: HeaderProps) {
                     className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
                   >
                     <LogOut className="w-4 h-4" />
-                    Logout
+                    Sair
                   </button>
                 </div>
               </div>

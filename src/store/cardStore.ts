@@ -317,7 +317,7 @@ export const useCardStore = create<CardStore>((set, get) => ({
         const card = state.cards.find(c => c.id === cardId);
         if (!card) return;
 
-        const updatedSubTasks = [...card.subTasks, newSubTask];
+        const updatedSubTasks = [...(card.subTasks || []), newSubTask];
 
         set((state) => ({
             cards: state.cards.map((c) =>
@@ -346,7 +346,7 @@ export const useCardStore = create<CardStore>((set, get) => ({
         const card = state.cards.find(c => c.id === cardId);
         if (!card) return;
 
-        const updatedSubTasks = card.subTasks.map(st =>
+        const updatedSubTasks = (card.subTasks || []).map(st =>
             st.id === subTaskId ? { ...st, completed: !st.completed } : st
         );
 
@@ -391,7 +391,7 @@ export const useCardStore = create<CardStore>((set, get) => ({
         const card = state.cards.find(c => c.id === cardId);
         if (!card) return;
 
-        const updatedComments = [...card.comments, newComment];
+        const updatedComments = [...(card.comments || []), newComment];
 
         set((state) => ({
             cards: state.cards.map((c) =>
@@ -420,7 +420,7 @@ export const useCardStore = create<CardStore>((set, get) => ({
         const card = state.cards.find(c => c.id === cardId);
         if (!card) return;
 
-        const updatedComments = card.comments.filter(c => c.id !== commentId);
+        const updatedComments = (card.comments || []).filter(c => c.id !== commentId);
 
         set((state) => ({
             cards: state.cards.map((c) =>
@@ -463,7 +463,7 @@ export const useCardStore = create<CardStore>((set, get) => ({
         const card = state.cards.find(c => c.id === cardId);
         if (!card) return;
 
-        const updatedAttachments = [...card.attachments, newAttachment];
+        const updatedAttachments = [...(card.attachments || []), newAttachment];
 
         set((state) => ({
             cards: state.cards.map((c) =>
@@ -492,7 +492,7 @@ export const useCardStore = create<CardStore>((set, get) => ({
         const card = state.cards.find(c => c.id === cardId);
         if (!card) return;
 
-        const updatedAttachments = card.attachments.filter(a => a.id !== attachmentId);
+        const updatedAttachments = (card.attachments || []).filter(a => a.id !== attachmentId);
 
         set((state) => ({
             cards: state.cards.map((c) =>

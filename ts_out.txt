@@ -1,0 +1,19 @@
+﻿src/components/Modals/CardDetailModal.tsx(69,35): error TS18048: 'card.subTasks' is possibly 'undefined'.
+src/components/Modals/CardDetailModal.tsx(127,36): error TS18048: 'card.comments' is possibly 'undefined'.
+src/components/Modals/CardDetailModal.tsx(174,31): error TS18048: 'card.attachments' is possibly 'undefined'.
+src/components/Modals/CardDetailModal.tsx(226,22): error TS18048: 'card.history' is possibly 'undefined'.
+src/components/RouteErrorBoundary.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/RouteErrorBoundary.tsx(1,28): error TS1484: 'ErrorInfo' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+src/components/RouteErrorBoundary.tsx(1,39): error TS1484: 'ReactNode' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+src/store/__tests__/cardStore.test.ts(71,16): error TS2532: Object is possibly 'undefined'.
+src/store/__tests__/cardStore.test.ts(72,16): error TS2532: Object is possibly 'undefined'.
+src/store/__tests__/cardStore.test.ts(88,16): error TS2532: Object is possibly 'undefined'.
+src/store/__tests__/cardStore.test.ts(101,16): error TS2532: Object is possibly 'undefined'.
+src/store/__tests__/cardStore.test.ts(102,16): error TS2532: Object is possibly 'undefined'.
+src/store/__tests__/cardStore.test.ts(136,16): error TS2532: Object is possibly 'undefined'.
+src/store/cardStore.ts(320,37): error TS2488: Type 'SubTask[] | undefined' must have a '[Symbol.iterator]()' method that returns an iterator.
+src/store/cardStore.ts(349,33): error TS18048: 'card.subTasks' is possibly 'undefined'.
+src/store/cardStore.ts(394,37): error TS2488: Type 'Comment[] | undefined' must have a '[Symbol.iterator]()' method that returns an iterator.
+src/store/cardStore.ts(423,33): error TS18048: 'card.comments' is possibly 'undefined'.
+src/store/cardStore.ts(466,40): error TS2488: Type 'Attachment[] | undefined' must have a '[Symbol.iterator]()' method that returns an iterator.
+src/store/cardStore.ts(495,36): error TS18048: 'card.attachments' is possibly 'undefined'.

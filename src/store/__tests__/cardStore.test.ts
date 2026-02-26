@@ -67,9 +67,9 @@ describe('Card Store - State Management', () => {
         useCardStore.getState().addSubTask(cardId, 'Subtask 1');
 
         const { cards } = useCardStore.getState();
-        expect(cards[0].subTasks).toHaveLength(1);
-        expect(cards[0].subTasks[0].text).toBe('Subtask 1');
-        expect(cards[0].subTasks[0].completed).toBe(false);
+        expect(cards[0].subTasks?.length).toBe(1);
+        expect(cards[0].subTasks?.[0].text).toBe('Subtask 1');
+        expect(cards[0].subTasks?.[0].completed).toBe(false);
     });
 
     it('should toggle a subtask', () => {
@@ -85,7 +85,7 @@ describe('Card Store - State Management', () => {
         useCardStore.getState().toggleSubTask(cardId, subTaskId);
 
         const { cards } = useCardStore.getState();
-        expect(cards[0].subTasks[0].completed).toBe(true);
+        expect(cards[0].subTasks?.[0].completed).toBe(true);
     });
 
     it('should add a comment optimistically', () => {
@@ -97,9 +97,9 @@ describe('Card Store - State Management', () => {
         useCardStore.getState().addComment(cardId, 'Hello!', 'user-123');
 
         const { cards } = useCardStore.getState();
-        expect(cards[0].comments).toHaveLength(1);
-        expect(cards[0].comments[0].text).toBe('Hello!');
-        expect(cards[0].comments[0].authorId).toBe('user-123');
+        expect(cards[0].comments?.length).toBe(1);
+        expect(cards[0].comments?.[0].text).toBe('Hello!');
+        expect(cards[0].comments?.[0].authorId).toBe('user-123');
     });
 
     it('should delete a comment optimistically', () => {
@@ -115,7 +115,7 @@ describe('Card Store - State Management', () => {
         useCardStore.getState().deleteComment(cardId, commentId);
 
         const { cards } = useCardStore.getState();
-        expect(cards[0].comments).toHaveLength(0);
+        expect(cards[0].comments?.length).toBe(0);
     });
 
     it('should add an attachment optimistically', () => {
@@ -132,8 +132,8 @@ describe('Card Store - State Management', () => {
         });
 
         const { cards } = useCardStore.getState();
-        expect(cards[0].attachments).toHaveLength(1);
-        expect(cards[0].attachments[0].name).toBe('file.pdf');
+        expect(cards[0].attachments?.length).toBe(1);
+        expect(cards[0].attachments?.[0].name).toBe('file.pdf');
     });
 
     it('should set currentUserId', () => {

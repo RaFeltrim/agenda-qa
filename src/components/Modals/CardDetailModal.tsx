@@ -66,7 +66,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({ cardId, open, 
     const items = [
         {
             key: 'subtasks',
-            label: `Subtarefas (${card.subTasks.length})`,
+            label: `Subtarefas (${card.subTasks?.length || 0})`,
             children: (
                 <div className="space-y-4">
                     <div className="flex gap-2">
@@ -105,7 +105,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({ cardId, open, 
                         )}
                     </div>
                     <List
-                        dataSource={card.subTasks}
+                        dataSource={card.subTasks || []}
                         renderItem={item => (
                             <List.Item>
                                 <Checkbox
@@ -124,12 +124,12 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({ cardId, open, 
         },
         {
             key: 'comments',
-            label: `Comentários (${card.comments.length})`,
+            label: `Comentários (${card.comments?.length || 0})`,
             children: (
                 <div className="space-y-4">
                     <List
                         itemLayout="horizontal"
-                        dataSource={card.comments}
+                        dataSource={card.comments || []}
                         renderItem={item => (
                             <List.Item
                                 actions={[
@@ -171,7 +171,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({ cardId, open, 
         },
         {
             key: 'attachments',
-            label: `Anexos (${card.attachments.length})`,
+            label: `Anexos (${card.attachments?.length || 0})`,
             children: (
                 <div className="space-y-4">
                     {/* BUG-014 FIX: Disable mock upload — show tooltip explaining it's not available */}
@@ -194,7 +194,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({ cardId, open, 
                         </Upload>
                     </Tooltip>
                     <List
-                        dataSource={card.attachments}
+                        dataSource={card.attachments || []}
                         renderItem={item => (
                             <List.Item
                                 actions={[
@@ -223,7 +223,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({ cardId, open, 
             label: 'Histórico',
             children: (
                 <Timeline mode="left">
-                    {card.history.map(h => (
+                    {(card.history || []).map(h => (
                         <Timeline.Item key={h.id} label={dayjs(h.timestamp).format('DD/MM/YY HH:mm')}>
                             {h.action} <Text type="secondary">por {h.userId}</Text>
                         </Timeline.Item>

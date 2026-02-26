@@ -56,6 +56,10 @@ O projeto passou por uma restauração completa de infraestrutura em fevereiro d
 5. **Navegação (Router):**
    - Rota `/admin/users` restaurada e configurada globalmente no `App.tsx` para não causar fallback de página 404 (redirecionamento do wildcard).
 
+6. **Acessibilidade e WCAG (Baixa Visão):**
+   - Integração do teste automatizado `@axe-core/playwright` (`e2e/playwright/a11y.spec.ts`).
+   - Resolução de contraste do card de Login. Cores de acento e textos semânticos ajustados para superar o contraste mínimo de `4.5:1` do WCAG 2 AA.
+
 ---
 
 ## 🚀 Como Rodar

@@ -10,7 +10,14 @@ const { Title, Text } = Typography;
 
 export default function LoginPage() {
   return (
-    <ConfigProvider locale={ptBR}>
+    <ConfigProvider 
+      locale={ptBR}
+      theme={{
+        token: {
+          colorPrimary: '#105fdc', // Stronger blue for 4.5+ WCAG contrast on white bg
+        }
+      }}
+    >
       <App>
         <LoginPageInner />
       </App>
@@ -85,7 +92,7 @@ function LoginPageInner() {
               QA
             </div>
             <Title level={2} className="!mb-2">Agenda QA</Title>
-            <Text type="secondary" className="text-base">Mantenha seu fluxo de trabalho sincronizado</Text>
+            <div className="text-slate-600 text-base font-medium">Mantenha seu fluxo de trabalho sincronizado</div>
           </div>
 
           <div className="bg-white p-8 rounded-3xl shadow-premium border border-slate-100">

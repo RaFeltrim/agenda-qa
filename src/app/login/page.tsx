@@ -39,26 +39,30 @@ function LoginPageInner() {
       await login(values.email, values.password);
       message.success('Bem-vindo de volta!');
       navigate('/dashboard');
+      return true;
     } catch (error) {
       console.error(error);
       const msg = error instanceof Error ? error.message : 'Falha no login';
       message.error(msg);
+      return false;
     }
   };
 
   const handleSignup = async (values: { email: string; password: string; confirmPassword?: string }) => {
     if (values.password !== values.confirmPassword) {
       message.error('As senhas nao coincidem');
-      return;
+      return false;
     }
     try {
       await signup(values.email, values.password);
       message.success('Conta criada! Verifique seu email para confirmar.');
       setLoginType('login');
+      return true;
     } catch (error) {
       console.error(error);
       const msg = error instanceof Error ? error.message : 'Falha no cadastro';
       message.error(msg);
+      return false;
     }
   };
 

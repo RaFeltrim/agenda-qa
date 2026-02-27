@@ -1,5 +1,6 @@
 import { ProTable, type ActionType, type ProColumns } from '@ant-design/pro-components';
-import { Button, Tag, Space, Typography, message, Popconfirm } from 'antd';
+import { Button, Tag, Space, Typography, message, Popconfirm, ConfigProvider } from 'antd';
+import ptBR from 'antd/locale/pt_BR';
 import { PlusOutlined, DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
 import { useAuth } from '../../../hooks/useAuth';
 import { supabase } from '../../../services/supabase';
@@ -128,8 +129,9 @@ export default function UsersPage() {
     ];
 
     return (
-        <div className="py-6">
-            {contextHolder}
+        <ConfigProvider locale={ptBR}>
+            <div className="py-6">
+                {contextHolder}
             <div className="mb-6">
                 <Title level={2} style={{ margin: 0 }}>Gestão de Usuários</Title>
                 <Text type="secondary">Administre o acesso e as permissões da equipe.</Text>
@@ -218,5 +220,6 @@ export default function UsersPage() {
                 ]}
             />
         </div>
+        </ConfigProvider>
     );
 }

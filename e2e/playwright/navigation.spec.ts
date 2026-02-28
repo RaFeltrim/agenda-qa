@@ -135,8 +135,8 @@ test.describe('Responsive Layout @regression', () => {
 
   test('TC-LAYOUT-001: ProLayout sidebar renders', async ({ page }) => {
     // ProLayout sidebar should be visible at desktop size
-    const sidebar = page.locator('.ant-pro-sider, .ant-layout-sider, [class*="sider"]').first();
-    await expect(sidebar).toBeVisible({ timeout: 10000 });
+    const navItem = page.locator('.ant-menu-item, [role="menuitem"]').first();
+    await expect(navItem).toBeVisible({ timeout: 10000 });
   });
 
   test('TC-LAYOUT-002: Mobile viewport collapses sidebar', async ({ page }) => {

@@ -1,0 +1,1018 @@
+﻿
+Running 36 tests using 15 workers
+
+  Ô£ô   5 [chromium] ÔÇ║ e2e\playwright\a11y.spec.ts:9:3 ÔÇ║ Acessibilidade (Baixa Vis├úo / Low Vision Persona) ÔÇ║ Deve ser leg├¡vel para usu├írios com baixa vis├úo na tela de Login (13.7s)
+  Ô£ô  12 [chromium] ÔÇ║ e2e\playwright\auth.spec.ts:63:3 ÔÇ║ Authentication Flow @regression ÔÇ║ TC-AUTH-004: Login form validates empty fields (31.9s)
+  Ô£ô   8 [chromium] ÔÇ║ e2e\playwright\auth.spec.ts:27:3 ÔÇ║ Authentication Flow @regression ÔÇ║ TC-AUTH-001: Login page loads correctly (34.4s)
+  Ô£ô   2 [chromium] ÔÇ║ e2e\playwright\auth.spec.ts:49:3 ÔÇ║ Authentication Flow @regression ÔÇ║ TC-AUTH-003: Login with invalid credentials shows error (37.1s)
+  Ô£ô   7 [chromium] ÔÇ║ e2e\playwright\auth.spec.ts:38:3 ÔÇ║ Authentication Flow @regression ÔÇ║ TC-AUTH-002: Login with valid credentials redirects to dashboard (37.8s)
+
+========== 1´©ÅÔâú TESTE: LOGIN ==========
+  Ô£ô   9 [chromium] ÔÇ║ e2e\playwright\auth.spec.ts:86:3 ÔÇ║ Authentication Flow @regression ÔÇ║ TC-AUTH-007: Unauthenticated user is redirected to login (38.2s)
+  Ô£ô   1 [chromium] ÔÇ║ e2e\playwright\auth.spec.ts:79:3 ÔÇ║ Authentication Flow @regression ÔÇ║ TC-AUTH-006: Forgot password modal opens (41.2s)
+
+========== 2´©ÅÔâú TESTE: DASHBOARD / KANBAN ==========
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more informa
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see http
+
+========== 3´©ÅÔâú TESTE: TASKBOARD ==========
+  Ô£ô  13 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:32:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-001: Dashboard loads with Portal de Governan├ºa title (39.7s)
+  Ô£ô   6 [chromium] ÔÇ║ e2e\playwright\auth.spec.ts:71:3 ÔÇ║ Authentication Flow @regression ÔÇ║ TC-AUTH-005: Signup tab is accessible and has correct fields (42.0s)
+­ƒôì P├ígina de login carregada
+Ô£Å´©Å Credenciais preenchidas
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more informa
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see http
+­ƒû▒´©Å Bot├úo LOGIN clicado
+­ƒôì URL ap├│s login: http://localhost:5173/login
+ÔØî Login FALHOU ÔÇö ainda na p├ígina de login
+­ƒôä Texto vis├¡vel (primeiros 300 chars): QA Agenda QA Mantenha seu fluxo de trabalho sincronizado Login Cadastro Esqueci minha senha Acessar Plataforma
+­ƒÅù´©Å ProLayout renderizado: ÔØî N├âO
+
+========== 5´©ÅÔâú TESTE: SETTINGS ==========
+
+========== 4´©ÅÔâú TESTE: PROFILE ==========
+­ƒôî T├¡tulo da p├ígina: "Agenda QA"
+­ƒôï KanbanBoard vis├¡vel: ÔØî N├âO
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more informa
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see http
+­ƒåò Bot├úo "Nova Reuni├úo" vis├¡vel: ÔÜá´©Å N├âO (role=viewer)
+­ƒô¡ Estado vazio (sem reuni├Áes): ÔÜá´©Å SIM ÔÇö tabela meetings n├úo existe
+­ƒô© Screenshot salvo: test-results/human-test-dashboard.png
+­ƒöÇ Toggle vis├¡vel: ÔØî N├âO
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more informa
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see http
+  Ô£ô  10 [chromium] ÔÇ║ e2e\playwright\auth.spec.ts:93:3 ÔÇ║ Authentication Flow @regression ÔÇ║ TC-AUTH-008: Session persists after page reload (49.9s)
+  Ô£ô  20 [chromium] ÔÇ║ e2e\playwright\human-test.spec.ts:45:3 ÔÇ║ TESTE HUMANO ÔÇö Navega├º├úo Completa @regression ÔÇ║ 1´©ÅÔâú LOGIN ÔÇö Realizar login e verificar dashboard (14.1s)
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more informa
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see http
+­ƒö┤ [NETWORK FAIL] GET https://aejcerpfayhlefkheslr.supabase.co/rest/v1/meetings?select=id%2Ctitulo%2Cdata%2Chorario_inicio%2Cdescricao%2Cstatus%2Clink_reuniao%2Ccreated_by&deleted_at=is.null&order=data.desc ÔÇö net::ERR_ABORTED
+­ƒö┤ [NETWORK FAIL] GET https://aejcerpfayhlefkheslr.supabase.co/rest/v1/cards?select=*&order=updated_at.desc ÔÇö net::ERR_ABORTED
+­ƒö┤ [NETWORK FAIL] GET https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2 ÔÇö net::ERR_ABORTED
+­ƒö┤ CONSOLE ERROR: Erro ao buscar reuni├Áes: {message: TypeError: Failed to fetch, details: TypeError: Failed to fetch
+    at http://localhostÔÇª//localhost:5173/src/store/meetingStore.ts:45:31), hint: , code: }
+­ƒö┤ CONSOLE ERROR: Error fetching cards: {message: TypeError: Failed to fetch, details: TypeError: Failed to fetch
+    at http://localhostÔÇªhttp://localhost:5173/src/hooks/useKanban.ts:9:31, hint: , code: }
+
+========== 7´©ÅÔâú TESTE: SIDEBAR / NAVEGA├ç├âO ==========
+
+========== 6´©ÅÔâú TESTE: ADMIN ==========
+  Ô£ô  22 [chromium] ÔÇ║ e2e\playwright\human-test.spec.ts:143:3 ÔÇ║ TESTE HUMANO ÔÇö Navega├º├úo Completa @regression ÔÇ║ 3´©ÅÔâú TASKBOARD ÔÇö Toggle e colunas de tarefas (12.5s)
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more informa
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see http
+­ƒö┤ [NETWORK FAIL] GET https://aejcerpfayhlefkheslr.supabase.co/rest/v1/meetings?select=id%2Ctitulo%2Cdata%2Chorario_inicio%2Cdescricao%2Cstatus%2Clink_reuniao%2Ccreated_by&deleted_at=is.null&order=data.desc ÔÇö net::ERR_ABORTED
+­ƒö┤ [NETWORK FAIL] GET https://aejcerpfayhlefkheslr.supabase.co/rest/v1/cards?select=*&order=updated_at.desc ÔÇö net::ERR_ABORTED
+­ƒö┤ [NETWORK FAIL] GET https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2 ÔÇö net::ERR_ABORTED
+­ƒö┤ CONSOLE ERROR: Erro ao buscar reuni├Áes: {message: TypeError: Failed to fetch, details: TypeError: Failed to fetch
+    at http://localhostÔÇª//localhost:5173/src/store/meetingStore.ts:45:31), hint: , code: }
+­ƒö┤ CONSOLE ERROR: Error fetching cards: {message: TypeError: Failed to fetch, details: TypeError: Failed to fetch
+    at http://localhostÔÇªhttp://localhost:5173/src/hooks/useKanban.ts:9:31, hint: , code: }
+­ƒôì URL: http://localhost:5173/settings
+­ƒôä Conte├║do (primeiros 400 chars): QA Agenda QA Q qa.tester Admin Configuracoes Personalize sua experiencia Aparencia Modo Escuro Alterar para o tema escuro Modo Compacto Reduzir espacamento entre elementos Notificacoes Notificacoes Push Receber notificacoes de atualizacoes Sistema Atualizacao Automatica Atualizar dados automaticamente
+­ƒô© Screenshot salvo: test-results/human-test-settings.png
+
+========== ­ƒôè RESUMO DE ERROS ==========
+
+­ƒö┤ Console Errors: 0
+
+­ƒö┤ Network Errors: 0
+
+­ƒö┤ Page Errors: 0
+
+========================================
+
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more informa
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see http
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more informa
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see http
+  Ô£ô  21 [chromium] ÔÇ║ e2e\playwright\human-test.spec.ts:83:3 ÔÇ║ TESTE HUMANO ÔÇö Navega├º├úo Completa @regression ÔÇ║ 2´©ÅÔâú DASHBOARD ÔÇö Inspecionar KanbanBoard (17.1s)
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more informa
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see http
+  Ô£ô  27 [chromium] ÔÇ║ e2e\playwright\human-test.spec.ts:346:3 ÔÇ║ TESTE HUMANO ÔÇö Navega├º├úo Completa @regression ÔÇ║ 8´©ÅÔâú RESUMO ÔÇö Coletar todos os erros acumulados (3.9s)
+­ƒôì URL: http://localhost:5173/profile
+­ƒôä Conte├║do (primeiros 400 chars): QA Agenda QA Q qa.tester Admin Meu Perfil Gerencie suas informa├º├Áes pessoais Informa├º├Áes Pessoais Nome Completo URL do Avatar qa.tester@gmail.com ADMIN Salvar Perfil Alterar Senha Nova Senha Confirmar Nova Senha Alterar Senha
+­ƒôº Email do usu├írio vis├¡vel: Ô£à SIM
+ÔÜá´©Å Erros vis├¡veis na p├ígina: Ô£à N├âO
+­ƒôØ Campos de input encontrados: 7
+­ƒæñ Campo nome atual: "QA Tester"
+­ƒô© Screenshot salvo: test-results/human-test-profile.png
+­ƒö┤ [NETWORK FAIL] GET https://aejcerpfayhlefkheslr.supabase.co/rest/v1/meetings?select=id%2Ctitulo%2Cdata%2Chorario_inicio%2Cdescricao%2Cstatus%2Clink_reuniao%2Ccreated_by&deleted_at=is.null&order=data.desc ÔÇö net::ERR_ABORTED
+­ƒö┤ [NETWORK FAIL] GET https://aejcerpfayhlefkheslr.supabase.co/rest/v1/cards?select=*&order=updated_at.desc ÔÇö net::ERR_ABORTED
+­ƒö┤ [NETWORK FAIL] GET https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2 ÔÇö net::ERR_ABORTED
+­ƒö┤ CONSOLE ERROR: Erro ao buscar reuni├Áes: {message: TypeError: Failed to fetch, details: TypeError: Failed to fetch
+    at http://localhostÔÇª//localhost:5173/src/store/meetingStore.ts:45:31), hint: , code: }
+­ƒö┤ CONSOLE ERROR: Error fetching cards: {message: TypeError: Failed to fetch, details: TypeError: Failed to fetch
+    at http://localhostÔÇªhttp://localhost:5173/src/hooks/useKanban.ts:9:31, hint: , code: }
+­ƒôÉ Sidebar vis├¡vel: ÔØî N├âO
+­ƒôï Items no menu: 0
+
+­ƒæñ Avatar/dropdown vis├¡vel: ÔØî N├âO
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more informa
+­ƒƒí CONSOLE WARN: ÔÜá´©Å React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see http
+­ƒô© Screenshot salvo: test-results/human-test-sidebar.png
+­ƒö┤ CONSOLE ERROR: Warning: findDOMNode is deprecated and will be removed in the next major release. Instead, add a ref directly to the element you want to reference. Learn more about using refs safely here: https://reactjs.org/link/strict-mode-find-node%s 
+    at SingleObserver (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:1346:24)
+    at ResizeObserver3 (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:1423:24)
+    at http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:23116:34
+    at Tooltip2 (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:28777:32)
+    at http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:29447:16
+    at span
+    at div
+    at div
+    at div
+    at div
+    at div
+    at DomWrapper4 (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:1332:5)
+    at SingleObserver (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:1346:24)
+    at ResizeObserver3 (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:1423:24)
+    at ListToolBar2 (http://localhost:5173/node_modules/.vite/deps/@ant-design_pro-components.js?v=4a61636d:39729:34)
+    at ToolBar (http://localhost:5173/node_modules/.vite/deps/@ant-design_pro-components.js?v=4a61636d:40035:27)
+    at ToolbarRender2 (http://localhost:5173/node_modules/.vite/deps/@ant-design_pro-components.js?v=4a61636d:40115:5)
+    at div
+    at div
+    at http://localhost:5173/node_modules/.vite/deps/@ant-design_pro-components.js?v=4a61636d:16717:25
+    at div
+    at TableRender (http://localhost:5173/node_modules/.vite/deps/@ant-design_pro-components.js?v=4a61636d:41113:22)
+    at ProTable2 (http://localhost:5173/node_modules/.vite/deps/@ant-design_pro-components.js?v=4a61636d:41294:28)
+    at ErrorBoundary2 (http://localhost:5173/node_modules/.vite/deps/@ant-design_pro-components.js?v=4a61636d:11724:5)
+    at MotionWrapper (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:6324:32)
+    at ProviderChildren (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:6432:5)
+    at ConfigProvider (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:6723:27)
+    at ConfigProviderContainer2 (http://localhost:5173/node_modules/.vite/deps/@ant-design_pro-components.js?v=4a61636d:11510:24)
+    at LocaleProvider (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:3758:13)
+    at MotionWrapper (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:6324:32)
+    at ProviderChildren (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:6432:5)
+    at ConfigProvider (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:6723:27)
+    at ProConfigProvider2 (http://localhost:5173/node_modules/.vite/deps/@ant-design_pro-components.js?v=4a61636d:11603:24)
+    at Container2 (http://localhost:5173/node_modules/.vite/deps/@ant-design_pro-components.js?v=4a61636d:38632:34)
+    at ProviderTableContainer2 (http://localhost:5173/node_modules/.vite/deps/@ant-design_pro-components.js?v=4a61636d:41692:52)
+    at div
+    at LocaleProvider (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:3758:13)
+    at MotionWrapper (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:6324:32)
+    at ProviderChildren (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:6432:5)
+    at ConfigProvider (http://localhost:5173/node_modules/.vite/deps/chunk-QO6XC32S.js?v=4a61636d:6723:27)
+    at UsersPage (http://localhost:5173/src/app/admin/users/page.tsx:28:29)
+    at RouteErrorBoundary (http://localhost:5173/src/components/RouteErrorBoundary.tsx:8:5)
+    at ProtectedRoute (http://localhost:5173/src/components/ProtectedRoute.tsx:22:3)
+    at RenderedRoute (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=4a61636d:4131:5)
+    at Outlet (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=4a61636d:4537:26)
+    at main
+    at div
+    at AppLayout
+    at RenderedRoute (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=4a61636d:4131:5)
+    at Routes (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=4a61636d:4601:5)
+    at Suspense
+    at ErrorBoundary (http://localhost:5173/src/components/ErrorBoundary.tsx:7:5)
+    at Router (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=4a61636d:4544:15)
+    at BrowserRouter (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=4a61636d:5290:5)
+    at AuthProvider (http://localhost:5173/src/hooks/useAuth.tsx:54:32)
+    at App
+    at ErrorBoundary (http://localhost:5173/src/components/ErrorBoundary.tsx:7:5)
+  Ô£ô  24 [chromium] ÔÇ║ e2e\playwright\human-test.spec.ts:238:3 ÔÇ║ TESTE HUMANO ÔÇö Navega├º├úo Completa @regression ÔÇ║ 5´©ÅÔâú SETTINGS ÔÇö P├ígina de configura├º├Áes (19.8s)
+­ƒôì URL: http://localhost:5173/admin/users
+­ƒôä Conte├║do (primeiros 400 chars): QA Agenda QA Q qa.tester Admin Gest├úo de Usu├írios Administre o acesso e as permiss├Áes da equipe. Nome Email Limpar Filtrar Expandir Lista de Membros Novo Usu├írio Avatar Nome Email Fun├º├úo Status ├Ültimo Acesso A├º├Áes Q QA Tester qa.tester@gmail.com Admin ATIVO 2026-02-24 17:15:05 Editar Excluir 1-1 de 1 itens 1
+­ƒÜ½ Acesso negado detectado: Ô£à N├âO
+  Ô£ÿ   4 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:37:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-002: Kanban board is visible by default (Reuni├Áes view) (52.4s)
+­ƒô© Screenshot salvo: test-results/human-test-admin.png
+  Ô£ô  23 [chromium] ÔÇ║ e2e\playwright\human-test.spec.ts:195:3 ÔÇ║ TESTE HUMANO ÔÇö Navega├º├úo Completa @regression ÔÇ║ 4´©ÅÔâú PROFILE ÔÇö P├ígina de perfil (21.2s)
+  Ô£ô  25 [chromium] ÔÇ║ e2e\playwright\human-test.spec.ts:288:3 ÔÇ║ TESTE HUMANO ÔÇö Navega├º├úo Completa @regression ÔÇ║ 7´©ÅÔâú SIDEBAR ÔÇö Navega├º├úo pelo menu lateral (12.2s)
+  Ô£ô  26 [chromium] ÔÇ║ e2e\playwright\human-test.spec.ts:261:3 ÔÇ║ TESTE HUMANO ÔÇö Navega├º├úo Completa @regression ÔÇ║ 6´©ÅÔâú ADMIN ÔÇö P├ígina de gest├úo de usu├írios (11.8s)
+  Ô£ÿ  11 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:72:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-005: Clicking "Nova Reuni├úo" opens meeting modal (47.3s)
+  Ô£ô  29 [chromium] ÔÇ║ e2e\playwright\navigation.spec.ts:58:3 ÔÇ║ Profile Page @regression ÔÇ║ TC-PROF-002: Profile page shows user information (14.8s)
+  Ô£ÿ  15 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:53:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-004: "Nova Reuni├úo" button is visible for authorized users (49.1s)
+  Ô£ô  30 [chromium] ÔÇ║ e2e\playwright\navigation.spec.ts:88:3 ÔÇ║ Route Guards & Access Control @regression ÔÇ║ TC-GUARD-001: Non-admin cannot access /admin/users (11.8s)
+  Ô£ô  31 [chromium] ÔÇ║ e2e\playwright\navigation.spec.ts:117:3 ÔÇ║ Route Guards & Access Control @regression ÔÇ║ TC-GUARD-002: Root / redirects to /dashboard after login (13.0s)
+  Ô£ÿ  14 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:88:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-006: Meeting modal has all required fields (49.1s)
+  Ô£ô  33 [chromium] ÔÇ║ e2e\playwright\navigation.spec.ts:142:3 ÔÇ║ Responsive Layout @regression ÔÇ║ TC-LAYOUT-002: Mobile viewport collapses sidebar (13.3s)
+  Ô£ô  28 [chromium] ÔÇ║ e2e\playwright\navigation.spec.ts:31:3 ÔÇ║ Profile Page @regression ÔÇ║ TC-PROF-001: Profile page loads (21.3s)
+  Ô£ÿ  16 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:115:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-001: View toggle switches to Tasks view (38.6s)
+  Ô£ÿ  17 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:125:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-002: TaskBoard has 5 status columns (31.4s)
+  Ô£ÿ  18 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:152:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-003: Sprint selector is visible in TaskBoard (30.2s)
+  Ô£ÿ   3 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:42:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-003: KanbanBoard has expected columns (49.6s)
+Navigated to profile, current URL: http://localhost:5173/profile
+Ô£à Role detectada: ADMIN
+Ô£à Profile page carregou. Conte├║do: true, Tag: true
+  Ô£ô  34 [chromium] ÔÇ║ e2e\playwright\smoke-test.spec.ts:57:3 ÔÇ║ SMOKE TEST ÔÇö Valida├º├úo P├│s-Migration @smoke ÔÇ║ 1. Login e verificar role no perfil (9.7s)
+  Ô£ÿ  19 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:159:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-004: TaskBoard shows Backlog Geral when no sprint selected (37.5s)
+  Ô£ÿ  32 [chromium] ÔÇ║ e2e\playwright\navigation.spec.ts:136:3 ÔÇ║ Responsive Layout @regression ÔÇ║ TC-LAYOUT-001: ProLayout sidebar renders (22.3s)
+  Ô£ÿ  38 [chromium] ÔÇ║ e2e\playwright\smoke-test.spec.ts:92:3 ÔÇ║ SMOKE TEST ÔÇö Valida├º├úo P├│s-Migration @smoke ÔÇ║ 2. TaskBoard com 5 colunas Kanban (19.3s)
+  -  45 [chromium] ÔÇ║ e2e\playwright\smoke-test.spec.ts:126:3 ÔÇ║ SMOKE TEST ÔÇö Valida├º├úo P├│s-Migration @smoke ÔÇ║ 3. Criar Card "A Fazer" e verificar persist├¬ncia
+  Ô£ÿ  35 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:37:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-002: Kanban board is visible by default (Reuni├Áes view) (retry #1) (20.3s)
+  Ô£ÿ  36 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:115:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-001: View toggle switches to Tasks view (retry #1) (21.9s)
+  Ô£ÿ  39 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:53:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-004: "Nova Reuni├úo" button is visible for authorized users (retry #1) (20.0s)
+  Ô£ÿ  37 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:72:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-005: Clicking "Nova Reuni├úo" opens meeting modal (retry #1) (22.4s)
+  Ô£ÿ  41 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:88:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-006: Meeting modal has all required fields (retry #1) (20.5s)
+  Ô£ÿ  43 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:42:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-003: KanbanBoard has expected columns (retry #1) (20.5s)
+  Ô£ÿ  42 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:152:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-003: Sprint selector is visible in TaskBoard (retry #1) (25.9s)
+  Ô£ÿ  40 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:125:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-002: TaskBoard has 5 status columns (retry #1) (30.3s)
+Navigated to profile, current URL: http://localhost:5173/profile
+Ô£à Role detectada: ADMIN
+Ô£à Profile page carregou. Conte├║do: true, Tag: true
+  Ô£ô  47 [chromium] ÔÇ║ e2e\playwright\smoke-test.spec.ts:57:3 ÔÇ║ SMOKE TEST ÔÇö Valida├º├úo P├│s-Migration @smoke ÔÇ║ 1. Login e verificar role no perfil (retry #1) (6.5s)
+  Ô£ÿ  44 [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:159:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-004: TaskBoard shows Backlog Geral when no sprint selected (retry #1) (23.2s)
+  Ô£ÿ  46 [chromium] ÔÇ║ e2e\playwright\navigation.spec.ts:136:3 ÔÇ║ Responsive Layout @regression ÔÇ║ TC-LAYOUT-001: ProLayout sidebar renders (retry #1) (16.8s)
+  Ô£ÿ  48 [chromium] ÔÇ║ e2e\playwright\smoke-test.spec.ts:92:3 ÔÇ║ SMOKE TEST ÔÇö Valida├º├úo P├│s-Migration @smoke ÔÇ║ 2. TaskBoard com 5 colunas Kanban (retry #1) (13.8s)
+  -  49 [chromium] ÔÇ║ e2e\playwright\smoke-test.spec.ts:126:3 ÔÇ║ SMOKE TEST ÔÇö Valida├º├úo P├│s-Migration @smoke ÔÇ║ 3. Criar Card "A Fazer" e verificar persist├¬ncia (retry #1)
+­ƒº╣ Running global teardown...
+Ô£à Global teardown completed
+
+
+  1) [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:37:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-002: Kanban board is visible by default (Reuni├Áes view) 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="kanban-board"]')
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="kanban-board"]')[22m
+
+
+      37 |   test('TC-DASH-002: Kanban board is visible by default (Reuni├Áes view)', async ({ page }) => {
+      38 |     const kanban = page.locator(SELECTORS.dashboard.kanbanBoard);
+    > 39 |     await expect(kanban).toBeVisible({ timeout: 10000 });
+         |                          ^
+      40 |   });
+      41 |
+      42 |   test('TC-DASH-003: KanbanBoard has expected columns', async ({ page }) => {
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:39:26
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-aa66b-e-by-default-Reuni├Áes-view--chromium\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-aa66b-e-by-default-Reuni├Áes-view--chromium\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Kanb-aa66b-e-by-default-Reuni├Áes-view--chromium\error-context.md
+
+    Retry #1 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="kanban-board"]')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="kanban-board"]')[22m
+
+
+      37 |   test('TC-DASH-002: Kanban board is visible by default (Reuni├Áes view)', async ({ page }) => {
+      38 |     const kanban = page.locator(SELECTORS.dashboard.kanbanBoard);
+    > 39 |     await expect(kanban).toBeVisible({ timeout: 10000 });
+         |                          ^
+      40 |   });
+      41 |
+      42 |   test('TC-DASH-003: KanbanBoard has expected columns', async ({ page }) => {
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:39:26
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-aa66b-e-by-default-Reuni├Áes-view--chromium-retry1\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-aa66b-e-by-default-Reuni├Áes-view--chromium-retry1\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Kanb-aa66b-e-by-default-Reuni├Áes-view--chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-aa66b-e-by-default-Reuni├Áes-view--chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\playwright-artifacts\dashboard-Dashboard---Kanb-aa66b-e-by-default-Reuni├Áes-view--chromium-retry1\trace.zip
+
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+  2) [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:42:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-003: KanbanBoard has expected columns 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="kanban-board"]')
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="kanban-board"]')[22m
+
+
+      42 |   test('TC-DASH-003: KanbanBoard has expected columns', async ({ page }) => {
+      43 |     const kanban = page.locator(SELECTORS.dashboard.kanbanBoard);
+    > 44 |     await expect(kanban).toBeVisible({ timeout: 10000 });
+         |                          ^
+      45 |
+      46 |     // KanbanBoard should have meeting status columns
+      47 |     const columns = ['A Agendar', 'Confirmada', 'Realizada'];
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:44:26
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-97e71-nBoard-has-expected-columns-chromium\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-97e71-nBoard-has-expected-columns-chromium\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Kanb-97e71-nBoard-has-expected-columns-chromium\error-context.md
+
+    Retry #1 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="kanban-board"]')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="kanban-board"]')[22m
+
+
+      42 |   test('TC-DASH-003: KanbanBoard has expected columns', async ({ page }) => {
+      43 |     const kanban = page.locator(SELECTORS.dashboard.kanbanBoard);
+    > 44 |     await expect(kanban).toBeVisible({ timeout: 10000 });
+         |                          ^
+      45 |
+      46 |     // KanbanBoard should have meeting status columns
+      47 |     const columns = ['A Agendar', 'Confirmada', 'Realizada'];
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:44:26
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-97e71-nBoard-has-expected-columns-chromium-retry1\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-97e71-nBoard-has-expected-columns-chromium-retry1\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Kanb-97e71-nBoard-has-expected-columns-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-97e71-nBoard-has-expected-columns-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\playwright-artifacts\dashboard-Dashboard---Kanb-97e71-nBoard-has-expected-columns-chromium-retry1\trace.zip
+
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+  3) [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:53:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-004: "Nova Reuni├úo" button is visible for authorized users 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="kanban-board"]')
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="kanban-board"]')[22m
+
+
+      53 |   test('TC-DASH-004: "Nova Reuni├úo" button is visible for authorized users', async ({ page }) => {
+      54 |     // Wait for dashboard to load completely
+    > 55 |     await expect(page.locator(SELECTORS.dashboard.kanbanBoard)).toBeVisible({ timeout: 10000 });
+         |                                                                 ^
+      56 |     const newMeetingBtn = page.locator(SELECTORS.dashboard.newMeetingBtn);
+      57 |     // Button only visible for admin/user roles - user needs profile in DB
+      58 |     const isVisible = await newMeetingBtn.isVisible().catch(() => false);
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:55:65
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7e97e-isible-for-authorized-users-chromium\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7e97e-isible-for-authorized-users-chromium\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7e97e-isible-for-authorized-users-chromium\error-context.md
+
+    Retry #1 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="kanban-board"]')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="kanban-board"]')[22m
+
+
+      53 |   test('TC-DASH-004: "Nova Reuni├úo" button is visible for authorized users', async ({ page }) => {
+      54 |     // Wait for dashboard to load completely
+    > 55 |     await expect(page.locator(SELECTORS.dashboard.kanbanBoard)).toBeVisible({ timeout: 10000 });
+         |                                                                 ^
+      56 |     const newMeetingBtn = page.locator(SELECTORS.dashboard.newMeetingBtn);
+      57 |     // Button only visible for admin/user roles - user needs profile in DB
+      58 |     const isVisible = await newMeetingBtn.isVisible().catch(() => false);
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:55:65
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7e97e-isible-for-authorized-users-chromium-retry1\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7e97e-isible-for-authorized-users-chromium-retry1\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7e97e-isible-for-authorized-users-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7e97e-isible-for-authorized-users-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7e97e-isible-for-authorized-users-chromium-retry1\trace.zip
+
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+  4) [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:72:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-005: Clicking "Nova Reuni├úo" opens meeting modal 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="kanban-board"]')
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="kanban-board"]')[22m
+
+
+      72 |   test('TC-DASH-005: Clicking "Nova Reuni├úo" opens meeting modal', async ({ page }) => {
+      73 |     // Wait for dashboard to load completely
+    > 74 |     await expect(page.locator(SELECTORS.dashboard.kanbanBoard)).toBeVisible({ timeout: 10000 });
+         |                                                                 ^
+      75 |     const newMeetingBtn = page.locator(SELECTORS.dashboard.newMeetingBtn);
+      76 |     const isVisible = await newMeetingBtn.isVisible().catch(() => false);
+      77 |     if (!isVisible) {
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:74:65
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7b440-Reuni├úo-opens-meeting-modal-chromium\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7b440-Reuni├úo-opens-meeting-modal-chromium\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7b440-Reuni├úo-opens-meeting-modal-chromium\error-context.md
+
+    Retry #1 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="kanban-board"]')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="kanban-board"]')[22m
+
+
+      72 |   test('TC-DASH-005: Clicking "Nova Reuni├úo" opens meeting modal', async ({ page }) => {
+      73 |     // Wait for dashboard to load completely
+    > 74 |     await expect(page.locator(SELECTORS.dashboard.kanbanBoard)).toBeVisible({ timeout: 10000 });
+         |                                                                 ^
+      75 |     const newMeetingBtn = page.locator(SELECTORS.dashboard.newMeetingBtn);
+      76 |     const isVisible = await newMeetingBtn.isVisible().catch(() => false);
+      77 |     if (!isVisible) {
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:74:65
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7b440-Reuni├úo-opens-meeting-modal-chromium-retry1\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7b440-Reuni├úo-opens-meeting-modal-chromium-retry1\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7b440-Reuni├úo-opens-meeting-modal-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7b440-Reuni├úo-opens-meeting-modal-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\playwright-artifacts\dashboard-Dashboard---Kanb-7b440-Reuni├úo-opens-meeting-modal-chromium-retry1\trace.zip
+
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+  5) [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:88:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-006: Meeting modal has all required fields 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="kanban-board"]')
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="kanban-board"]')[22m
+
+
+      88 |   test('TC-DASH-006: Meeting modal has all required fields', async ({ page }) => {
+      89 |     // Wait for dashboard to load completely
+    > 90 |     await expect(page.locator(SELECTORS.dashboard.kanbanBoard)).toBeVisible({ timeout: 10000 });
+         |                                                                 ^
+      91 |     const newMeetingBtn = page.locator(SELECTORS.dashboard.newMeetingBtn);
+      92 |     const isVisible = await newMeetingBtn.isVisible().catch(() => false);
+      93 |     if (!isVisible) {
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:90:65
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-e50e8-dal-has-all-required-fields-chromium\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-e50e8-dal-has-all-required-fields-chromium\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Kanb-e50e8-dal-has-all-required-fields-chromium\error-context.md
+
+    Retry #1 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="kanban-board"]')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="kanban-board"]')[22m
+
+
+      88 |   test('TC-DASH-006: Meeting modal has all required fields', async ({ page }) => {
+      89 |     // Wait for dashboard to load completely
+    > 90 |     await expect(page.locator(SELECTORS.dashboard.kanbanBoard)).toBeVisible({ timeout: 10000 });
+         |                                                                 ^
+      91 |     const newMeetingBtn = page.locator(SELECTORS.dashboard.newMeetingBtn);
+      92 |     const isVisible = await newMeetingBtn.isVisible().catch(() => false);
+      93 |     if (!isVisible) {
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:90:65
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-e50e8-dal-has-all-required-fields-chromium-retry1\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-e50e8-dal-has-all-required-fields-chromium-retry1\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Kanb-e50e8-dal-has-all-required-fields-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Kanb-e50e8-dal-has-all-required-fields-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\playwright-artifacts\dashboard-Dashboard---Kanb-e50e8-dal-has-all-required-fields-chromium-retry1\trace.zip
+
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+  6) [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:115:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-001: View toggle switches to Tasks view 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="view-toggle-switch"]')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="view-toggle-switch"]')[22m
+
+
+      116 |     // Click the toggle to switch to tasks
+      117 |     const toggle = page.locator(SELECTORS.dashboard.viewToggle);
+    > 118 |     await expect(toggle).toBeVisible({ timeout: 10000 });
+          |                          ^
+      119 |     await toggle.click();
+      120 |
+      121 |     // TaskBoard should now be visible
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:118:26
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-15cab-ggle-switches-to-Tasks-view-chromium\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-15cab-ggle-switches-to-Tasks-view-chromium\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Task-15cab-ggle-switches-to-Tasks-view-chromium\error-context.md
+
+    Retry #1 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="view-toggle-switch"]')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="view-toggle-switch"]')[22m
+
+
+      116 |     // Click the toggle to switch to tasks
+      117 |     const toggle = page.locator(SELECTORS.dashboard.viewToggle);
+    > 118 |     await expect(toggle).toBeVisible({ timeout: 10000 });
+          |                          ^
+      119 |     await toggle.click();
+      120 |
+      121 |     // TaskBoard should now be visible
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:118:26
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-15cab-ggle-switches-to-Tasks-view-chromium-retry1\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-15cab-ggle-switches-to-Tasks-view-chromium-retry1\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Task-15cab-ggle-switches-to-Tasks-view-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-15cab-ggle-switches-to-Tasks-view-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\playwright-artifacts\dashboard-Dashboard---Task-15cab-ggle-switches-to-Tasks-view-chromium-retry1\trace.zip
+
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+  7) [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:125:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-002: TaskBoard has 5 status columns 
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="view-toggle-switch"]')[22m
+
+
+      124 |
+      125 |   test('TC-TASK-002: TaskBoard has 5 status columns', async ({ page }) => {
+    > 126 |     await page.locator(SELECTORS.dashboard.viewToggle).click();
+          |                                                        ^
+      127 |     
+      128 |     const taskBoard = page.locator(SELECTORS.dashboard.taskBoard);
+      129 |     await expect(taskBoard).toBeVisible({ timeout: 10000 });
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:126:56
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-f3e9b-kBoard-has-5-status-columns-chromium\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-f3e9b-kBoard-has-5-status-columns-chromium\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Task-f3e9b-kBoard-has-5-status-columns-chromium\error-context.md
+
+    Retry #1 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="view-toggle-switch"]')[22m
+
+
+      124 |
+      125 |   test('TC-TASK-002: TaskBoard has 5 status columns', async ({ page }) => {
+    > 126 |     await page.locator(SELECTORS.dashboard.viewToggle).click();
+          |                                                        ^
+      127 |     
+      128 |     const taskBoard = page.locator(SELECTORS.dashboard.taskBoard);
+      129 |     await expect(taskBoard).toBeVisible({ timeout: 10000 });
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:126:56
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-f3e9b-kBoard-has-5-status-columns-chromium-retry1\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-f3e9b-kBoard-has-5-status-columns-chromium-retry1\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Task-f3e9b-kBoard-has-5-status-columns-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-f3e9b-kBoard-has-5-status-columns-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\playwright-artifacts\dashboard-Dashboard---Task-f3e9b-kBoard-has-5-status-columns-chromium-retry1\trace.zip
+
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+  8) [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:152:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-003: Sprint selector is visible in TaskBoard 
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="view-toggle-switch"]')[22m
+
+
+      151 |
+      152 |   test('TC-TASK-003: Sprint selector is visible in TaskBoard', async ({ page }) => {
+    > 153 |     await page.locator(SELECTORS.dashboard.viewToggle).click();
+          |                                                        ^
+      154 |     
+      155 |     // Sprint select dropdown
+      156 |     await expect(page.locator('text=Selecione uma Sprint').first()).toBeVisible({ timeout: 10000 });
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:153:56
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-b47a1-tor-is-visible-in-TaskBoard-chromium\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-b47a1-tor-is-visible-in-TaskBoard-chromium\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Task-b47a1-tor-is-visible-in-TaskBoard-chromium\error-context.md
+
+    Retry #1 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="view-toggle-switch"]')[22m
+
+
+      151 |
+      152 |   test('TC-TASK-003: Sprint selector is visible in TaskBoard', async ({ page }) => {
+    > 153 |     await page.locator(SELECTORS.dashboard.viewToggle).click();
+          |                                                        ^
+      154 |     
+      155 |     // Sprint select dropdown
+      156 |     await expect(page.locator('text=Selecione uma Sprint').first()).toBeVisible({ timeout: 10000 });
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:153:56
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-b47a1-tor-is-visible-in-TaskBoard-chromium-retry1\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-b47a1-tor-is-visible-in-TaskBoard-chromium-retry1\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Task-b47a1-tor-is-visible-in-TaskBoard-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-b47a1-tor-is-visible-in-TaskBoard-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\playwright-artifacts\dashboard-Dashboard---Task-b47a1-tor-is-visible-in-TaskBoard-chromium-retry1\trace.zip
+
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+  9) [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:159:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-004: TaskBoard shows Backlog Geral when no sprint selected 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="view-toggle-switch"]')[22m
+
+
+      158 |
+      159 |   test('TC-TASK-004: TaskBoard shows Backlog Geral when no sprint selected', async ({ page }) => {
+    > 160 |     await page.locator(SELECTORS.dashboard.viewToggle).click();
+          |                                                        ^
+      161 |     
+      162 |     await expect(page.locator('text=Backlog Geral').first()).toBeVisible({ timeout: 10000 });
+      163 |   });
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:160:56
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-b6785-ral-when-no-sprint-selected-chromium\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-b6785-ral-when-no-sprint-selected-chromium\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Task-b6785-ral-when-no-sprint-selected-chromium\error-context.md
+
+    Retry #1 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="view-toggle-switch"]')[22m
+
+
+      158 |
+      159 |   test('TC-TASK-004: TaskBoard shows Backlog Geral when no sprint selected', async ({ page }) => {
+    > 160 |     await page.locator(SELECTORS.dashboard.viewToggle).click();
+          |                                                        ^
+      161 |     
+      162 |     await expect(page.locator('text=Backlog Geral').first()).toBeVisible({ timeout: 10000 });
+      163 |   });
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\dashboard.spec.ts:160:56
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-b6785-ral-when-no-sprint-selected-chromium-retry1\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-b6785-ral-when-no-sprint-selected-chromium-retry1\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\dashboard-Dashboard---Task-b6785-ral-when-no-sprint-selected-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\dashboard-Dashboard---Task-b6785-ral-when-no-sprint-selected-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\playwright-artifacts\dashboard-Dashboard---Task-b6785-ral-when-no-sprint-selected-chromium-retry1\trace.zip
+
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+  10) [chromium] ÔÇ║ e2e\playwright\navigation.spec.ts:136:3 ÔÇ║ Responsive Layout @regression ÔÇ║ TC-LAYOUT-001: ProLayout sidebar renders 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('.ant-pro-sider, .ant-layout-sider, [class*="sider"]').first()
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('.ant-pro-sider, .ant-layout-sider, [class*="sider"]').first()[22m
+
+
+      137 |     // ProLayout sidebar should be visible at desktop size
+      138 |     const sidebar = page.locator('.ant-pro-sider, .ant-layout-sider, [class*="sider"]').first();
+    > 139 |     await expect(sidebar).toBeVisible({ timeout: 10000 });
+          |                           ^
+      140 |   });
+      141 |
+      142 |   test('TC-LAYOUT-002: Mobile viewport collapses sidebar', async ({ page }) => {
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\navigation.spec.ts:139:27
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\navigation-Responsive-Layo-6d19b-1-ProLayout-sidebar-renders-chromium\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\navigation-Responsive-Layo-6d19b-1-ProLayout-sidebar-renders-chromium\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\navigation-Responsive-Layo-6d19b-1-ProLayout-sidebar-renders-chromium\error-context.md
+
+    Retry #1 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('.ant-pro-sider, .ant-layout-sider, [class*="sider"]').first()
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('.ant-pro-sider, .ant-layout-sider, [class*="sider"]').first()[22m
+
+
+      137 |     // ProLayout sidebar should be visible at desktop size
+      138 |     const sidebar = page.locator('.ant-pro-sider, .ant-layout-sider, [class*="sider"]').first();
+    > 139 |     await expect(sidebar).toBeVisible({ timeout: 10000 });
+          |                           ^
+      140 |   });
+      141 |
+      142 |   test('TC-LAYOUT-002: Mobile viewport collapses sidebar', async ({ page }) => {
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\navigation.spec.ts:139:27
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\navigation-Responsive-Layo-6d19b-1-ProLayout-sidebar-renders-chromium-retry1\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\navigation-Responsive-Layo-6d19b-1-ProLayout-sidebar-renders-chromium-retry1\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\navigation-Responsive-Layo-6d19b-1-ProLayout-sidebar-renders-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\navigation-Responsive-Layo-6d19b-1-ProLayout-sidebar-renders-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\playwright-artifacts\navigation-Responsive-Layo-6d19b-1-ProLayout-sidebar-renders-chromium-retry1\trace.zip
+
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+  11) [chromium] ÔÇ║ e2e\playwright\smoke-test.spec.ts:92:3 ÔÇ║ SMOKE TEST ÔÇö Valida├º├úo P├│s-Migration @smoke ÔÇ║ 2. TaskBoard com 5 colunas Kanban 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="view-toggle-switch"]')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="view-toggle-switch"]')[22m
+
+
+      43 | async function switchToTasks(page: Page) {
+      44 |   const toggle = page.locator(SELECTORS.dashboard.viewToggle);
+    > 45 |   await expect(toggle).toBeVisible({ timeout: 10000 });
+         |                        ^
+      46 |   
+      47 |   // Check if already on tasks (task-board visible)
+      48 |   const taskBoard = page.locator(SELECTORS.dashboard.taskBoard);
+        at switchToTasks (C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\smoke-test.spec.ts:45:24)
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\smoke-test.spec.ts:94:11
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\smoke-test-SMOKE-TEST-ÔÇö-Va-6c9a2-kBoard-com-5-colunas-Kanban-chromium\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\smoke-test-SMOKE-TEST-ÔÇö-Va-6c9a2-kBoard-com-5-colunas-Kanban-chromium\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\smoke-test-SMOKE-TEST-ÔÇö-Va-6c9a2-kBoard-com-5-colunas-Kanban-chromium\error-context.md
+
+    Retry #1 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="view-toggle-switch"]')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="view-toggle-switch"]')[22m
+
+
+      43 | async function switchToTasks(page: Page) {
+      44 |   const toggle = page.locator(SELECTORS.dashboard.viewToggle);
+    > 45 |   await expect(toggle).toBeVisible({ timeout: 10000 });
+         |                        ^
+      46 |   
+      47 |   // Check if already on tasks (task-board visible)
+      48 |   const taskBoard = page.locator(SELECTORS.dashboard.taskBoard);
+        at switchToTasks (C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\smoke-test.spec.ts:45:24)
+        at C:\Users\Rafael Feltrim\Documents\agenda-qa\e2e\playwright\smoke-test.spec.ts:94:11
+
+    attachment #1: screenshot (image/png) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\smoke-test-SMOKE-TEST-ÔÇö-Va-6c9a2-kBoard-com-5-colunas-Kanban-chromium-retry1\test-failed-1.png
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    attachment #2: video (video/webm) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\smoke-test-SMOKE-TEST-ÔÇö-Va-6c9a2-kBoard-com-5-colunas-Kanban-chromium-retry1\video.webm
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+    Error Context: test-results\playwright-artifacts\smoke-test-SMOKE-TEST-ÔÇö-Va-6c9a2-kBoard-com-5-colunas-Kanban-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    test-results\playwright-artifacts\smoke-test-SMOKE-TEST-ÔÇö-Va-6c9a2-kBoard-com-5-colunas-Kanban-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\playwright-artifacts\smoke-test-SMOKE-TEST-ÔÇö-Va-6c9a2-kBoard-com-5-colunas-Kanban-chromium-retry1\trace.zip
+
+    ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+
+  11 failed
+    [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:37:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-002: Kanban board is visible by default (Reuni├Áes view) 
+    [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:42:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-003: KanbanBoard has expected columns 
+    [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:53:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-004: "Nova Reuni├úo" button is visible for authorized users 
+    [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:72:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-005: Clicking "Nova Reuni├úo" opens meeting modal 
+    [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:88:3 ÔÇ║ Dashboard - KanbanBoard (Reuni├Áes) @regression ÔÇ║ TC-DASH-006: Meeting modal has all required fields 
+    [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:115:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-001: View toggle switches to Tasks view 
+    [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:125:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-002: TaskBoard has 5 status columns 
+    [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:152:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-003: Sprint selector is visible in TaskBoard 
+    [chromium] ÔÇ║ e2e\playwright\dashboard.spec.ts:159:3 ÔÇ║ Dashboard - TaskBoard (Tarefas) @regression ÔÇ║ TC-TASK-004: TaskBoard shows Backlog Geral when no sprint selected 
+    [chromium] ÔÇ║ e2e\playwright\navigation.spec.ts:136:3 ÔÇ║ Responsive Layout @regression ÔÇ║ TC-LAYOUT-001: ProLayout sidebar renders 
+    [chromium] ÔÇ║ e2e\playwright\smoke-test.spec.ts:92:3 ÔÇ║ SMOKE TEST ÔÇö Valida├º├úo P├│s-Migration @smoke ÔÇ║ 2. TaskBoard com 5 colunas Kanban 
+  1 did not run
+  24 passed (2.7m)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report test-results\playwright-report[39m
+[36m[39m

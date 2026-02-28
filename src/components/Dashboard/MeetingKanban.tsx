@@ -142,6 +142,7 @@ export default function MeetingKanban() {
     return (
         <>
             <Card
+                data-testid="kanban-board"
                 title={
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -153,6 +154,7 @@ export default function MeetingKanban() {
                             size="small"
                             icon={<PlusOutlined />}
                             onClick={() => handleAddToColumn('a-agendar')}
+                            data-testid="new-meeting-btn"
                         >
                             Nova Reunião
                         </Button>

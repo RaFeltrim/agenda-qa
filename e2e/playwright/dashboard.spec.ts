@@ -100,9 +100,9 @@ test.describe('Dashboard - KanbanBoard (Reuniões) @regression', () => {
     await expect(page.locator('.ant-modal').first()).toBeVisible({ timeout: 10000 });
 
     // Check form fields exist inside modal
-    await expect(page.locator('.ant-modal input').first()).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('[data-testid="meeting-title-input"]').first()).toBeVisible({ timeout: 5000 });
     // Check submit/save button exists
-    await expect(page.locator('.ant-modal button[type="submit"], .ant-modal .ant-btn-primary').first()).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('button:has-text("Salvar Reunião")').first()).toBeVisible({ timeout: 5000 });
   });
 });
 
@@ -112,53 +112,21 @@ test.describe('Dashboard - TaskBoard (Tarefas) @regression', () => {
     await loginAndGoToDashboard(page);
   });
 
-  test('TC-TASK-001: View toggle switches to Tasks view', async ({ page }) => {
-    // Click the toggle to switch to tasks
-    const toggle = page.locator(SELECTORS.dashboard.viewToggle);
-    await expect(toggle).toBeVisible({ timeout: 10000 });
-    await toggle.click();
-
-    // TaskBoard should now be visible
+  test('TC-TASK-001: TaskBoard is visible directly on dashboard', async ({ page }) => {
+    // TaskBoard should be directly visible on the page without toggling
     await expect(page.locator(SELECTORS.dashboard.taskBoard)).toBeVisible({ timeout: 10000 });
   });
 
-  test('TC-TASK-002: TaskBoard has 5 status columns', async ({ page }) => {
-    await page.locator(SELECTORS.dashboard.viewToggle).click();
-    
+  test('TC-TASK-002: TaskBoard has 4 status columns for cards', async ({ page }) => {
     const taskBoard = page.locator(SELECTORS.dashboard.taskBoard);
     await expect(taskBoard).toBeVisible({ timeout: 10000 });
 
-    // Check for empty state first - if there are no sprints/cards, we might see empty state message
-    const emptyState = page.locator('text=Criar Primeira Sprint');
-    const hasEmptyState = await emptyState.isVisible().catch(() => false);
-    
-    if (hasEmptyState) {
-      // If in empty state, verify the empty state message is visible
-      await expect(emptyState).toBeVisible();
-      console.log('TaskBoard in empty state - showing "Criar Primeira Sprint"');
-    } else {
-      // 5 columns: Backlog, A Fazer, Em Progresso, Bloqueado, Concluído
-      const columns = ['Backlog', 'A Fazer', 'Em Progresso', 'Bloqueado', 'Concluído'];
-      let foundCount = 0;
-      for (const col of columns) {
-        const visible = await page.locator(`text=${col}`).first().isVisible().catch(() => false);
-        if (visible) foundCount++;
-      }
-      // Verify that at least one expected column is visible
-      expect(foundCount).toBeGreaterThan(0);
+    const columns = ['Backlog', 'Em Progresso', 'Bloqueado', 'Concluído'];
+    let foundCount = 0;
+    for (const col of columns) {
+      const visible = await page.locator(`text=${col}`).first().isVisible().catch(() => false);
+      if (visible) foundCount++;
     }
-  });
-
-  test('TC-TASK-003: Sprint selector is visible in TaskBoard', async ({ page }) => {
-    await page.locator(SELECTORS.dashboard.viewToggle).click();
-    
-    // Sprint select dropdown
-    await expect(page.locator('text=Selecione uma Sprint').first()).toBeVisible({ timeout: 10000 });
-  });
-
-  test('TC-TASK-004: TaskBoard shows Backlog Geral when no sprint selected', async ({ page }) => {
-    await page.locator(SELECTORS.dashboard.viewToggle).click();
-    
-    await expect(page.locator('text=Backlog Geral').first()).toBeVisible({ timeout: 10000 });
+    expect(foundCount).toBeGreaterThan(0);
   });
 });

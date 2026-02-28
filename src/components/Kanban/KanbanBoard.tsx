@@ -228,7 +228,7 @@ export default function KanbanBoard({ cards, onCardClick, onStatusChange, onAddC
 
   return (
     <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="flex gap-4 overflow-x-auto pb-4">
+      <div data-testid="task-board" className="flex gap-4 overflow-x-auto pb-4">
         {STATUS_COLUMNS.map((col) => {
           const columnCards = cards.filter((c) => c.status === col.id);
           return (

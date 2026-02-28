@@ -44,7 +44,7 @@ test.describe('TESTE HUMANO — Navegação Completa @regression', () => {
 
   test('1️⃣ LOGIN — Realizar login e verificar dashboard', async ({ page }) => {
     console.log('\n========== 1️⃣ TESTE: LOGIN ==========');
-    await page.goto('http://localhost:5173/login');
+    await page.goto('/login');
     await page.waitForLoadState('networkidle');
     console.log('📍 Página de login carregada');
 
@@ -84,7 +84,7 @@ test.describe('TESTE HUMANO — Navegação Completa @regression', () => {
     console.log('\n========== 2️⃣ TESTE: DASHBOARD / KANBAN ==========');
     
     // Login rápido
-    await page.goto('http://localhost:5173/login');
+    await page.goto('/login');
     await page.getByTestId('login-email-input').fill(EMAIL);
     await page.getByTestId('login-password-input').fill(PASSWORD);
     await page.getByTestId('login-submit-button').click();
@@ -144,7 +144,7 @@ test.describe('TESTE HUMANO — Navegação Completa @regression', () => {
     console.log('\n========== 3️⃣ TESTE: TASKBOARD ==========');
     
     // Login
-    await page.goto('http://localhost:5173/login');
+    await page.goto('/login');
     await page.getByTestId('login-email-input').fill(EMAIL);
     await page.getByTestId('login-password-input').fill(PASSWORD);
     await page.getByTestId('login-submit-button').click();
@@ -196,7 +196,7 @@ test.describe('TESTE HUMANO — Navegação Completa @regression', () => {
     console.log('\n========== 4️⃣ TESTE: PROFILE ==========');
     
     // Login
-    await page.goto('http://localhost:5173/login');
+    await page.goto('/login');
     await page.getByTestId('login-email-input').fill(EMAIL);
     await page.getByTestId('login-password-input').fill(PASSWORD);
     await page.getByTestId('login-submit-button').click();
@@ -204,7 +204,7 @@ test.describe('TESTE HUMANO — Navegação Completa @regression', () => {
     
 
     // Navegar para profile
-    await page.goto('http://localhost:5173/profile');
+    await page.goto('/profile');
     await page.waitForLoadState('networkidle');
     console.log(`📍 URL: ${page.url()}`);
 
@@ -239,7 +239,7 @@ test.describe('TESTE HUMANO — Navegação Completa @regression', () => {
     console.log('\n========== 5️⃣ TESTE: SETTINGS ==========');
     
     // Login
-    await page.goto('http://localhost:5173/login');
+    await page.goto('/login');
     await page.getByTestId('login-email-input').fill(EMAIL);
     await page.getByTestId('login-password-input').fill(PASSWORD);
     await page.getByTestId('login-submit-button').click();
@@ -247,7 +247,7 @@ test.describe('TESTE HUMANO — Navegação Completa @regression', () => {
     
 
     // Navegar para settings
-    await page.goto('http://localhost:5173/settings');
+    await page.goto('/settings');
     await page.waitForLoadState('networkidle');
     console.log(`📍 URL: ${page.url()}`);
 
@@ -262,7 +262,7 @@ test.describe('TESTE HUMANO — Navegação Completa @regression', () => {
     console.log('\n========== 6️⃣ TESTE: ADMIN ==========');
     
     // Login
-    await page.goto('http://localhost:5173/login');
+    await page.goto('/login');
     await page.getByTestId('login-email-input').fill(EMAIL);
     await page.getByTestId('login-password-input').fill(PASSWORD);
     await page.getByTestId('login-submit-button').click();
@@ -270,7 +270,7 @@ test.describe('TESTE HUMANO — Navegação Completa @regression', () => {
     
 
     // Navegar para admin
-    await page.goto('http://localhost:5173/admin/users');
+    await page.goto('/admin/users');
     await page.waitForLoadState('networkidle');
     console.log(`📍 URL: ${page.url()}`);
 
@@ -289,7 +289,7 @@ test.describe('TESTE HUMANO — Navegação Completa @regression', () => {
     console.log('\n========== 7️⃣ TESTE: SIDEBAR / NAVEGAÇÃO ==========');
     
     // Login
-    await page.goto('http://localhost:5173/login');
+    await page.goto('/login');
     await page.getByTestId('login-email-input').fill(EMAIL);
     await page.getByTestId('login-password-input').fill(PASSWORD);
     await page.getByTestId('login-submit-button').click();

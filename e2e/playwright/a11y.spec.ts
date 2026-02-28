@@ -7,7 +7,7 @@ test.describe('Acessibilidade (Baixa Visão / Low Vision Persona)', () => {
   // Ja que playwright precisa de login, podemos usar a mesma estrutura do dash.
 
   test('Deve ser legível para usuários com baixa visão na tela de Login', async ({ page }) => {
-    await page.goto('http://localhost:3001/login');
+    await page.goto('/login');
     // Espera carregar e renderizar
     await page.waitForLoadState('networkidle');
 

@@ -133,10 +133,14 @@ test.describe('Responsive Layout @regression', () => {
     await loginAndGoToDashboard(page);
   });
 
-  test('TC-LAYOUT-001: ProLayout sidebar renders', async ({ page }) => {
-    // ProLayout sidebar should be visible at desktop size
-    const navItem = page.locator('.ant-menu-item, [role="menuitem"]').first();
-    await expect(navItem).toBeVisible({ timeout: 10000 });
+  test('TC-LAYOUT-001: Header navigation renders with key elements', async ({ page }) => {
+    // App uses top header navigation (banner) — not a sidebar
+    const header = page.locator('header, [role="banner"]').first();
+    await expect(header).toBeVisible({ timeout: 10000 });
+
+    // Verify key header elements: logo, user info
+    await expect(page.locator('text=Agenda QA')).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('button:has-text("qa.tester")')).toBeVisible({ timeout: 5000 });
   });
 
   test('TC-LAYOUT-002: Mobile viewport collapses sidebar', async ({ page }) => {

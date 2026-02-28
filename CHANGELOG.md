@@ -4,6 +4,16 @@ Todas as mudanças notáveis do projeto serão documentadas neste arquivo.
 
 ---
 
+## [2.1.0] — 2026-02-27 — Avaliação QA MVP & Estratégia Shift-Left
+
+### Qualidade Analisada (SR SDET)
+- **Avaliação do MVP**: Realizada auditoria completa de testes E2E e configurações, documentada na nova pasta `testes/`.
+- **Estratégia Shift-Left**: Definido plano para mitigar bugs na origem através de Unit Tests rigorosos, checagem estática Typescript no `pre-commit`, e integração CI/CD autônoma.
+- **Arquitetura de Testes**: Sugerida depreciação do `Cypress` para centralizar a regressão nativa de Interface apenas via `Playwright`, além de adoção de `Vitest` com obrigatoriedade progressiva para `Stores` e `Hooks`.
+- **Artefatos Criados**: Inclusão de templates de _Pipeline Github Actions_ (`exemplo_ci.yaml`), Assessment do MVP local (`01_QA_ASSESSMENT_MVP.md`) e Estratégia Shift-Left (`02_ESTRATEGIA_SHIFT_LEFT.md`).
+
+---
+
 ## [2.0.0] — 2026-02-10 — Restauração de Infraestrutura
 
 ### Adicionado

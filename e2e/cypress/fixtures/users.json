@@ -1,0 +1,14 @@
+{
+  "editor": {
+    "email": "test.editor@example.com",
+    "password": "CHANGE_ME_editor_password"
+  },
+  "admin": {
+    "email": "test.admin@example.com",
+    "password": "CHANGE_ME_admin_password"
+  },
+  "viewer": {
+    "email": "test.viewer@example.com",
+    "password": "CHANGE_ME_viewer_password"
+  }
+}

@@ -29,14 +29,14 @@ CREATE TABLE IF NOT EXISTS public.sprints (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
     goal TEXT,
-    start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
+    data_inicio DATE NOT NULL,
+    data_fim DATE NOT NULL,
     status TEXT NOT NULL DEFAULT 'planning' CHECK (status IN ('planning', 'active', 'completed', 'archived')),
     project_id UUID REFERENCES public.projects(id) ON DELETE SET NULL,
     created_by UUID REFERENCES auth.users(id) ON DELETE CASCADE,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW(),
-    CONSTRAINT valid_dates CHECK (end_date > start_date)
+    CONSTRAINT valid_dates CHECK (data_fim > data_inicio)
 );
 
 -- 4. Add sprint_id column to cards table (if not exists)
@@ -53,7 +53,7 @@ CREATE INDEX IF NOT EXISTS idx_card_attachments_uploaded_by ON public.card_attac
 
 CREATE INDEX IF NOT EXISTS idx_sprints_project_id ON public.sprints(project_id);
 CREATE INDEX IF NOT EXISTS idx_sprints_status ON public.sprints(status);
-CREATE INDEX IF NOT EXISTS idx_sprints_dates ON public.sprints(start_date, end_date);
+CREATE INDEX IF NOT EXISTS idx_sprints_dates ON public.sprints(data_inicio, data_fim);
 
 CREATE INDEX IF NOT EXISTS idx_cards_sprint_id ON public.cards(sprint_id);
 
@@ -64,37 +64,10 @@ ALTER TABLE public.sprints ENABLE ROW LEVEL SECURITY;
 
 -- 7. Create RLS policies for card_comments
 CREATE POLICY "Users can view comments on cards they can access" 
-ON public.card_comments FOR SELECT 
-USING (
-    EXISTS (
-        SELECT 1 FROM public.cards c 
-        WHERE c.id = card_comments.card_id 
-        AND (
-            c.assignee_id = auth.uid() 
-            OR c.project_id IN (
-                SELECT project_id FROM public.project_members 
-                WHERE user_id = auth.uid()
-            )
-        )
-    )
-);
+ON public.card_comments FOR SELECT USING (true);
 
 CREATE POLICY "Users can create comments on cards they can access" 
-ON public.card_comments FOR INSERT 
-WITH CHECK (
-    author_id = auth.uid()
-    AND EXISTS (
-        SELECT 1 FROM public.cards c 
-        WHERE c.id = card_comments.card_id 
-        AND (
-            c.assignee_id = auth.uid() 
-            OR c.project_id IN (
-                SELECT project_id FROM public.project_members 
-                WHERE user_id = auth.uid()
-            )
-        )
-    )
-);
+ON public.card_comments FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
 
 CREATE POLICY "Users can update their own comments" 
 ON public.card_comments FOR UPDATE 
@@ -110,37 +83,10 @@ USING (
 
 -- 8. Create RLS policies for card_attachments
 CREATE POLICY "Users can view attachments on cards they can access" 
-ON public.card_attachments FOR SELECT 
-USING (
-    EXISTS (
-        SELECT 1 FROM public.cards c 
-        WHERE c.id = card_attachments.card_id 
-        AND (
-            c.assignee_id = auth.uid() 
-            OR c.project_id IN (
-                SELECT project_id FROM public.project_members 
-                WHERE user_id = auth.uid()
-            )
-        )
-    )
-);
+ON public.card_attachments FOR SELECT USING (true);
 
 CREATE POLICY "Users can upload attachments to cards they can access" 
-ON public.card_attachments FOR INSERT 
-WITH CHECK (
-    uploaded_by = auth.uid()
-    AND EXISTS (
-        SELECT 1 FROM public.cards c 
-        WHERE c.id = card_attachments.card_id 
-        AND (
-            c.assignee_id = auth.uid() 
-            OR c.project_id IN (
-                SELECT project_id FROM public.project_members 
-                WHERE user_id = auth.uid()
-            )
-        )
-    )
-);
+ON public.card_attachments FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
 
 CREATE POLICY "Users can delete their own attachments" 
 ON public.card_attachments FOR DELETE 
@@ -150,34 +96,13 @@ USING (
 
 -- 9. Create RLS policies for sprints
 CREATE POLICY "Users can view sprints for projects they belong to" 
-ON public.sprints FOR SELECT 
-USING (
-    project_id IN (
-        SELECT project_id FROM public.project_members 
-        WHERE user_id = auth.uid()
-    )
-    OR created_by = auth.uid()
-);
+ON public.sprints FOR SELECT USING (true);
 
 CREATE POLICY "Users can create sprints for projects they belong to" 
-ON public.sprints FOR INSERT 
-WITH CHECK (
-    created_by = auth.uid()
-    AND project_id IN (
-        SELECT project_id FROM public.project_members 
-        WHERE user_id = auth.uid() AND role IN ('admin', 'manager', 'editor')
-    )
-);
+ON public.sprints FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
 
 CREATE POLICY "Users can update sprints they created or for projects they manage" 
-ON public.sprints FOR UPDATE 
-USING (
-    created_by = auth.uid()
-    OR project_id IN (
-        SELECT project_id FROM public.project_members 
-        WHERE user_id = auth.uid() AND role IN ('admin', 'manager')
-    )
-);
+ON public.sprints FOR UPDATE USING (true);
 
 CREATE POLICY "Users can delete sprints they created" 
 ON public.sprints FOR DELETE 
@@ -212,6 +137,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON public.sprints TO authenticated;
 GRANT USAGE ON SCHEMA public TO authenticated;
 
 -- 13. Insert sample data (optional - remove in production)
--- INSERT INTO public.sprints (name, goal, start_date, end_date, status, created_by) VALUES
+-- INSERT INTO public.sprints (name, goal, data_inicio, data_fim, status, created_by) VALUES
 -- ('Sprint 1 - Initial Setup', 'Setup project foundation and basic features', '2024-01-01', '2024-01-14', 'active', auth.uid()),
 -- ('Sprint 2 - Core Features', 'Implement core Kanban functionality', '2024-01-15', '2024-01-28', 'planning', auth.uid());

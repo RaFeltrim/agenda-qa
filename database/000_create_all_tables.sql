@@ -182,51 +182,51 @@ ALTER TABLE public.comment_reads ENABLE ROW LEVEL SECURITY;
 -- =====================================================
 
 -- Profiles
-CREATE POLICY IF NOT EXISTS "profiles_select" ON public.profiles FOR SELECT USING (auth.uid() IS NOT NULL);
-CREATE POLICY IF NOT EXISTS "profiles_insert" ON public.profiles FOR INSERT WITH CHECK (auth.uid() = id);
-CREATE POLICY IF NOT EXISTS "profiles_update" ON public.profiles FOR UPDATE USING (auth.uid() = id);
+CREATE POLICY "profiles_select" ON public.profiles FOR SELECT USING (auth.uid() IS NOT NULL);
+CREATE POLICY "profiles_insert" ON public.profiles FOR INSERT WITH CHECK (auth.uid() = id);
+CREATE POLICY "profiles_update" ON public.profiles FOR UPDATE USING (auth.uid() = id);
 
 -- Cards
-CREATE POLICY IF NOT EXISTS "cards_select" ON public.cards FOR SELECT USING (true);
-CREATE POLICY IF NOT EXISTS "cards_insert" ON public.cards FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
-CREATE POLICY IF NOT EXISTS "cards_update" ON public.cards FOR UPDATE USING (true);
-CREATE POLICY IF NOT EXISTS "cards_delete" ON public.cards FOR DELETE USING (auth.uid() IS NOT NULL);
+CREATE POLICY "cards_select" ON public.cards FOR SELECT USING (true);
+CREATE POLICY "cards_insert" ON public.cards FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "cards_update" ON public.cards FOR UPDATE USING (true);
+CREATE POLICY "cards_delete" ON public.cards FOR DELETE USING (auth.uid() IS NOT NULL);
 
 -- Meetings
-CREATE POLICY IF NOT EXISTS "meetings_select" ON public.meetings FOR SELECT USING (true);
-CREATE POLICY IF NOT EXISTS "meetings_insert" ON public.meetings FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
-CREATE POLICY IF NOT EXISTS "meetings_update" ON public.meetings FOR UPDATE USING (true);
-CREATE POLICY IF NOT EXISTS "meetings_delete" ON public.meetings FOR DELETE USING (auth.uid() IS NOT NULL);
+CREATE POLICY "meetings_select" ON public.meetings FOR SELECT USING (true);
+CREATE POLICY "meetings_insert" ON public.meetings FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "meetings_update" ON public.meetings FOR UPDATE USING (true);
+CREATE POLICY "meetings_delete" ON public.meetings FOR DELETE USING (auth.uid() IS NOT NULL);
 
 -- Sprints
-CREATE POLICY IF NOT EXISTS "sprints_select" ON public.sprints FOR SELECT USING (true);
-CREATE POLICY IF NOT EXISTS "sprints_insert" ON public.sprints FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
-CREATE POLICY IF NOT EXISTS "sprints_update" ON public.sprints FOR UPDATE USING (true);
-CREATE POLICY IF NOT EXISTS "sprints_delete" ON public.sprints FOR DELETE USING (auth.uid() IS NOT NULL);
+CREATE POLICY "sprints_select" ON public.sprints FOR SELECT USING (true);
+CREATE POLICY "sprints_insert" ON public.sprints FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "sprints_update" ON public.sprints FOR UPDATE USING (true);
+CREATE POLICY "sprints_delete" ON public.sprints FOR DELETE USING (auth.uid() IS NOT NULL);
 
 -- Projects
-CREATE POLICY IF NOT EXISTS "projects_select" ON public.projects FOR SELECT USING (true);
-CREATE POLICY IF NOT EXISTS "projects_insert" ON public.projects FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
-CREATE POLICY IF NOT EXISTS "projects_update" ON public.projects FOR UPDATE USING (true);
-CREATE POLICY IF NOT EXISTS "projects_delete" ON public.projects FOR DELETE USING (auth.uid() IS NOT NULL);
+CREATE POLICY "projects_select" ON public.projects FOR SELECT USING (true);
+CREATE POLICY "projects_insert" ON public.projects FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "projects_update" ON public.projects FOR UPDATE USING (true);
+CREATE POLICY "projects_delete" ON public.projects FOR DELETE USING (auth.uid() IS NOT NULL);
 
 -- Comentarios
-CREATE POLICY IF NOT EXISTS "comentarios_select" ON public.comentarios FOR SELECT USING (true);
-CREATE POLICY IF NOT EXISTS "comentarios_insert" ON public.comentarios FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
-CREATE POLICY IF NOT EXISTS "comentarios_update" ON public.comentarios FOR UPDATE USING (auth.uid() = autor_id);
-CREATE POLICY IF NOT EXISTS "comentarios_delete" ON public.comentarios FOR DELETE USING (auth.uid() = autor_id);
+CREATE POLICY "comentarios_select" ON public.comentarios FOR SELECT USING (true);
+CREATE POLICY "comentarios_insert" ON public.comentarios FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "comentarios_update" ON public.comentarios FOR UPDATE USING (auth.uid() = autor_id);
+CREATE POLICY "comentarios_delete" ON public.comentarios FOR DELETE USING (auth.uid() = autor_id);
 
 -- Anexos
-CREATE POLICY IF NOT EXISTS "anexos_select" ON public.anexos FOR SELECT USING (true);
-CREATE POLICY IF NOT EXISTS "anexos_insert" ON public.anexos FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
-CREATE POLICY IF NOT EXISTS "anexos_delete" ON public.anexos FOR DELETE USING (auth.uid() = uploaded_by);
+CREATE POLICY "anexos_select" ON public.anexos FOR SELECT USING (true);
+CREATE POLICY "anexos_insert" ON public.anexos FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "anexos_delete" ON public.anexos FOR DELETE USING (auth.uid() = uploaded_by);
 
 -- Audit logs
-CREATE POLICY IF NOT EXISTS "audit_logs_select" ON public.audit_logs FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY IF NOT EXISTS "audit_logs_insert" ON public.audit_logs FOR INSERT WITH CHECK (true);
+CREATE POLICY "audit_logs_select" ON public.audit_logs FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "audit_logs_insert" ON public.audit_logs FOR INSERT WITH CHECK (true);
 
 -- Comment reads
-CREATE POLICY IF NOT EXISTS "comment_reads_all" ON public.comment_reads FOR ALL USING (auth.uid() = user_id);
+CREATE POLICY "comment_reads_all" ON public.comment_reads FOR ALL USING (auth.uid() = user_id);
 
 -- =====================================================
 -- 13. TRIGGERS — auto-update updated_at

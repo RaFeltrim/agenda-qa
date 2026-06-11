@@ -15,7 +15,7 @@ export function useSprints(initialSprints: Sprint[] = []) {
             let query = supabase
                 .from('sprints')
                 .select('*')
-                .order('start_date', { ascending: false });
+                .order('data_inicio', { ascending: false });
 
             if (projectId) {
                 query = query.eq('project_id', projectId);
